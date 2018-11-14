@@ -1,0 +1,74 @@
+<?style href="/recursos/css/buttons.css" type="text/css" ?>
+<window id="mspGotaGruesaRMalaria" position="center" width="50%" apply="ni.com.sts.estudioCohorteCssfv.controller.laboratorio.MSPGotaGruesaRMalariaController">
+
+<div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+    <groupbox width="100%">
+    <hbox width="100%" height="100%" pack="center" align="center">
+    		<vbox>
+				<label sclass="texto_titulo_estilo" value="MUESTRA DE SANGRE PERIFERICA (GOTA GRUESA)" />
+
+			</vbox>
+		</hbox>
+		<space height="30px"/>
+		<hbox width="50%" style="margin-left: auto; margin-right: auto;">
+			<div style="width: 160px;">
+	                        	<label>Muestra Tomada:</label>
+	                        </div>
+	                        <div style="width: 50px;">
+	                        <checkbox id="chkTomaMx">
+	                        	</checkbox>
+	                        </div>
+	    </hbox>
+		<space height="20px"/>
+    	<listbox width="50%" style="margin-left: auto; margin-right: auto;">
+    		<listhead sizable="true">
+        		<listheader label="Resultados" />
+			</listhead>
+			<listitem>
+			<listcell>
+				<radiogroup id="sv1" />
+                	<radio id="rbPFalciparum" label="P.Falciparum" radiogroup="sv1" />
+                    <radio id="rbPVivax" label="P.Vivax" radiogroup="sv1" />
+                    <radio id="rbNegativo" label="Negativo" radiogroup="sv1" />
+            </listcell>
+			</listitem>
+			<!-- <listitem>
+            	<listcell label="P.Falciparum" />
+            	<listcell><textbox id="txtPFalciparum" cols="4" tabindex="2" width="100%;" /></listcell>
+        	</listitem>
+        	<listitem>
+            	<listcell label="P.Vivax" />
+            	<listcell><textbox id="txtPVivax" cols="4" tabindex="2" width="100%;" /></listcell>
+        	</listitem>
+        	<listitem>
+            	<listcell label="Negativo" />
+            	<listcell><textbox id="txtNegativo" cols="4" tabindex="2" width="100%;" /></listcell>
+        	</listitem>-->
+    	</listbox>
+    	<space height="30px" />
+	<hbox style="margin-left: auto; margin-right: auto;">
+		<div>
+			<label value="Bioanalista:"/>
+			<combobox id="cmbBioanalista" tabindex="2" width="200px" />
+		</div>
+    	<space width="10px"/>
+    	<!-- <div>
+    		<label value="Código Muestra:"/>
+    		<textbox id="txtCodigoMuestra" tabindex="2" width="200px" maxlength="50" />
+    	</div>-->
+    	<space width="10px"/>
+    	 <div>
+         	<button id="btnEnviar" tabindex="3"
+            label="Enviar" sclass="myGreen" mold="trendy" height="29px"/>
+         </div>
+         <space width="10px"/>
+    	 <div>
+         	<button id="btnCerrar" tabindex="3"
+            label="Cerrar" sclass="myRed" mold="trendy" height="29px"/>
+         </div>
+	</hbox>
+	<space height="30px" />
+ 	</groupbox>
+</div>
+
+</window >

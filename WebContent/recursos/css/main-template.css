@@ -1,0 +1,98 @@
+@CHARSET "ISO-8859-1";
+
+/*-----------------------------------\
+| Hoja de Estilo Plantilla           |
+|------------------------------------|
+| Autor : Honorio Trejos             |
+| Ultima Actualización : 13/02/2015  |
+\-----------------------------------*/
+
+
+
+body{
+    background: #f7fcfe !important;
+    font-family : Tahoma, Verdana, Arial, sans-serif !important;
+    font-size :8pt !important;
+    font-style :normal !important;
+    font-weight :normal !important;
+}
+
+.contenedor_header {
+  background-image: url('/estudioCohorteCSSFVWEB/recursos/imagenes/header.png');
+  background-size:cover;
+    border-bottom: 1px solid #cccccc;
+    height: 100px; /*100px;*/
+    width:100%;
+}
+
+.titulo_header {
+  left: 50%; /*50px;*/
+    position: absolute;
+    top: 100%; /*35px;*/
+}
+
+.titulo_header span {
+  color: #4863A0;
+  font-family: "Times New Roman",Times,serif; !important;
+  font-size: 20pt !important;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.imagenCliente {
+    height: 100%; /*90px;*/
+    left: 23%; /*215px;*/
+    position: absolute;
+    top: 0%; /*10px;*/
+    width: 50%; /*600px;*/
+}
+
+.z-button-os{
+    font-family : Tahoma, Verdana, Arial, sans-serif !important;
+    cursor: pointer !important;
+}
+
+.z-menubar-ver {
+    border-right: 0 none;
+    height: 100%;
+    border: none;
+}
+
+.z-west {
+    border-left: none !important;
+    border-top: none !important;
+}
+
+.contenedor {
+    text-align: left;
+    background-color: #D3CFCF;
+    border: 1px solid #cccccc;
+    height: 1000px;
+}
+
+.valorRequerido{
+    color: #B11414;
+    margin-left:2px;
+}
+.fontWhite{
+  color: #000000;
+  font-weight: bold;
+  background: #999999;
+}
+.disableTrue{
+  color: #000000;
+  font-weight: bold;
+  background: #999999;
+}
+
+.tituloPagina {
+    color: #625D5D !important;
+    font-size: 25px !important;
+    font-weight: bold !important;
+}
+
+.subtituloPagina {
+    color: #6D7B8D !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+}

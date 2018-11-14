@@ -1,0 +1,91 @@
+<?style href="/recursos/css/buttons.css" type="text/css" ?>
+<window id="extendidoPeriferico" position="center" width="80%" apply="ni.com.sts.estudioCohorteCssfv.controller.laboratorio.ExtendidoPerifericoController">
+
+<div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+    <groupbox width="100%">
+    <hbox width="100%" height="100%" pack="center" align="center">
+    		<vbox>
+				<label sclass="texto_titulo_estilo" value="EXTENDIDO PERIFERICO" />
+
+			</vbox>
+		</hbox>
+		<space height="30px"/>
+		<hbox width="40%" style="margin-left: auto; margin-right: auto;">
+			<div style="width: 160px;">
+	                        	<label>Muestra Tomada:</label>
+	                        </div>
+	                        <div style="width: 50px;">
+	                        <checkbox id="chkTomaMx">
+	                        	</checkbox>
+	                        </div>
+	    </hbox>
+		<space height="20px"/>
+    	<listbox width="40%" style="margin-left: auto; margin-right: auto;">
+    		<listhead sizable="true">
+        		<listheader label="SERIE ROJA"  />
+        		<listheader label="Resultado" />
+			</listhead>
+			<listitem>
+            	<listcell label="Anisocitosis" />
+            	<listcell><textbox id="txtAnisocitosis" cols="4" maxlength="32" tabindex="2" width="100%;" /></listcell>
+        	</listitem>
+        	<listitem>
+            	<listcell label="Anisocromia" />
+            	<listcell><textbox id="txtAnisocromia" cols="4" maxlength="32" tabindex="2" width="100%;" /></listcell>
+        	</listitem>
+        	<listitem>
+            	<listcell label="Poiquilocitosis" />
+            	<listcell><textbox id="txtPoiquilocitosis" cols="4" tabindex="2" maxlength="32" width="100%;" /></listcell>
+        	</listitem>
+    	</listbox>
+    	<listbox  width="40%" style="margin-left: auto; margin-right: auto;">
+    		<listhead sizable="true">
+        		<listheader label="SERIE BLANCA" />
+        		<listheader label="" />
+			</listhead>
+			<listitem>
+            	<listcell label="Linfositos atípicos" />
+            	<listcell><textbox id="txtLinfositosAtipicos" cols="4" tabindex="2" maxlength="32" width="100%;" /></listcell>            	
+        	</listitem>
+        	<listitem>
+            	<listcell label="Observaciones" />
+            	<listcell><textbox id="txtObservaciones" multiline="true" cols="4" tabindex="2" width="100%;" maxlength="124" /></listcell>
+        	</listitem>
+    	</listbox>
+    	<listbox width="40%" style="margin-left: auto; margin-right: auto;">
+    	<listhead sizable="true">
+        		<listheader label="IMPRESION PLAQUETARIA" />
+        		<listheader label="" />
+		</listhead>
+		<listitem>
+            	<listcell label="Observaciones" />
+            	<listcell><textbox id="txtObservacionesPlaquetaria" multiline="true" cols="4" tabindex="2" width="100%;" maxlength="124" /></listcell>
+        	</listitem>
+    	</listbox>
+    	<space height="30px" />
+	<hbox style="margin-left: auto; margin-right: auto;">
+		<div>
+			<label value="Bioanalista:"/>
+			<combobox id="cmbBioanalista" tabindex="2" width="200px" />
+    	</div>
+    	<space width="10px"/>
+    	<!-- <div>
+    		<label value="Código Muestra:"/>
+    		<textbox id="txtCodigoMuestra" tabindex="2" width="200px" maxlength="50" />
+    	</div>-->
+    	<space width="10px"/>
+    	 <div>
+         	<button id="btnEnviar" tabindex="3"
+            label="Enviar" sclass="myGreen" mold="trendy" height="29px"/>
+         </div>
+         <space width="10px"/>
+    	 <div>
+         	<button id="btnCerrar" tabindex="3"
+            label="Cerrar" sclass="myRed" mold="trendy" height="29px"/>
+         </div>
+	</hbox>
+	<space height="30px" />
+ </groupbox>
+</div>
+
+</window >

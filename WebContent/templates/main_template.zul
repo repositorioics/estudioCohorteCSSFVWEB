@@ -1,0 +1,20 @@
+<?page title="Gestión de Seguridad" contentType="text/html;charset=UTF-8"?>
+<zk>
+    <borderlayout sclass="contenedor">
+
+        <north height="10%" border="none">
+            <include src="/templates/header.zul"/>
+        </north>
+
+         <west border="none" apply="ni.com.sts.estudioCohorteCssfv.controller.seguridad.SidebarController">
+            <menubar id="menuNavegacion" orient="vertical" autodrop="true" width="175px"/>
+        </west> 
+        <center border="none" self="@insert(content)">
+        </center>
+
+        <south style="text-align: center;">
+      <label>by &#169; STS</label>
+        </south>
+
+    </borderlayout>
+</zk>

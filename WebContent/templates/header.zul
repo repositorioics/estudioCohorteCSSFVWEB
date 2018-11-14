@@ -1,0 +1,153 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/recursos/css/login.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<zk>
+
+<style>
+    .btndiv .z-button-cr, .btndiv .z-button-cl,
+        .btndiv .z-button-bl, .btndiv .z-button-bm,
+        .btndiv .z-button-br, .btndiv .z-button-tl,
+        .btndiv .z-button-tm, .btndiv .z-button-tr {
+            background-image: none;
+        }
+        .btndiv .z-button-cm {
+            background : transparent url('') no-repeat 0 0 ;
+        }
+        .btndiv table {
+            width: 100%;
+            height: 100%;
+        }
+        .myWhite, .myBlack, .myGreen {
+            width: 110px;
+            height: 39px;
+            height: 37px\9;
+        }
+        .myWhite .z-button-cm,
+        .myBlack .z-button-cm,
+        .myGreen .z-button-cm {
+            height: 19px;
+            color: black;
+        }
+        .myWhite .z-button-cm {
+            background-image : url(${c:encodeURL('/widgets/styling/custom_style/img/button1.png')});
+        }
+        .myBlack .z-button-cm {
+            background-image : url('/estudioCohorteCSSFVWEB/recursos/imagenes/botones/a150.png');
+        }
+        .myGreen .z-button-cm {
+            background-image: url('/estudioCohorteCSSFVWEB/recursos/imagenes/botones/a100x80.png');
+        }
+        .z-button-focus .z-button-cm {
+            background-position: 0 -62px
+        }
+        .z-button-over .z-button-cm {
+            background-position: 0 -19px
+        }
+        .z-button-clk .z-button-cm {
+            background-position: 0 -93px
+        }
+ </style>
+
+    <div apply="ni.com.sts.estudioCohorteCssfv.controller.seguridad.HeaderController">
+        <div sclass="contenedor_header">
+            <hbox hflex="1" vflex="1" align="center" apply="ni.com.sts.estudioCohorteCssfv.controller.seguridad.LoginController">
+
+        <!-- 30-04-2014 SE DESHABILITA DEBIDO A QUE EL BANNER TIENE EL NOMBRE DE LA APLICACION-->
+                <!-- <space spacing="5px"/>
+                <hbox hflex="1" vflex="1" spacing="5px" align="center">
+                    <div sclass="titulo_header">
+		              <label id="lbTituloApp"/>
+		            </div>
+                </hbox> -->
+
+
+                <vbox hflex="1" vflex="1" pack="start" align="end" style="padding:4px;" >
+
+		          <hbox hflex="1" vflex="1" spacing="2px" align="center">
+		              <image id="imgCliente" zclass="imagenCliente" />
+		          </hbox>
+
+					<vbox align="end" pack="end">
+
+	                    <hbox style="margin-right:8px">
+	                        <image src="/recursos/imagenes/calendario.png" />
+	                        <label id="lblFecha" style="font-size:12px;font-weight:bold;color: #FFFFFF;"/>
+	                        <space spacing="30px"/>
+	                        <image src="/recursos/imagenes/manager.png"/>
+	                        <label id="lblUsername" style="font-size:12px;font-weight:bold;color: #FFFFFF;"/>
+	                    </hbox>
+
+	                    <hbox style="margin-top:30px;margin-right:8px" align="end" pack="end">
+	                        <!-- <button id="btnConfigSeguridad" label="seguridad"
+	                                    style="width: 140px;height:20px;font-size:10px;font-weight: bold;" sclass="myBlack" mold="trendy" height="29px"/>
+	                        <button id="btnCambiarPass" label="cambiar contraseña"
+	                                    style="width: 140px;height: 20px;font-size:10px;font-weight: bold;" sclass="myBlack" mold="trendy" height="29px"/>
+	                                     -->
+	                        <button id="btnLogout" label="Cerrar sesión"
+	                                    style="width: 140px;height: 20px;font-size:10px;font-weight: bold;"
+	                                    forward="onClick=btnLogout.onLogout" sclass="myBlack" mold="trendy" height="29px"/>
+	                    </hbox>
+                    </vbox>
+
+                    <space></space>
+
+                </vbox>
+            </hbox>
+        </div>
+
+        <!--  Cuadro de diálogo para cambiar la contraseña del usuario -->
+        <window id="popUpNuevoPass" visible="false" title="Nueva contraseña"
+            zindex="1001" width="400px" height="170px" border="normal"
+            position="center" hflex="1" vflex="1">
+
+            <vbox style="padding:10px;">
+                <hbox>
+                    <div width="150px">
+                        <label>Contraseña actual:</label>
+                        <html>
+
+                            <![CDATA[<span
+                            class="valorRequerido">*</span>]]>
+
+                                    </html>
+                    </div>
+                    <textbox id="txbPass" type="password" tabindex="1001" width="200px"
+                        maxlength="50" />
+                </hbox>
+                <hbox>
+                    <div width="150px">
+                        <label>Nueva contraseña:</label>
+                        <html>
+
+                            <![CDATA[<span
+                            class="valorRequerido">*</span>]]>
+
+                                    </html>
+                    </div>
+                    <textbox id="txbNuevoPass" type="password" tabindex="1002" width="200px"
+                        maxlength="50" />
+                </hbox>
+                <hbox>
+                    <div width="150px">
+                        <label>Confirmar contraseña:</label>
+                        <html>
+
+                            <![CDATA[<span
+                            class="valorRequerido">*</span>]]>
+
+                                    </html>
+                    </div>
+                    <textbox id="txbConfirmarPass" type="password"
+                        tabindex="1003" width="200px" maxlength="50" />
+                </hbox>
+            </vbox>
+            <hbox style="padding-top:10px">
+                <button id="btnConfirmarCambio" tabindex="1004" width="90px"
+                    label="Cambiar" />
+                <button id="btnSalirNuevoPass" tabindex="1005" width="90px"
+                    label="Salir" />
+            </hbox>
+        </window>
+
+    </div>
+</zk>

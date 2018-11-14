@@ -1,0 +1,11 @@
+@CHARSET "ISO-8859-1";
+
+.texbox_linea_estilo {
+	background-color: transparent !important;
+	border-top: none !important;
+	border-left: none !important;
+	border-right: none !important;
+	border-color: black !important;
+	font-weight: bold;
+	
+}

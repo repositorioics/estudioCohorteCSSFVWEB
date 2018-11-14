@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+    <addon-name>myCustomDateBox</addon-name>
+    <language-name>xul/html</language-name>
+    <addon-name>datebox.custom</addon-name><!-- any name you like -->
+    <javascript src="recursos/scripts/CustomDateBox.js" />
+</language-addon>

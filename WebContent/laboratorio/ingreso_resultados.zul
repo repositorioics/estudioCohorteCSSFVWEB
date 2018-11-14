@@ -1,0 +1,130 @@
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+<?style href="/recursos/css/estilo_textbox.css" type="text/css" ?>
+<window id="ingresoResultados" apply="ni.com.sts.estudioCohorteCssfv.controller.laboratorio.IngresoResultadosController" >
+<div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+<vlayout>
+            <!-- Breadcrumb -->
+            <hbox style="margin-bottom:10px">
+                <image src="/recursos/imagenes/marker_squared_red.png"/>
+                <label style="color: #008FBB;font-size:14px;font-style:italic;">LABORATORIO - INGRESO RESULTADOS</label>
+            </hbox>
+     </vlayout>
+<groupbox width="100%">
+    	<hbox width="100%" height="100%" pack="center" align="center">
+    		<vbox>
+				<label sclass="texto_titulo_estilo" value="INGRESO RESULTADOS" />
+
+			</vbox>
+		</hbox>
+		<space height="30px" />
+		<hbox>
+			<div>
+				<label value="Código:"/>
+				<textbox id="txtCodigo" cols="4" readonly="true" tabindex="2" width="100px;" sclass="texbox_linea_estilo"/>
+			</div>
+			<space width="10px"/>
+			<div>
+				<label value="Nombre del Paciente:"/>
+				<textbox id="txtNombrePaciente" cols="4" readonly="true" tabindex="2" width="500px;" sclass="texbox_linea_estilo"/>
+			</div>
+			<space width="10px"/>
+			<div>
+				<label value="Edad:"/>
+				<textbox id="txtEdad" cols="4" readonly="true" tabindex="2" width="100px;" sclass="texbox_linea_estilo"/>
+			</div>
+			<space width="10px"/>
+			<div>
+				<label value="Sexo:"/>
+				<textbox id="txtSexo" cols="4" readonly="true" tabindex="2" width="100px;" sclass="texbox_linea_estilo"/>
+			</div>
+		</hbox>
+		<space height="40px"/>
+    <listbox id = "lstIngresoResultados" mold="paging" pageSize="15" emptyMessage="No hay resultados que mostrar">
+    	<listhead sizable="true">
+        		<listheader label="Examen Clínico" width="16%" />
+        		<listheader label="Fecha" width="10%"/>
+        		<listheader label="Hora Orden" width="10%"/>
+        		<listheader label="Hora Reporte" width="10%" />
+        		<listheader label="Estado" width="7%" />
+        		<listheader label="Muestra Tomada" width="10%" />
+        		<listheader label="Razón cancelación" width="15%" />
+        		<listheader label="Ingresar Resultado" width="12%" align="center" />
+        		<listheader label="PDF" width="4%" align="center"/>
+        		<listheader label="Cancelar" width="6%" align="center"/>
+		</listhead>
+
+			<template name="model">
+			<listitem>
+            	<zk if="${each.estado=='Pendiente'}">
+	            	<listcell label="${each.examen }" style="color:red"/>
+	            	<listcell label="${c:formatDate(each.fechaOrdenLaboratorio.getTime(), 'dd/MM/yyyy')}" style="color:red"/>
+	            	<listcell label="${c:formatDate(each.fechaOrdenLaboratorio.getTime(), 'hh:mm a')}" style="color:red"/>
+	            	<listcell label="${each.horaReporte != null ? c:formatDate(each.horaReporte.getTime(), 'hh:mm a') : ''}" style="color:red"/>
+            		<listcell label = "${each.estado}" style="color:red"/>
+	            	<listcell label="${each.tomaMx != '0' ? 'Si' : 'No'}" style="color:red"/>
+	            	<listcell label="${each.razonCancela }" style="color:red"/>
+            	</zk>
+            	<zk if="${each.estado!='Pendiente'}">
+            		<listcell label="${each.examen }" />
+	            	<listcell label="${c:formatDate(each.fechaOrdenLaboratorio.getTime(), 'dd/MM/yyyy')}" />
+	            	<listcell label="${c:formatDate(each.fechaOrdenLaboratorio.getTime(), 'hh:mm a')}" />
+	            	<listcell label="${each.horaReporte != null ? c:formatDate(each.horaReporte.getTime(), 'hh:mm a') : ''}" />
+            		<listcell label = "${each.estado}"/>
+            		<listcell label="${each.tomaMx != '0' ? 'Si' : 'No'}" />
+	            	<listcell label="${each.razonCancela }" />
+            	</zk>
+            	
+            	<listcell>
+            		<toolbarbutton image="/recursos/imagenes/edit_pencil_small.png" tooltiptext="Editar"
+                                    forward="onClick=lstIngresoResultados.onEditarIngresarResultado" />
+                </listcell>
+                <listcell>
+            		<toolbarbutton image="/recursos/imagenes/pdf.png" tooltiptext="Ver Pdf"
+                                    forward="onClick=lstIngresoResultados.onPdfResultado" />
+                </listcell>
+                <listcell>
+            		<toolbarbutton image="/recursos/imagenes/cross-small.png" tooltiptext="Cancelar"
+                                    forward="onClick=lstIngresoResultados.onCancelar" />
+                </listcell>
+        	</listitem>
+        	</template>
+    </listbox>
+    <space width="10px"/>
+    	 <div>
+         	<button id="btnCerrar" tabindex="3"
+            label="Cerrar" sclass="myRed" mold="trendy" height="29px"/>
+         </div>
+    </groupbox>
+    </div>
+	    <!-- Modal cancelar examen -->
+    <window id="popCancelarExamen" visible="false" zindex="1000" sizable="false" closable="true"
+                width="600px" height="200px" border="none" position="center">
+    	<vlayout style="padding:20px;" spacing="7px">
+        	<hbox style="margin-bottom:10px">
+                <image src="/recursos/imagenes/marker_squared_red.png"/>
+                <label style="color: #008FBB;font-size:14px;font-style:italic;" id="lblTituloOrden"></label>
+            </hbox> 
+            <div style="width: 100px;"><label id="lblNombreExamen"></label></div>                
+            <hbox width="100%" height="100%" pack="center" align="center">
+            <textbox id="idOrdenLaboratorio" visible="false"></textbox>
+            <textbox id="txtHojaConsulta" visible="false"></textbox>
+            	<space height="2px"/>
+		    	<hbox pack="center">
+	               	<div style="width: 100px;">
+	            	     <label>Razón(</label><label style="color:red">*</label><label>):</label>
+	                </div>
+	                <div style="width: 400px;!important">
+	                	<textbox id="txtRazon" cols="4" rows="2" style="font-weight: bold;" maxlength="100" tabindex="1" width="100%"/>
+	                </div>
+				</hbox>
+				<space height="2px"/>
+			</hbox>
+			<div width="100%">
+				<div align="right" width="100%">
+                    <button id="btnCancelar" tabindex="2" width="90px" label="Guardar" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
+					<button id="btnSalirPopup" tabindex="3" width="90px" label="Salir" sclass="myRed" mold="trendy" height="29px" />
+                </div>
+            </div>
+        </vlayout>
+    </window>
+</window>

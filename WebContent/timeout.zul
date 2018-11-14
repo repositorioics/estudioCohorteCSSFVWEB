@@ -1,0 +1,43 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?page title="Estudio Cohorte Web - Timeout !" contentType="text/html;charset=UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/recursos/css/buttons.css"?>
+
+<zk>
+	<borderlayout hflex="1" vflex="1">
+		<center style="background: url('/estudioCohorteCSSFVWEB/recursos/imagenes/fondo_login.png') no-repeat center;">
+
+			<window title="Timeout de Sesión ..." border="normal"
+					mode="overlapped"
+					apply="ni.com.sts.estudioCohorteCssfv.controller.seguridad.TimeoutController"
+					position="center" width="400px" id="winTimeout"
+					onCreate="btnGotoLogin.focus();">
+					<grid width="100%">
+						<columns>
+							<column width="100%"></column>
+						</columns>
+						<rows>
+							<row align="center">
+								<cell>
+									<label style="font-weight: normal;font-size:1em;"
+										value="Ha ocurrido un Timeout de Sesión," />
+									<separator height="0px"/>
+									<label style="font-weight: normal;font-size:1em;"
+										value="por favor ingrese de nuevo a la aplicación." />
+								</cell>
+							</row>
+							<row align="center">
+								<image
+									src="/recursos/imagenes/image_hourglass.png" />
+							</row>
+							<row align="center">
+								<button id="btnGotoLogin"
+									label="Ir a Login" autodisable="self" width="90px"
+									style="font-weight: bold;font-size:1em;" sclass="myBlue" mold="trendy" height="29px"/>
+							</row>
+						</rows>
+					</grid>
+				</window>
+
+		</center>
+	</borderlayout>
+</zk>

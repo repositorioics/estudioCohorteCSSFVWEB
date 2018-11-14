@@ -1,0 +1,145 @@
+<?init class="ni.com.sts.estudioCohorteCssfv.controller.seguridad.InitController" ?>
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+<window id="windowHorario" apply="ni.com.sts.estudioCohorteCssfv.controller.mantenedores.HorarioAtencionController" >
+    <div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+        <vlayout>
+            <!-- Breadcrumb -->
+            <hbox style="margin-bottom:10px">
+                <image src="/recursos/imagenes/marker_squared_red.png"/>
+                <label style="color: #008FBB;font-size:14px;font-style:italic;">MANTENEDOR DE HORARIOS DE ATENCIÓN</label>
+            </hbox>
+            <auxhead>
+                <auxheader>
+                  	<groupbox width="99%" height="100%" closable="false">
+                  	<vbox style="padding:8px;">
+                  		<textbox id="txtSecuencia" value="0" cols="4" style="font-weight: bold;" visible="false"/>
+	                    <hbox pack="center">
+	                    	<div style="width: 150px;">
+	                            <label>Turno:</label> (<label style="color: red">*</label>)
+	                        </div>
+	                        <div>
+	                            <combobox id="cmbTurno" tabindex="1" width="100%" cols="26" >
+	                            <comboitem value="0" label="Seleccione"/>
+	                            <comboitem value="1" label="Regular"/>
+	                            <comboitem value="2" label="Noche"/>
+	                            <comboitem value="3" label="Fin Semana"/>
+	                            </combobox>
+	                        </div>
+	                    </hbox>
+						<space height="1px"/>
+	                    <hbox pack="center">
+	                        <div style="width: 150px;">
+	                            <label>Dia:</label> (<label style="color: red">*</label>)
+	                        </div>
+	                        <div>
+	                            <combobox id="cmbDia" tabindex="2" width="100%" cols="26">
+	                            <comboitem value="0" label="Seleccione"/>
+	                            <comboitem value="2" label="Lunes"/>
+	                            <comboitem value="3" label="Martes"/>
+	                            <comboitem value="4" label="Miércoles"/>
+	                            <comboitem value="5" label="Jueves"/>
+	                            <comboitem value="6" label="Viernes"/>
+	                            <comboitem value="7" label="Sábado"/>
+	                            <comboitem value="1" label="Domingo"/>
+	                            </combobox>
+	                        </div>
+	                    </hbox>
+	                    <space height="1px"/>
+	                    <hbox pack="center">
+							<div style="width: 150px;">
+	                             <label>Hora Inicio:</label> (<label style="color: red">*</label>)
+	                        </div>
+	                        <div style="width: 200px!important;">
+	                        <textbox id="txtHoraInicio" cols="4" style="font-weight: bold;" value="00:00" tabindex="3" width="100%" maxlength="5" constraint="/^([0-9]|0[0-9]|1[0-2]):[0-5][0-9]/: ingresar hora formato 12 horas (hh:mm)"/>
+	                        </div>
+	                        <div>
+	                            <combobox id="cmbPeriodoHI" tabindex="4" width="100%" cols="5">
+	                            <comboitem value="am" label="AM" focus="true"/>
+	                            <comboitem value="pm" label="PM"/>
+	                            </combobox>
+	                        </div>
+	                        <div style="width: 50px;">
+	                             <label style="color: red">(hh:mm)</label>
+	                        </div>
+	                    </hbox>
+						<space height="1px"/>
+	                    <hbox pack="center">
+							<div style="width: 150px;">
+	                             <label>Hora Fin:</label> (<label style="color: red">*</label>)
+	                        </div>
+	                        <div style="width: 200px!important;">
+	                        <textbox id="txtHoraFin" cols="4" style="font-weight: bold;" value="00:00" tabindex="4" width="100%" maxlength="5" constraint="/^([0-9]|0[0-9]|1[0-2]):[0-5][0-9]/: ingresar hora formato 12 horas (hh:mm)"/>
+	                        </div>
+	                        <div>
+	                            <combobox id="cmbPeriodoHF" tabindex="4" cols="5">
+	                            <comboitem value="am" label="AM"/>
+	                            <comboitem value="pm" label="PM"/>
+	                            </combobox>
+	                        </div>
+	                        <div style="width: 50px;">
+	                             <label style="color: red">(hh:mm)</label>
+	                        </div>
+	                    </hbox>
+	                    <space height="3px"/>
+	                   	<space height="5px"/>
+                    <space height="5px"/>
+	                <div style="width: 200px;">
+                    </div>
+                    <div style="width:98%;" align="center">
+                    	<button id="btnGuardar" tabindex="5" width="90px" label="Guardar" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
+  						<button id="btnNuevo" tabindex="6" width="90px" label="Nuevo" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
+                        <button id="btnSalir" label="Salir" tabindex="7" width="110px" sclass="myRed" mold="trendy" height="29px" onClick="closeWindow()"/>
+		            </div>
+		            </vbox>
+		            </groupbox>
+		                <space height="5px"/>
+		                <groupbox width="99%" closable="false">
+		                <space height="5px"/>
+					    	<hbox width="100%" height="100%" pack="center" align="center">
+					    		<vbox>
+									<label sclass="texto_titulo_estilo" value="HORARIOS DE ATENCIÓN REGISTRADOS" />
+								</vbox>
+							</hbox>
+							<space height="5px"/>
+					    	<listbox id = "listaHorarios" mold="paging" pageSize="10">
+					    		<listhead sizable="true">
+					        		<listheader label="Turno" width="25%" />
+					        		<listheader label="Día" width="25%" />
+					        		<listheader label="Hora Inicio" width="18%" />
+					        		<listheader label="Hora Fin" width="18%"/>
+					        		<listheader label="Editar" width="7%" align="center" />
+					        		<listheader label="Eliminar" width="7%" align="center" />
+					            </listhead>
+								<template name="model">
+								<listitem>
+					            	<listcell label = "${each.texto1}" />
+					            	<listcell label = "${each.texto2}" />
+					            	<listcell label = "${each.texto3}" />
+					            	<listcell label = "${each.texto4}" />
+					            	<listcell>
+					            		<toolbarbutton image="/recursos/imagenes/edit_pencil_small.png" tooltiptext="Editar"
+					                                    forward="onClick=listaHorarios.onEditarHorario" />
+					                </listcell>
+					                <listcell>
+					            		<toolbarbutton image="/recursos/imagenes/cross-small.png" tooltiptext="Editar"
+					                                    forward="onClick=listaHorarios.onEliminarHorario" />
+					                </listcell>
+					        	</listitem>
+					        	</template>
+					    	</listbox>
+					    </groupbox>
+                </auxheader>
+            	</auxhead>
+            	<space />
+            <div style="width:98%;" align="right">
+            </div>
+        </vlayout>
+    </div>
+
+    <zscript><![CDATA[
+        public void closeWindow() {
+        	Executions.sendRedirect("/contenido.zul");
+            Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowHorario , null);
+        }
+    ]]></zscript>
+</window>

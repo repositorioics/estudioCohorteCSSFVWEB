@@ -1,0 +1,106 @@
+<?init class="ni.com.sts.estudioCohorteCssfv.controller.seguridad.InitController" ?>
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+<window id="windowParametro" apply="ni.com.sts.estudioCohorteCssfv.controller.parametro.ParametrosController" >
+    <div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+        <vlayout>
+            <!-- Breadcrumb -->
+            <hbox style="margin-bottom:10px">
+                <image src="/recursos/imagenes/marker_squared_red.png"/>
+                <label style="color: #008FBB;font-size:14px;font-style:italic;">PARAMETROS DEL SISTEMA</label>
+            </hbox>
+            <auxhead>
+                <auxheader>
+                  	<groupbox width="99%" height="100%" closable="false">
+                  	 <vbox style="padding:4px;">
+	                    <hbox pack="center">
+	                    	<div style="width: 200px;">
+	                            <label>Código:</label>
+	                        </div>
+	                        <div style="width: 400px!important;">
+	                           <textbox id="txtCodigo" cols="4" style="font-weight: bold;" tabindex="1" width="100%" readonly="true" maxlength="8"/>
+	                        </div>
+	                        </hbox>
+						<space height="1px"/>
+	                    <hbox pack="center">
+	                        <div style="width: 200px;">
+	                            <label>Nombre:</label>
+	                        </div>
+	                        <div style="width: 400px!important;">
+	                           <textbox id="txtNombre" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="100%" maxlength="64"/>
+	                        </div>
+	                    </hbox>
+	                    <space height="2px"/>
+	                    <hbox pack="center">
+							<div style="width: 200px;">
+	                             <label>Valores:</label> (<label style="color: red">*</label>)
+	                        </div>
+	                        <div style="width: 600px!important;">
+	                        <textbox id="txtValores" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="100%" maxlength="124"/>
+	                        </div>
+	                    </hbox>
+						<space height="2px"/>
+	                    <hbox pack="center">
+							<div style="width: 200px;">
+	                             <label>Descripción:</label>
+	                        </div>
+	                        <div style="width: 600px!important;">
+	                        <textbox id="txtDescripcion" cols="4" rows="3" style="font-weight: bold;" readonly="true" tabindex="2" width="100%" maxlength="256"/>
+	                        </div>
+	                    </hbox>
+	                    <space height="3px"/>
+
+                    <space height="2px"/>
+
+	                </vbox>
+                    <div style="width:98%;" align="center">
+                    	<button id="btnGuardar" tabindex="5" width="90px" label="Guardar" autodisable="self" sclass="myGreen" mold="trendy" height="29px" disabled="true"/>
+  						<button id="btnLimpiar" tabindex="5" width="90px" label="Limpiar" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
+                        <button id="btnSalir" label="Salir" tabindex="20" width="110px" sclass="myRed" mold="trendy" height="29px" onClick="closeWindow()"/>
+		            </div>
+		            </groupbox>
+		                <space height="5px"/>
+		                <groupbox width="99%" closable="false">
+		                <space height="5px"/>
+					    	<hbox width="100%" height="100%" pack="center" align="center">
+					    		<vbox>
+									<label sclass="texto_titulo_estilo" value="PARÁMETROS DEL SISTEMA" />
+								</vbox>
+							</hbox>
+							<space height="5px"/>
+					    	<listbox id = "listaParametros" mold="paging" pageSize="10">
+					    		<listhead sizable="true">
+					        		<listheader label="Código" width="10%" />
+					        		<listheader label="Nombre" width="25%" />
+					        		<listheader label="Valor" width="30%" />
+					        		<listheader label="Descripción" width="30%"/>
+					        		<listheader label="Editar" width="5%" />
+					            </listhead>
+								<template name="model">
+								<listitem>
+					            	<listcell label = "${each.codigoParametro}" />
+					            	<listcell label = "${each.nombreParametro}" />
+					            	<listcell label = "${each.valores}" />
+					            	<listcell label = "${each.descripcion}" />
+					            	<listcell>
+					            		<toolbarbutton image="/recursos/imagenes/edit_pencil_small.png" tooltiptext="Editar"
+					                                    forward="onClick=listaParametros.onEditarParametro" />
+					                </listcell>
+					        	</listitem>
+					        	</template>
+					    	</listbox>
+					    </groupbox>
+                </auxheader>
+            	</auxhead>
+            	<space />
+            <div style="width:98%;" align="right">
+            </div>
+        </vlayout>
+    </div>
+
+    <zscript><![CDATA[
+        public void closeWindow() {
+        	Executions.sendRedirect("/contenido.zul");
+            Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowParametro , null);
+        }
+    ]]></zscript>
+</window>

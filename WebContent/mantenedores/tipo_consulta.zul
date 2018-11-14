@@ -1,0 +1,110 @@
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+<?style href="/recursos/css/buttons.css" type="text/css" ?>
+<window id="winTiposConsulta" apply="ni.com.sts.estudioCohorteCssfv.controller.mantenedores.TipoConsultaController" >
+ 	<div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+    <vlayout>
+	    <hbox style="margin-bottom:10px">
+                <image src="/recursos/imagenes/marker_squared_red.png"/>
+                <label style="color: #008FBB;font-size:14px;font-style:italic;">MANTENEDOR DE TIPOS DE CONSULTA</label>
+        </hbox>
+		<auxhead>
+        	<auxheader>
+             	<groupbox width="99%" height="100%" closable="false">
+             	<textbox id="txtSecuencia" value="0" cols="4" style="font-weight: bold;" visible="false"/>
+                  	<hbox pack="center">
+		                <div style="width: 150px;">
+		            		<label value="Descripción" />(<label style="color: red">*</label>)
+		                </div>
+		                <div style="width: 250px!important;">
+		                	<textbox id="txtDescripcion" cols="4" tabindex="1" width="200px;" maxlength="32" />
+		                </div>
+		                <div style="width: 120px!important;">
+		                	<button id="btnBuscar" tabindex="2"	label="Buscar" sclass="myGreen" mold="trendy" height="29px"/>
+		                </div>
+		                <div style="width: 120px!important;">
+		                	<button id="btnNuevo" tabindex="6" label="Limpiar" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
+		                </div>
+		                <div style="width: 120px!important;">
+		                	<button id="btnGuardar" tabindex="7" label="Guardar" sclass="myGreen" mold="trendy" height="29px" />
+		                </div>
+		                <!-- <div style="width: 120px!important;">
+		                	<toolbarbutton id="btnHojaExcel" tabindex="8" image="/recursos/imagenes/hoja_excel.png" />
+		                </div>-->
+	                </hbox>
+	                <space height="2px" />
+	                <hbox pack="center">
+	                	<div style="width: 150px;">
+	                	<label value="Código:" />(<label style="color: red">*</label>)
+	                	</div>
+	                	<div style="width: 250px!important;">
+	                		<textbox id="txtCodigo" cols="4" tabindex="2" width="200px;" maxlength="16" />
+	                	</div>
+	                	<div style="width: 120px!important;">
+		                </div>
+		                <div style="width: 120px!important;">
+		                </div>
+	                </hbox>
+	                <space height="5px" />
+	                <hbox pack="center">
+	                	<div style="width: 150px;">
+	                		<label value="Estado" />(<label style="color: red">*</label>)
+	                	</div>
+	                	<div style="width: 250px!important;">
+	                		<combobox id="cmbEstado" tabindex="5" width="200px">
+	                			<comboitem value="-1" label="Seleccione"/>
+	                			<comboitem value="1" label="Activo"/>
+	                			<comboitem value="0" label="Inactivo"/>
+	                		</combobox>
+	                	</div>
+	                	<div style="width: 120px!important;">
+		                </div>
+		                <div style="width: 120px!important;">
+		                </div>
+	                </hbox>
+               	</groupbox>
+               	<space height="2px"/>
+                <groupbox width="99%" closable="false">
+	                <space height="2px"/>
+			    	<hbox width="100%" height="100%" pack="center" align="center">
+		    		<vbox>
+						<label sclass="texto_titulo_estilo" value="TIPOS DE CONSULTA REGISTRADAS" />
+					</vbox>
+					</hbox>
+					<space height="2px"/>
+					<listbox id = "listaTipoConsulta" mold="paging" pageSize="10">
+			    		<listhead sizable="true">
+			        		<listheader label="Tipo de Consulta" width="50%" />
+			        		<listheader label="Código" width="20%"/>
+			        		<listheader label="Estado" width="20%"/>
+			        		<listheader label="Editar" width="10%"/>
+						</listhead>
+						<template name="model">
+								<listitem>
+					            	<listcell label = "${each.descripcion}" />
+					            	<listcell label = "${each.codigo}" />
+					            	<listcell label = "${each.estado == '0' ? 'Inactivo' : 'Activo'}" />
+					            	<listcell>
+					            		<toolbarbutton image="/recursos/imagenes/edit_pencil_small.png" tooltiptext="Editar"
+					                                    forward="onClick=listaTipoConsulta.onEditarDx" />
+					                </listcell>
+					        	</listitem>
+					    </template>
+			    	</listbox>
+				</groupbox>
+				<space height="5px"></space>
+				<hbox width="100%" pack="center" align="center">
+			    	<div style="width: 100%!important;">
+		                	<button id="btnSalir" tabindex="3" label="Salir" sclass="myRed" mold="trendy" height="29px"  onClick="closeWindow()"/>
+		                </div>
+			    </hbox>
+	        </auxheader>
+        </auxhead>
+        </vlayout>
+    </div>
+        <zscript><![CDATA[
+        public void closeWindow() {
+        	Executions.sendRedirect("/contenido.zul");
+            Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, winTiposConsulta , null);
+        }
+    ]]></zscript>
+</window>

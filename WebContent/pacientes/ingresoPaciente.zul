@@ -1,0 +1,178 @@
+<!-- <?init class="ni.com.sts.estudioCohorteCssfv.controller.seguridad.InitController" ?>-->
+<window id="windowPaciente" apply="ni.com.sts.estudioCohorteCssfv.controller.paciente.IngresoPacienteController" >
+    <div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+        <vlayout>
+            <!-- Breadcrumb -->
+            <hbox style="margin-bottom:10px">
+                <image src="/recursos/imagenes/marker_squared_red.png"/>
+                <label style="color: #008FBB;font-size:14px;font-style:italic;">DATOS DEL PACIENTE</label>
+            </hbox>
+
+            <auxhead>
+                <auxheader>
+                  	<groupbox width="99%" height="100%" closable="false">
+                		 <hbox pack="center">
+	                        <div style="width: 200px;">
+	                            <label>Código Expediente:</label>
+	                        </div>
+	                        <div style="width: 400px!important;">
+	                           <textbox id="txtCodExpediente" cols="4" style="font-weight: bold;" tabindex="1" width="200px;" readonly="false"/>
+	                           <button id="btnBuscar" tabindex="5" width="50px" autodisable="self" sclass="myGreen" mold="trendy" height="29px" image="/recursos/imagenes/buscar.png"/>
+	                        </div>
+	                    </hbox>
+	                    <space height="3px"/>
+	                    <hbox pack="center">
+	                        <div style="width: 200px;">
+	                            <label>Primer Nombre:</label>
+	                        </div>
+	                        <div style="width: 400px;">
+	                           <textbox id="txtFechaSalida" cols="4" style="font-weight: bold;" tabindex="2" width="200px;"/>
+	                        </div>
+	                        <div style="width: 200px;">
+	                             <label>Segundo Nombre:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                        	<textbox id="txtSegundoNombre" cols="4" style="font-weight: bold;" tabindex="2" width="200px;"/>	                            
+	                        </div>
+	                    </hbox>
+	                    <space height="3px"/>
+	                    <hbox pack="center">
+	                        <div style="width: 200px;">
+	                            <label>Primer Apellido:</label>
+	                        </div>
+	                        <div style="width: 400px;">
+	                           <combobox id="cmbEntregadoPor" tabindex="4" width="100%" cols="31" />
+	                        </div>
+	                        <div style="width: 200px;">
+	                             <label>Segundo Apellido:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                            <combobox id="cmbRecibidoPor" tabindex="4" width="100%" cols="31" />
+	                        </div>
+	                    </hbox>
+	                    <space height="3px"/>
+	                     <hbox pack="center">
+	                        <div style="width: 200px;">
+	                            <label>Sexo:</label>
+	                        </div>
+	                        <div style="width: 400px;">
+	                        	<combobox id="cmbSexo" tabindex="4" width="100%" cols="31" />
+	                        </div>
+	                        <div style="width: 200px;">
+	                             <label>Fecha Nacimiento:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                            <textbox id="txtFechaEntrada" cols="4" style="font-weight: bold;" tabindex="2" width="200px;" value="@bind(fx.email)"/>
+	                        </div>
+	                    </hbox>
+	                    <space height="3px"/>
+	                    <hbox pack="center">
+	                        <div style="width: 200px;">
+	                           <label>Barrio:</label>
+	                        </div>
+	                        <div style="width: 400px;">
+	                            <combobox id="cmbRegresadoA" tabindex="4" width="100%" cols="31" />	                            
+	                        </div>
+	                    </hbox>
+	                    <space height="3px"/>
+	                    <hbox>
+	                    	<div style="width: 200px;">
+	                            <label>Direccion:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                           <textbox id="txtObservEntrada" cols="4" style="font-weight: bold;" tabindex="2" width="200px;"/>
+	                        </div>                    
+	                    </hbox>
+	                    <space height="3px"/>
+	                    <hbox pack="center">
+	                        <div style="width: 200px;">
+	                           <label>Teléfono Emergencia:</label> 
+	                        </div>
+	                        <div style="width: 400px;">
+	                           <textbox id="txtHojaConsulta" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="200px;"/>
+	                        </div>
+	                         <div style="width: 200px;">
+	                              <label>Tipo Linea:</label>
+	                        </div>
+	                        <div style="width: 200px!important;">
+								<combobox id="cmbTipoConsulta" tabindex="4" width="100%" cols="31" />
+						    </div>
+	                    </hbox>
+	                    <space height="3px"/>
+	                    <hbox>
+	                    	<div style="width: 200px;">
+	                            <label>Tutor:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                           <textbox id="txtTutor" cols="4" style="font-weight: bold;" tabindex="2" width="200px;"/>
+	                        </div>                    
+	                    </hbox>
+	                    	                    <space height="3px"/>
+	                    <hbox>
+	                    	<div style="width: 200px;">
+	                            <label>Parentesco:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                           <textbox id="txtParentesco" cols="4" style="font-weight: bold;" tabindex="2" width="200px;"/>
+	                        </div>                    
+	                    </hbox>
+	                    <space height="3px"/>
+	                    <hbox>
+	                    	<div style="width: 200px;">
+	                            <label>Estado:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                           <combobox id="cmbEstado" tabindex="4" width="100%" cols="31" />
+	                        </div>                    
+	                    </hbox>
+	                    	                    <space height="3px"/>
+	                    <hbox>
+	                    	<div style="width: 200px;">
+	                            <label>Estudio:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                           <combobox id="cmbEstudio" tabindex="4" width="100%" cols="31" />
+	                        </div>                    
+	                    </hbox>
+	                    	                    <space height="3px"/>
+	                    <hbox>
+	                    	<div style="width: 200px;">
+	                            <label>Fecha Ingreso:</label>
+	                        </div>
+	                        <div style="width: 100px;">
+	                           <textbox id="txtFechaIngreso" cols="4" style="font-weight: bold;" tabindex="2" width="200px;"/>
+	                        </div>                    
+	                    </hbox>	                    
+	                    <space height="3px"/>
+	                   	<space height="5px"/> 
+                  
+                    </groupbox>
+                    <space height="5px"/> 
+	                <div style="width: 200px;">
+                    </div>
+	                <div style="width: 100px;">
+	                </div>	                   
+                    <div style="width:98%;" align="center">
+                    	<button id="btnGuardar" tabindex="5" width="90px" label="Guardar" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
+  						<button id="btnLimpiar" tabindex="5" width="90px" label="Editar" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
+                        <button id="btnSalir" label="Salir" tabindex="20" width="110px" sclass="myRed" mold="trendy" height="29px" onClick="closeWindow()"/>
+		            </div>
+                </auxheader>
+            	</auxhead>
+            	<space />
+
+          
+
+            
+            <div style="width:98%;" align="right">
+            </div>
+        </vlayout>
+    </div>
+
+    <zscript><![CDATA[
+        public void closeWindow() {
+        	Executions.sendRedirect("/contenido.zul");
+            Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowPaciente , null);
+        }
+    ]]></zscript>
+</window>

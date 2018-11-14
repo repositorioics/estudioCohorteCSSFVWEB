@@ -1,0 +1,55 @@
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+<?style href="/recursos/css/estilo_textbox.css" type="text/css" ?>
+<?style href="/recursos/css/buttons.css" type="text/css" ?>
+<window id="muestraSerologiaDengue" position="center" width="50%" apply="ni.com.sts.estudioCohorteCssfv.controller.laboratorio.MuestraSerologiaDengueController">
+
+<div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
+    <groupbox width="100%">
+		<space height="40px"/>
+		<hbox width="100%" height="100%" pack="center">
+    		<vbox>
+				<label sclass="texto_titulo_estilo" value="MUESTRA SEROLOGIA DENGUE" />
+
+			</vbox>
+		</hbox>
+		<space height="30px"/>
+		<hbox width="90%" style="margin-left: auto; margin-right: auto;">
+			<div style="width: 160px;">
+	                        	<label>Muestra Tomada:</label>
+	                        </div>
+	                        <div style="width: 50px;">
+	                        <checkbox id="chkTomaMx">
+	                        	</checkbox>
+	                        </div>
+	    </hbox>
+		<space height="20px"/>
+		<hbox width="90%" style="margin-left: auto; margin-right: auto;">
+		<div>
+			<label value="Bioanalista:"/>
+			<combobox id="cmbBioanalista" tabindex="2" width="200px" />
+		</div>
+    	<space width="10px"/>
+    	<div>
+    		<label value="Código Muestra:"/>
+    		<textbox id="txtCodigoMuestra" tabindex="2" width="200px" maxlength="50" />
+    	</div>
+
+		</hbox>
+		<space height="40px"/>
+		<hbox>
+			<space width="200px"/>
+    	 <div>
+         	<button id="btnEnviar" tabindex="3"
+            label="Enviar" sclass="myGreen" mold="trendy" height="29px"/>
+         </div>
+         <space width="10px"/>
+    	 <div>
+         	<button id="btnCerrar" tabindex="3"
+            label="Cerrar" sclass="myRed" mold="trendy" height="29px"/>
+         </div>
+		</hbox>
+	<space height="30px" />
+ </groupbox>
+</div>
+
+</window>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Created by ZK Studio
+-->
+
+<zk>
+	<device-config>
+		<device-type>ajax</device-type>
+		<timeout-uri>/timeout.zul</timeout-uri><!-- An empty URL can cause the browser to reload the same URL -->
+	</device-config>
+    <session-config>
+        <timer-keep-alive>true</timer-keep-alive>
+    </session-config>
+
+    <language-config>
+        <addon-uri>/WEB-INF/my-addon.xml</addon-uri>
+    </language-config>
+
+	<!-- in WEB-INF/zk.xml -->
+		<library-property>
+		    <name>org.zkoss.theme.preferred</name>
+		    <value>silvertail</value>
+		</library-property>
+		
+    <!-- Configuración para ventanas modales -->
+    <system-config>
+        <disable-event-thread >false</disable-event-thread>
+    </system-config>
+    <library-property>
+  		<name>org.zkoss.zul.progressbox.position</name>
+  		<value>center</value>
+ 	</library-property>
+</zk>

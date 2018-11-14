@@ -1,0 +1,55 @@
+<?page title="Autenticación" contentType="text/html;charset=UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/recursos/css/login.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?link rel="stylesheet" type="text/css" href="/recursos/css/buttons.css"?>
+
+<zk>
+    <borderlayout hflex="1" vflex="1">
+        <center apply="ni.com.sts.estudioCohorteCssfv.controller.seguridad.LoginController" style="background: url('/estudioCohorteCSSFVWEB/recursos/imagenes/fondo_login.png') no-repeat center;">
+            <!-- Ventada para la autenticación de usuarios -->
+            <hbox vflex="1" hflex="2" align="center" pack="center">
+
+                <window id="winLogin" border="none">
+                  <div>
+              <!-- <div sclass="titulo_app">
+               <label id="lbTituloApp"/>
+            </div>-->
+            <div> <image id="imgClienteLogin" zclass="imagenCliente" />
+            </div>
+            <vlayout width="400px" height="250px" style="background-color:#F1F1F1;border: 1px solid #E5E5E5;" spacing="7px">
+                        <div style="margin: 0 auto;width:280px">
+                            <div style="margin-bottom:25px;margin-top:20px">
+                                <label style="font-size:20px;color:#7A7979">
+                                    Autenticación
+                                </label>
+                            </div>
+                            <div style="margin-bottom:15px">
+                                <label
+                                    style="color:#515151;font-size:14px;font-weight:bold">
+                                    Nombre de usuario:
+                                </label>
+                                <textbox id="txbUsername" tabindex="1"
+                                    width="250px" maxlength="50" />
+                            </div>
+                            <div style="margin-bottom:15px">
+                                <label
+                                    style="color:#515151;font-size:14px;font-weight:bold">
+                                    Contrase&#241;a:
+                                </label>
+                                <textbox id="txbPass" type="password"
+                                    tabindex="2" width="250px" maxlength="50" />
+                            </div>
+                            <div style="margin-top:25px">
+                                <button id="btnLogin" tabindex="3"
+                                    label="Iniciar sesión" sclass="myGreen" mold="trendy" height="29px"/>
+                            </div>
+                        </div>
+
+                  </vlayout>
+          </div>
+
+                </window>
+            </hbox>
+        </center>
+    </borderlayout>
+</zk>

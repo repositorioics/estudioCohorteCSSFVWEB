@@ -1,0 +1,6 @@
+<window title="Reporte" border="normal" width="90%" height="95%" closable="true" mode="modal"
+        apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('ni.com.sts.estudioCohorteCssfv.controller.visorReporte.VisorController')">
+
+    <jasperreport id="reporte" height="100%"/>
+
+</window>

@@ -1,0 +1,41 @@
+@CHARSET "ISO-8859-1";
+
+/*-----------------------------------\
+| Hoja de Estilo Plantilla           |
+|------------------------------------|
+| Autor : Honorio Trejos             |
+| Ultima Actualización : 13/09/2013  |
+\-----------------------------------*/
+
+
+
+body{
+    background: #f7fcfe !important;
+    font-family : Tahoma, Verdana, Arial, sans-serif !important;
+    font-size :8pt !important;
+    font-style :normal;
+    font-weight :normal;
+}
+
+.titulo_app {
+	padding-bottom: 20px;
+	text-align: center;
+	/*position: absolute;
+	right: 20%;
+    top: 10%; */
+}
+
+.titulo_app span {
+	color: #49729C;
+	font-family: Tahoma, Verdana, Arial, sans-serif !important;
+	font-size: 20pt !important;
+	font-style: normal;
+	font-weight: bold;
+}
+.imagenCliente {
+    height: 20%; /*150px;*/
+    left: 25%; /*375px;*/
+    position: absolute;
+    top: 5%; /*70px;*/
+    width: 50%; /*600px;*/
+}
