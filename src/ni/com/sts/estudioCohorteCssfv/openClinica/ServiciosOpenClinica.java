@@ -404,7 +404,7 @@ public class ServiciosOpenClinica {
 			String nombre = metodo.getName();
 			String datosCrf = null;
 			String value="";
-			if (!nombre.toUpperCase().contains("CLASS") && !nombre.toUpperCase().contains("ESTADO") && nombre.contains("get")){
+			if (!nombre.toUpperCase().contains("CLASS") && (!nombre.toUpperCase().contains("ESTADO") || nombre.toUpperCase().contains("MALESTADO")) && nombre.contains("get")){
 				Object val = metodo.invoke(hoja, null);
 				if (val != null){
 					nombre = nombre.replaceAll("get", "").toUpperCase();
@@ -417,8 +417,10 @@ public class ServiciosOpenClinica {
 						value = String.valueOf((Date)val);
 					else if (val instanceof Character){ //se invierten SI y NO
 						value = String.valueOf(val);
-						if (!nombre.equals("SEGCHICK") && !nombre.equals("TURNO") &&
-								!nombre.equals("MALESTADO") && !nombre.equals("MANIFESTACIONHEMORRAGICA")){
+						if (!nombre.equals("SEGCHICK") && !nombre.equals("TURNO") 
+								//20112018.Nose porque estaba en este filtro, pero por esto no cargaba correctamente a open
+								//&& !nombre.equals("MALESTADO") && !nombre.equals("MANIFESTACIONHEMORRAGICA")
+								){
 							if (value.trim().equals("0"))
 								value = "1";
 							else if (value.trim().equals("1"))
