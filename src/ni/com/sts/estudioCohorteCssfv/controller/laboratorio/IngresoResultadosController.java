@@ -488,7 +488,7 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 			parametros.put("observacionesIP", resultado.getObservacionPlaqueta());
 			parametros.put("bioanalista", bioanalista.getNombre());
 			parametros.put("codigoBio", bioanalista.getCodigoPersonal());
-			parametros.put("horaRecibido", UtilDate.DateToString(new Date(), "hh:mm a"));
+			parametros.put("horaRecibido", UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a"));
 			VisorController.mostrarReporte("Extendido Periferico", sRutaJasper, parametros, null);
 		}
 	}
@@ -519,7 +519,7 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 			// generando el documento
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
 			
-			String[] horaRecibido = UtilDate.DateToString(new Date(), "hh:mm a").split(" ");
+			String[] horaRecibido = UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a").split(" ");
 			
 			String sResultado = "";
 			if (resultado.getPFalciparum())
@@ -593,7 +593,7 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 			// generando el documento
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
 			
-			String[] horaRecibido = UtilDate.DateToString(new Date(), "hh:mm a").split(" ");
+			String[] horaRecibido = UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a").split(" ");
 			
 			String sPaciente = paciente.getNombre1();
 			if(paciente.getNombre2()!=null) sPaciente = sPaciente + " " + paciente.getNombre2();
@@ -671,7 +671,7 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 			// generando el documento
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
 			
-			String[] horaRecibido = UtilDate.DateToString(new Date(), "hh:mm a").split(" ");
+			String[] horaRecibido = UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a").split(" ");
 			
 			String sPaciente = paciente.getNombre1();
 			if(paciente.getNombre2()!=null) sPaciente = sPaciente + " " + paciente.getNombre2();
@@ -720,7 +720,7 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 				parametros.put("horaMx", null);
 				parametros.put("horaMxMD", null);
 			}		
-			VisorController.mostrarReporte("Examen General de Heces", sRutaJasper, parametros, null);
+			VisorController.mostrarReporte("Examen General de Orina", sRutaJasper, parametros, null);
 		}
 	}
 
