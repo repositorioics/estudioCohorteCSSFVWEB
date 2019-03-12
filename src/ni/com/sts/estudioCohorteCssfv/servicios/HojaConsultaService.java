@@ -24,4 +24,6 @@ public interface HojaConsultaService {
 	public List<HojaConsulta> getHojaConsultaNoActivaAndAdmiPenByCodExp(int codExpediente) throws Exception;
 
 	public EstadosHoja getEstadoHojaConsultaByNumHoja(int numHoja) throws Exception;
+
+	public List<HojaConsulta> getHojasConsultaSinAdmision(int codExpediente) throws Exception;
 }

@@ -496,6 +496,12 @@ public class ServiciosOpenClinica {
 							fecha = fecha + " " + value.trim();
 							String hora24 = UtilDate.DateToString(UtilDate.StringToDate(fecha, "yyyy-MM-dd hh:mm aa"),"HH:mm");
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora24);
+						}else if (nombre.equals("TELEF")) {
+							if (value.trim().isEmpty() || value.trim().equalsIgnoreCase("0") || !(value.trim().length()==8)) {
+								logger.debug("telefono no válido: "+nombre+" - "+value);
+							}else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim());
+							}
 						}else{
 							String valorEspecial = valorCasosEspeciales(nombre, value.trim());
 							if (valorEspecial!=null){

@@ -448,7 +448,7 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 		Mensajes.enviarMensaje(Mensajes.EXAMEN_ESTADO_CANCELADO, Mensajes.TipoMensaje.INFO);
 	}
 	
-	private void visualizarExtendidoPeriferico(OrdenesExamenes ingresoResultadoSeleccionado){
+	private void visualizarExtendidoPeriferico(OrdenesExamenes ingresoResultadoSeleccionado) throws ParseException{
 		
 		if (ingresoResultadoSeleccionado.getEstado().equalsIgnoreCase("Pendiente")){
 			MensajeExamenPendiente();
@@ -472,7 +472,6 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
 			
 			parametros.put("logo", sRutaImgLogo);
-			parametros.put("horaIngreso", UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a"));
 			parametros.put("codigoP", String.valueOf(ingresoResultadoSeleccionado.getCodigoExpediente()));
 			parametros.put("medico", medico.getNombre());
 			parametros.put("fecha", UtilDate.DateToString(ingresoResultadoSeleccionado.getFechaOrdenLaboratorio().getTime(),"dd/MM/yyyy"));
@@ -489,6 +488,13 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 			parametros.put("bioanalista", bioanalista.getNombre());
 			parametros.put("codigoBio", bioanalista.getCodigoPersonal());
 			parametros.put("horaRecibido", UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a"));
+			if (ingresoResultadoSeleccionado.getFechaHoraTomaMx()!=null){
+				Date fechaHoraMx = UtilDate.StringToDate(ingresoResultadoSeleccionado.getFechaHoraTomaMx(),"dd/MM/yyyy HH:mm:ss");
+				parametros.put("horaIngreso", UtilDate.DateToString(fechaHoraMx,"hh:mm a"));				
+			}else{
+				parametros.put("horaIngreso", null);
+			}
+			
 			VisorController.mostrarReporte("Extendido Periferico", sRutaJasper, parametros, null);
 		}
 	}

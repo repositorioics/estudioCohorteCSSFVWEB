@@ -1,276 +1,384 @@
 <?init class="ni.com.sts.estudioCohorteCssfv.controller.seguridad.InitController" ?>
-<window id="windowAdmision" apply="ni.com.sts.estudioCohorteCssfv.controller.admision.AdmisionController" >
-<zk>
-<style>
-.z-combobox-disd * {
-    cursor: default !important;
-    color: #000000 !important;
-    background: none repeat scroll 0% 0% #FAFAFA;
-    }
-</style>
-</zk>
-    <div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
-        <vlayout>
-            <!-- Breadcrumb -->
-            <hbox style="margin-bottom:10px">
-                <image src="/recursos/imagenes/marker_squared_red.png"/>
-                <label style="color: #008FBB;font-size:14px;font-style:italic;">CONTROL DE EXPEDIENTES - ADMISION</label>
-            </hbox>
+<window id="windowAdmision"
+	apply="ni.com.sts.estudioCohorteCssfv.controller.admision.AdmisionController">
+	<zk>
+		<style>
+			.z-combobox-disd * { cursor: default !important; color:
+			#000000 !important; background: none repeat scroll 0% 0%
+			#FAFAFA; }
+		</style>
+	</zk>
+	<div width="100%"
+		style="padding-left:4px;padding-right:4px;padding-top:25px;">
+		<vlayout>
+			<!-- Breadcrumb -->
+			<hbox style="margin-bottom:10px">
+				<image src="/recursos/imagenes/marker_squared_red.png" />
+				<label
+					style="color: #008FBB;font-size:14px;font-style:italic;">
+					CONTROL DE EXPEDIENTES - ADMISION
+				</label>
+			</hbox>
 
-            <auxhead>
-                <auxheader>
-                  	<groupbox width="99%" height="100%" closable="false">
-                  		<vbox style="padding:10px;">
-                		 <hbox pack="center">
-	                        <div style="width: 200px;">
-	                            <label>Código:</label>
-	                        </div>
-	                        <div style="width: 140px!important;">
-	                           <intbox id="txtCodExpediente" style="font-weight: bold;" tabindex="1" width="90%" readonly="false" maxlength="5"/>
-	                        </div>
-	                        <div style="width: 70px;">
-	                           <button id="btnBuscar" tabindex="5" width="50px" autodisable="self" sclass="myGreen" mold="trendy" height="29px" image="/recursos/imagenes/buscar.png"/>
-	                        </div>
-	                        <div style="width: 160px;">
-	                        	<label>Recepción Expediente:</label>
-	                        </div>
-	                        <div style="width: 50px;">
-	                        <checkbox id="chkRecepcion">
-	                        	</checkbox>
-	                        </div>
-	                    </hbox>
-	                    <space height="1px"/>
-	                    <hbox pack="center">
-	                    	<div style="width: 200px;">
-	                            <label>Nombre y Apellido:</label>
-	                        </div>
-	                        <div style="width: 400px!important;">
-	                           <textbox id="txtNombrePaciente" cols="4" style="font-weight: bold;" tabindex="1" width="100%" readonly="true" maxlength="128"/>
-	                        </div>
-	                        </hbox>
-						<space height="1px"/>
-						<hbox pack="center">
-	                    	<div style="width: 200px;">
-	                            <label>Estudios:</label>
-	                        </div>
-	                        <div style="width: 400px!important;">
-	                           <textbox id="txtEstudios" cols="4" style="font-weight: bold;" tabindex="1" width="100%" readonly="true" maxlength="128"/>
-	                        </div>
-	                        </hbox>
-						<space height="1px"/>
-	                    <hbox pack="center">
-	                        <div style="width: 200px;">
-	                            <label>Fecha de Salida:</label>
-	                        </div>
-	                        <div style="width: 400px!important;">
-	                           <textbox id="txtFechaSalida" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="100%"/>
-	                        </div>
-	                    </hbox>
-	                    <space height="2px"/>
-	                    <hbox pack="center">
-							<div style="width: 200px;">
-	                             <label>Tipo de Consulta:</label>
-	                        </div>
-	                        <div>
-	                            <combobox id="cmbTipoConsulta" autodrop="true" tabindex="4" width="100%" cols="26">	                            
-	                            </combobox>	                            
-	                        </div>
-	                        <div style="width: 35px;">
-	                              <label></label>
-	                        </div>
-	                        <div style="width: 80px;">
-	                              <label>Caso:</label>
-	                        </div>
-	                        <div style="width: 190px!important;">
-								<textbox id="txtCaso" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="50%"/>
-						    </div>
-	                    </hbox>
-						<space height="2px"/>
-						<hbox pack="center">
-							<div style="width: 200px;">
-	                             <label>Usuario que solicita:</label>
-	                        </div>
-	                        <div>
-	                            <combobox id="cmbUsuarioSoli" autodrop="true" tabindex="4" width="100%" cols="26">	                            
-	                            </combobox>
-	                        </div>	                        
-	                    </hbox>
-	                    <space height="2px"/>
-						<hbox pack="center">
-							<div style="width: 200px;">
-	                             <label>Entregado por:</label>
-	                        </div>
-	                        <div style="width: 180px;">
-	                           <textbox id="txtUsuarioEntrega" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="80%"/>
-	                        </div>	                        
-	                    </hbox>
-	                    <space height="2px"/>
-						<hbox pack="center">
-							<div style="width: 200px;">
-	                             <label>Regresado a:</label>
-	                        </div>
-	                        <div style="width: 180px;">
-	                           <textbox id="txtUsuarioRegresa" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="80%"/>
-	                        </div>	                        
-	                    </hbox>
-	                    <space height="2px"/>
-	                    <space height="1px"/>
-	                    <hbox pack="center">
-	                        <div style="width: 200px;">
-	                           <label>No. Hoja de Consulta:</label>
-	                        </div>
-	                        <div style="width: 180px;">
-	                           <textbox id="txtHojaConsulta" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="80%"/>
-	                        </div>
-	                        <div style="width: 120px;">
-	                              <label>Orden de Llegada:</label>
-	                        </div>
-	                        <div style="width: 190px!important;">
-								<textbox id="txtOrdenLlegada" cols="4" style="font-weight: bold;" readonly="true" tabindex="2" width="50%"/>
-						    </div>
-	                    </hbox>
-	                    <space height="2px"/>
-						<hbox pack="center">
-	                        <div style="width: 200px;">
-	                             <label>Fecha de Entrada:</label>
-	                        </div>
-	                        <div style="width: 400px!important;">
-	                            <textbox id="txtFechaEntrada" cols="4" style="font-weight: bold;" tabindex="2" width="100%" value="" readonly="true"/>
-	                        </div>
-						</hbox>
-						<space height="2px"/>
-						<hbox pack="center">
-	                        <div style="width: 200px;">
-	                            <label>Observaciones:</label>
-	                        </div>
-	                        <div style="width: 400px;!important">
-	                           <textbox id="txtObservaciones" cols="4" rows="2" style="font-weight: bold;" maxlength="100" tabindex="2" width="100%"/>
-	                        </div>
-						</hbox>
-						<space height="2px"/>
-						<hbox pack="center">
-	                        <div style="width: 200px;">
-	                           <label>Escanear No. Hoja de Consulta:</label>
-	                        </div>
-	                        <div style="width: 180px;">
-	                           <intbox id="txtHojaConsultaScan" cols="4" style="font-weight: bold;" readonly="true" maxlength="8" tabindex="2" width="80%"/>
-	                        </div>
-	                    </hbox>
-	                    <space height="3px"/>
-	                   	<space height="5px"/>
+			<auxhead>
+				<auxheader>
+					<groupbox width="99%" height="100%"
+						closable="false">
+						<vbox style="padding:10px;">
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Código:</label>
+								</div>
+								<div style="width: 140px!important;">
+									<intbox id="txtCodExpediente"
+										style="font-weight: bold;" tabindex="1" width="90%"
+										readonly="false" maxlength="5" />
+								</div>
+								<div style="width: 70px;">
+									<button id="btnBuscar" tabindex="5"
+										width="50px" autodisable="self" sclass="myGreen" mold="trendy"
+										height="29px" image="/recursos/imagenes/buscar.png" />
+								</div>
+								<div style="width: 160px;">
+									<label>Recepción Expediente:</label>
+								</div>
+								<div style="width: 50px;">
+									<checkbox id="chkRecepcion">
+									</checkbox>
+								</div>
+							</hbox>
+							<space height="1px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Nombre y Apellido:</label>
+								</div>
+								<div style="width: 400px!important;">
+									<textbox id="txtNombrePaciente"
+										cols="4" style="font-weight: bold;" tabindex="1" width="100%"
+										readonly="true" maxlength="128" />
+								</div>
+							</hbox>
+							<space height="1px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Estudios:</label>
+								</div>
+								<div style="width: 400px!important;">
+									<textbox id="txtEstudios" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										readonly="true" maxlength="128" />
+								</div>
+							</hbox>
+							<space height="1px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Fecha de Salida:</label>
+								</div>
+								<div style="width: 400px!important;">
+									<textbox id="txtFechaSalida"
+										cols="4" style="font-weight: bold;" readonly="true"
+										tabindex="2" width="100%" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Tipo de Consulta:</label>
+								</div>
+								<div>
+									<combobox id="cmbTipoConsulta"
+										autodrop="true" tabindex="4" width="100%" cols="26">
+									</combobox>
+								</div>
+								<div style="width: 35px;">
+									<label></label>
+								</div>
+								<div style="width: 80px;">
+									<label>Caso:</label>
+								</div>
+								<div style="width: 190px!important;">
+									<textbox id="txtCaso" cols="4"
+										style="font-weight: bold;" readonly="true" tabindex="2"
+										width="50%" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Usuario que solicita:</label>
+								</div>
+								<div>
+									<combobox id="cmbUsuarioSoli"
+										autodrop="true" tabindex="4" width="100%" cols="26">
+									</combobox>
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Entregado por:</label>
+								</div>
+								<div style="width: 180px;">
+									<textbox id="txtUsuarioEntrega"
+										cols="4" style="font-weight: bold;" readonly="true"
+										tabindex="2" width="80%" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Regresado a:</label>
+								</div>
+								<div style="width: 180px;">
+									<textbox id="txtUsuarioRegresa"
+										cols="4" style="font-weight: bold;" readonly="true"
+										tabindex="2" width="80%" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<space height="1px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>No. Hoja de Consulta:</label>
+								</div>
+								<div style="width: 180px;">
+									<textbox id="txtHojaConsulta"
+										cols="4" style="font-weight: bold;" readonly="true"
+										tabindex="2" width="80%" />
+								</div>
+								<div style="width: 120px;">
+									<label>Orden de Llegada:</label>
+								</div>
+								<div style="width: 190px!important;">
+									<textbox id="txtOrdenLlegada"
+										cols="4" style="font-weight: bold;" readonly="true"
+										tabindex="2" width="50%" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Fecha de Entrada:</label>
+								</div>
+								<div style="width: 400px!important;">
+									<textbox id="txtFechaEntrada"
+										cols="4" style="font-weight: bold;" tabindex="2" width="100%"
+										value="" readonly="true" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>Observaciones:</label>
+								</div>
+								<div style="width: 400px;!important">
+									<textbox id="txtObservaciones"
+										cols="4" rows="2" style="font-weight: bold;" maxlength="100"
+										tabindex="2" width="100%" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 200px;">
+									<label>
+										Escanear No. Hoja de Consulta:
+									</label>
+								</div>
+								<div style="width: 180px;">
+									<intbox id="txtHojaConsultaScan"
+										cols="4" style="font-weight: bold;" readonly="true"
+										maxlength="8" tabindex="2" width="80%" />
+								</div>
+							</hbox>
+							<space height="3px" />
+							<space height="5px" />
 
-	                   	</vbox>
-                    </groupbox>
-                    <space height="5px"/>
-	                <div style="width: 200px;">
-                    </div>
-	                <div style="width: 100px;">
-	                </div>
-                    <div style="width:98%;" align="center">
-                    	<button id="btnGuardar" tabindex="5" width="90px" label="Guardar" autodisable="self" sclass="myGreen" mold="trendy" height="29px" disabled="true"/>
-  						<button id="btnNuevo" tabindex="5" width="90px" label="Nueva" autodisable="self" sclass="myGreen" mold="trendy" height="29px"/>
-                        <button id="btnSalir" label="Salir" tabindex="20" width="110px" sclass="myRed" mold="trendy" height="29px" onClick="closeWindow()"/>
-		            </div>
-                </auxheader>
-            	</auxhead>
-            	<space />
-            <div style="width:98%;" align="right">
-            </div>
-        </vlayout>
-    </div>
-    
-    <!-- Modal admisiones pendientes de recepción cuando es admisión-->
-    <window id="popAdmisionesPendientes" visible="false" zindex="1000" sizable="false" closable="true"
-                width="600px" height="450px" border="none" position="center">
-                <vlayout style="padding:20px;" spacing="7px">
-                	            <hbox style="margin-bottom:10px">
-                <image src="/recursos/imagenes/marker_squared_red.png"/>
-                <label style="color: #008FBB;font-size:14px;font-style:italic;" id="lblAdmisionesPen">ADMISIONES PENDIENTES DE RECEPCIÓN</label>
-            </hbox>
-                	<div style="width: 100px;"><label></label></div>                
-                	<hbox width="100%" height="100%" pack="center" align="center">
-		    		<vbox>
-						
-					</vbox>
-					</hbox>
-					<listbox id = "listaAdmisiones" mold="paging" pageSize="6" emptyMessage="No hay resultados que mostrar">
-					    		<listhead sizable="true">
-					        		<listheader label="Código"/>
-					        		<listheader label="Num Hoja"/>
-					        		<listheader label="Fecha Admisión"/>
-					        		<listheader label="Tipo Consulta"/>
-					        		<listheader label="Estado Hoja"/>
-					            </listhead>
-								<template name="model">
-									<listitem>
-						            	<listcell label = "${each.numero1}" />
-						            	<listcell label = "${each.texto3}" />
-						            	<listcell label="${c:formatDate(each.fecha1, 'dd/MM/yyyy')}" />
-						            	<listcell label = "${each.texto1}" />
-						            	<listcell label = "${each.texto2}" />
-						        	</listitem>
-					        	</template>
-					    	</listbox>
-					<div width="100%">
+						</vbox>
+					</groupbox>
+					<space height="5px" />
+					<div style="width: 200px;"></div>
+					<div style="width: 100px;"></div>
+					<div style="width:98%;" align="center">
+						<button id="btnGuardar" tabindex="5"
+							width="90px" label="Guardar" autodisable="self" sclass="myGreen"
+							mold="trendy" height="29px" disabled="true" />
+						<button id="btnNuevo" tabindex="5" width="90px"
+							label="Nueva" autodisable="self" sclass="myGreen" mold="trendy"
+							height="29px" />
+						<button id="btnSalir" label="Salir"
+							tabindex="20" width="110px" sclass="myRed" mold="trendy"
+							height="29px" onClick="closeWindow()" />
+					</div>
+				</auxheader>
+			</auxhead>
+			<space />
+			<div style="width:98%;" align="right"></div>
+		</vlayout>
+	</div>
+
+	<!-- Modal admisiones pendientes de recepción cuando es admisión-->
+	<window id="popAdmisionesPendientes" visible="false" zindex="1000"
+		sizable="false" closable="true" width="600px" height="450px"
+		border="none" position="center">
+		<vlayout style="padding:20px;" spacing="7px">
+			<hbox style="margin-bottom:10px">
+				<image src="/recursos/imagenes/marker_squared_red.png" />
+				<label
+					style="color: #008FBB;font-size:14px;font-style:italic;"
+					id="lblAdmisionesPen">
+					ADMISIONES PENDIENTES DE RECEPCIÓN
+				</label>
+			</hbox>
+			<div style="width: 100px;">
+				<label></label>
+			</div>
+			<hbox width="100%" height="100%" pack="center"
+				align="center">
+				<vbox>
+
+				</vbox>
+			</hbox>
+			<listbox id="listaAdmisiones" mold="paging" pageSize="6"
+				emptyMessage="No hay resultados que mostrar">
+				<listhead sizable="true">
+					<listheader label="Código" />
+					<listheader label="Num Hoja" />
+					<listheader label="Fecha Admisión" />
+					<listheader label="Tipo Consulta" />
+					<listheader label="Estado Hoja" />
+				</listhead>
+				<template name="model">
+					<listitem>
+						<listcell label="${each.numero1}" />
+						<listcell label="${each.texto3}" />
+						<listcell
+							label="${c:formatDate(each.fecha1, 'dd/MM/yyyy')}" />
+						<listcell label="${each.texto1}" />
+						<listcell label="${each.texto2}" />
+					</listitem>
+				</template>
+			</listbox>
+			<div width="100%">
+				<div align="left">
+					<label
+						style="color: red;font-size:12px;font-style:italic;"
+						value="Recordar siempre recepcionar el expediente para cada admisión" />
+				</div>
+			</div>
+			<vbox></vbox>
+			<vbox></vbox>
+			<hbox style="margin-bottom:10px">
+				<image src="/recursos/imagenes/marker_squared_red.png" />
+				<label
+					style="color: #008FBB;font-size:14px;font-style:italic;"
+					id="lblHojasConsultaSinAdmision">
+					HOJAS DE CONSULTA POR EMERGENCIA U OBSERBACIÓN SIN
+					ADMISIÓN
+				</label>
+			</hbox>
+			<!-- mostrar las hojas de consulta que se generaron como emergencia y en observación -->
+			<div style="width: 100px;">
+				<label></label>
+			</div>
+			<hbox width="100%" height="100%" pack="center"
+				align="center">
+				<vbox>
+
+				</vbox>
+			</hbox>
+			<listbox id="listaHojasConsultaSinAdmision" mold="paging"
+				pageSize="6" emptyMessage="No hay resultados que mostrar">
+				<listhead sizable="true">
+					<listheader label="Código" />
+					<listheader label="Num Hoja" />
+					<listheader label="Fecha Consulta" />
+					<listheader label="Estado Hoja" />
+				</listhead>
+				<template name="model">
+					<listitem>
+						<listcell label="${each.numero1}" />
+						<listcell label="${each.texto1}" />
+						<listcell
+							label="${c:formatDate(each.fecha1, 'dd/MM/yyyy')}" />
+						<listcell label="${each.texto2}" />
+					</listitem>
+				</template>
+			</listbox>
+			<div width="100%">
+				<div align="right" width="100%">
+					<button id="btnSalirPopup" tabindex="15"
+						width="90px" label="Continuar" sclass="myGreen" mold="trendy"
+						height="29px" />
+				</div>
+			</div>
+		</vlayout>
+	</window>
+
+	<!-- Modal admisiones pendientes de recepción cuando es recepción -->
+	<window id="popAdmisionesPendientesRecep" visible="false"
+		zindex="1000" sizable="false" closable="true" width="600px"
+		height="450px" border="none" position="center">
+		<vlayout style="padding:20px;" spacing="7px">
+			<hbox style="margin-bottom:10px">
+				<image src="/recursos/imagenes/marker_squared_red.png" />
+				<label
+					style="color: #008FBB;font-size:14px;font-style:italic;">
+					ADMISIONES PENDIENTES DE RECEPCIÓN
+				</label>
+			</hbox>
+			<div style="width: 100px;">
+				<label></label>
+			</div>
+			<hbox width="100%" height="100%" pack="center"
+				align="center">
+				<vbox>
 					<div align="left">
-						<label style="color: red;font-size:12px;font-style:italic;" value="Recordar siempre recepcionar el expediente para cada admisión" />						
-                    </div>
-                    <div align="right" width="100%">
-						<button id="btnSalirPopup" tabindex="15" width="90px" label="Continuar" sclass="myGreen" mold="trendy" height="29px" />
-                    </div>
-                    </div>
-        </vlayout>
-    </window>
-   
-       <!-- Modal admisiones pendientes de recepción cuando es recepción -->
-    <window id="popAdmisionesPendientesRecep" visible="false" zindex="1000" sizable="false" closable="true"
-                width="600px" height="450px" border="none" position="center">
-                <vlayout style="padding:20px;" spacing="7px">
-                	            <hbox style="margin-bottom:10px">
-                <image src="/recursos/imagenes/marker_squared_red.png"/>
-                <label style="color: #008FBB;font-size:14px;font-style:italic;">ADMISIONES PENDIENTES DE RECEPCIÓN</label>
-            </hbox>
-                	<div style="width: 100px;"><label></label></div>                
-                	<hbox width="100%" height="100%" pack="center" align="center">
-		    		<vbox>
-		    		<div align="left">
-						<label style=";font-size:12px;font-style:italic;" value="Seleccionar la admisión que se recepcionará el expediente" />						
-                    </div>
-					</vbox>
-					</hbox>
-					<listbox id = "listaAdmisionesRecep" mold="paging" pageSize="6" emptyMessage="No hay resultados que mostrar">
-					    		<listhead sizable="true">
-					        		<listheader label="Código"/>
-					        		<listheader label="Num Hoja"/>
-					        		<listheader label="Fecha Admisión"/>
-					        		<listheader label="Tipo Consulta"/>
-					        		<listheader label="Seleccionar"/>
-					            </listhead>
-								<template name="model">
-									<listitem>
-						            	<listcell label = "${each.codExpediente}" />
-						            	<listcell label = "${each.numHojaConsulta}" />
-						            	<listcell label="${c:formatDate(each.fechaSalida, 'dd/MM/yyyy')}" />
-						            	<listcell label = "${each.tipoConsulta.descripcion}" />
-						            	<listcell>
-						            		<toolbarbutton image="/recursos/imagenes/justificar.png" tooltiptext="Seleccionar"
-						                                    forward="onClick=listaAdmisionesRecep.onSeleccionar" />
-                						</listcell>
-						        	</listitem>
-					        	</template>
-					    	</listbox>
-					<div width="100%">
-                    <div align="right" width="100%">
-						<button id="btnSalirPopupRecep" tabindex="15" width="90px" label="Salir" sclass="myRed" mold="trendy" height="29px" />
-                    </div>
-                    </div>
-        </vlayout>
-    </window>
-    
-    <zscript><![CDATA[
-        public void closeWindow() {
-        	Executions.sendRedirect("/contenido.zul");
-            Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowAdmision , null);
-        }
-    ]]></zscript>
+						<label
+							style=";font-size:12px;font-style:italic;"
+							value="Seleccionar la admisión que se recepcionará el expediente" />
+					</div>
+				</vbox>
+			</hbox>
+			<listbox id="listaAdmisionesRecep" mold="paging"
+				pageSize="6" emptyMessage="No hay resultados que mostrar">
+				<listhead sizable="true">
+					<listheader label="Código" />
+					<listheader label="Num Hoja" />
+					<listheader label="Fecha Admisión" />
+					<listheader label="Tipo Consulta" />
+					<listheader label="Seleccionar" />
+				</listhead>
+				<template name="model">
+					<listitem>
+						<listcell label="${each.codExpediente}" />
+						<listcell label="${each.numHojaConsulta}" />
+						<listcell
+							label="${c:formatDate(each.fechaSalida, 'dd/MM/yyyy')}" />
+						<listcell
+							label="${each.tipoConsulta.descripcion}" />
+						<listcell>
+							<toolbarbutton
+								image="/recursos/imagenes/justificar.png"
+								tooltiptext="Seleccionar"
+								forward="onClick=listaAdmisionesRecep.onSeleccionar" />
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+			<div width="100%">
+				<div align="right" width="100%">
+					<button id="btnSalirPopupRecep" tabindex="15"
+						width="90px" label="Salir" sclass="myRed" mold="trendy"
+						height="29px" />
+				</div>
+			</div>
+		</vlayout>
+	</window>
+
+	<zscript><![CDATA[
+	public void closeWindow() {
+		Executions.sendRedirect("/contenido.zul");
+		Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowAdmision, null);
+	}
+]]></zscript>
 </window>

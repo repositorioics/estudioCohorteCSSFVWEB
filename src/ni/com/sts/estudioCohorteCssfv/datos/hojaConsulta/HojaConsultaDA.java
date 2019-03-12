@@ -239,4 +239,29 @@ public class HojaConsultaDA implements HojaConsultaService {
    	 	}
    	 	return resultado;	
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+    public List<HojaConsulta> getHojasConsultaSinAdmision(int codExpediente) throws Exception{
+		List<HojaConsulta> lista = new ArrayList<HojaConsulta>();
+		try {
+           // Construir query
+   	 	String sql = "select hc from HojaConsulta hc "+
+				"where hc.codExpediente = :codExpediente and hc.numHojaConsulta not in (select numHojaConsulta from Admision) "
+				+ "order by hc.fechaConsulta desc";
+	
+           Query q = hibernateResource.getSession().createQuery(sql);
+           q.setInteger("codExpediente",  codExpediente);
+           
+           lista = (List<HojaConsulta>) q.list();
+   	 	} catch (Exception e) {
+   	 		e.printStackTrace();
+   	 		throw new Exception(e);
+   	 	} finally {
+   	 		if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}
+   	 	}
+   	 	return lista;	
+	}
 }

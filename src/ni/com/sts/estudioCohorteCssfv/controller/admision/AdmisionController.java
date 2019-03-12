@@ -479,8 +479,13 @@ public class AdmisionController extends SelectorComposer<Component> {
         			if (!this.chkRecepcion.isChecked()){
         				//ver si hay admisiones con expedientes pendientes de recepción
         	        	List<Admision> admisionesPendiente = admisionService.getAdmisionesPendienteEntregaByCodExp(Integer.valueOf(codExpediente));
+        	        	List<HojaConsulta> hojasSinAdmision = hojaConsultaService.getHojasConsultaSinAdmision(Integer.valueOf(codExpediente));
         				//no hay admisiones pendientes
         	        	if (admisionesPendiente.size()==0){
+        	        		if (hojasSinAdmision.size()>0) {
+        	        			cargarListaHojasConsultaSinAdmision(hojasSinAdmision);
+            					popAdmisionesPendientes.doModal();
+        	        		}
         					//dejar pasar a hacer la admisión
         	        		prepararNuevaAdmision();
         				}else{//si hay admisiones pendiente de recepción
@@ -496,6 +501,7 @@ public class AdmisionController extends SelectorComposer<Component> {
                 					for(Admision admin : admisionesPendiente){
                 						if (!admin.getTipoConsulta().getCodigo().equals("OPENCLINICA") || !admin.getTipoConsulta().getCodigo().equals("CONSULTA")){
                         					cargarListaAdmisionesPendientes(admisionesPendiente,false);
+                        					cargarListaHojasConsultaSinAdmision(hojasSinAdmision);
                         					popAdmisionesPendientes.doModal();
                         					break;
                 						}
@@ -504,6 +510,7 @@ public class AdmisionController extends SelectorComposer<Component> {
                 					prepararNuevaAdmision();                					
                 				}else{
                 					cargarListaAdmisionesPendientes(admisionesPendiente,false);
+                					cargarListaHojasConsultaSinAdmision(hojasSinAdmision);
                 					popAdmisionesPendientes.doModal();
                 					//dejar pasar a hacer la admisión
                 					prepararNuevaAdmision();
@@ -524,7 +531,7 @@ public class AdmisionController extends SelectorComposer<Component> {
                 				}
 
             				}else{//mostrar que hay mas de una admisión pendiente de recepción y mostrar cuáles son
-	            	        	if (admisionesPendiente.size()==1){
+	            	        	if (admisionesPendiente.size()==1 && hojasSinAdmision.size()==0){
 	            					Messagebox.show("Expediente físico está pendiente de recepción y hoja de consulta está activa", "Validación", Messagebox.OK, Messagebox.INFORMATION);
 	            	        		//pero deberá mostrar toda la información para conocer su ubicación
 	                    			this.txtHojaConsultaScan.setReadonly(true);
@@ -576,8 +583,9 @@ public class AdmisionController extends SelectorComposer<Component> {
 	            	        		habilitar = false;
 	            	        		this.txtCodExpediente.setFocus(true);
 	            	        		return;
-	            	        	}else{	            	        		
+	            	        	}else{
 	            	        		cargarListaAdmisionesPendientes(admisionesPendiente,true);
+	            	        		cargarListaHojasConsultaSinAdmision(hojasSinAdmision);
                 					popAdmisionesPendientes.doModal();
                 					//no dejar pasar a hacer la admisión
                 					//this.txtNombrePaciente.setValue(nombrePaciente);
@@ -823,9 +831,12 @@ public class AdmisionController extends SelectorComposer<Component> {
 	
     @Wire("[id$=lblAdmisionesPen]")
     private Label lblAdmisionesPen;
-
-    @Wire("[id$=listaAdmisiones]")
+    
+     @Wire("[id$=listaAdmisiones]")
 	private Listbox listaAdmisiones;
+    
+    @Wire("[id$=listaHojasConsultaSinAdmision]")
+	private Listbox listaHojasConsultaSinAdmision;
 	
 	@Wire("[id$=listaAdmisionesRecep]")
 	private Listbox listaAdmisionesRecep;
@@ -844,6 +855,7 @@ public class AdmisionController extends SelectorComposer<Component> {
     private void limpiarCerrarPop(){
 		//listaAdmisiones.setModel(new ListModelList<Admision>(new ArrayList<Admision>()));
 		listaAdmisiones.setModel(new ListModelList<Generico>(new ArrayList<Generico>()));
+		listaHojasConsultaSinAdmision.setModel(new ListModelList<Generico>(new ArrayList<Generico>()));
 		popAdmisionesPendientes.setVisible(false);
 	}
     
@@ -880,6 +892,24 @@ public class AdmisionController extends SelectorComposer<Component> {
 		}else{
 			this.lblAdmisionesPen.setValue("ADMISIONES PENDIENTES DE RECEPCIÓN CON HOJAS ACTIVAS");
 		}		
+	}
+	
+	private void cargarListaHojasConsultaSinAdmision(List<HojaConsulta> hojas) throws Exception{
+		List<Generico> genericoList = new ListModelList<Generico>();
+		
+		for(HojaConsulta admisionPendiente : hojas){
+			Generico datoAdmision = new Generico();
+			datoAdmision.setNumero1(admisionPendiente.getCodExpediente());
+			datoAdmision.setFecha1(admisionPendiente.getFechaConsulta());
+			datoAdmision.setTexto1(String.valueOf(admisionPendiente.getNumHojaConsulta()));
+			EstadosHoja estadoHoja = hojaConsultaService.getEstadoHojaConsultaByNumHoja(admisionPendiente.getNumHojaConsulta());
+			if (estadoHoja != null)
+				datoAdmision.setTexto2(estadoHoja.getDescripcion());
+			else
+				datoAdmision.setTexto2("");
+			genericoList.add(datoAdmision);
+		}
+		this.listaHojasConsultaSinAdmision.setModel(new ListModelList<Generico>(genericoList));
 	}
 	
 	private void cargarListaAdmisionesPendientesRecep(List<Admision> admin){
