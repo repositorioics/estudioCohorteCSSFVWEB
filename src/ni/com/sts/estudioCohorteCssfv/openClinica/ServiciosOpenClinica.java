@@ -495,6 +495,10 @@ public class ServiciosOpenClinica {
 							String expFisico = value.trim();
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], expFisico);
 						//****************************************************************************
+						} else if (nombre.trim().equals("COLEGIO")) {
+							String colegio = value.trim();
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], colegio);
+						//****************************************************************************	
 						}else if (nombre.trim().equals("DIAGNOSTICO2") || nombre.trim().equals("DIAGNOSTICO3") || nombre.trim().equals("DIAGNOSTICO4")){ 
 								if (!value.trim().equals("0")){
 									logger.debug("entro diagnostico: "+nombre+" - "+value);
