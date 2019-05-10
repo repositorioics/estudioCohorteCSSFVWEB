@@ -57,7 +57,7 @@ public class ImprimirResultados {
 		HashMap<String, Object> parametros = new HashMap<String, Object>();
 		
 		parametros.put("logo", sRutaImgLogo);
-		parametros.put("horaIngreso", "jodido");// UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a"));
+		parametros.put("horaIngreso", UtilDate.DateToString(resultado.getHoraReporte(), "hh:mm a"));
 		parametros.put("codigoP", ordenExamen.getCodigoExpediente());
 		parametros.put("medico", ordenExamen.getUsuarioMedico());
 		parametros.put("fecha", UtilDate.DateToString(ordenExamen.getFechaOrdenLaboratorio().getTime(),"dd/MM/yyyy"));

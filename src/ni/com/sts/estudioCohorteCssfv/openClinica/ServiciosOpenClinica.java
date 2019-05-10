@@ -476,12 +476,25 @@ public class ServiciosOpenClinica {
 							
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fecha);
 							
-							String[] datosCrfCompletar = config.getString("FSUPERVISOR").toUpperCase().trim().split(":");
+							/*String[] datosCrfCompletar = config.getString("FSUPERVISOR").toUpperCase().trim().split(":");
+							addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], fecha.trim());*/
+							
+							String[] datosCrfCompletar = config.getString("FENFERMERIA").toUpperCase().trim().split(":");
 							addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], fecha.trim());
 							
-							datosCrfCompletar = config.getString("FENFERMERIA").toUpperCase().trim().split(":");
-							addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], fecha.trim());
-							
+						//***************************************************************************
+						}else if(nombre.trim().equals("FECHACIERRE")){
+							Date fechaCierre = hoja.getFechaCierre();
+							String fMedico = UtilDate.DateToString(fechaCierre, "yyyy-MM-dd");
+							String fMedicoHora = UtilDate.DateToString(fechaCierre, "yyyy-MM-dd HH:mm aa");
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fMedico);
+							String hMedico = UtilDate.DateToString(UtilDate.StringToDate(fMedicoHora, "yyyy-MM-dd hh:mm aa"),"HH:mm");
+							addSoapItem(name7, soapBodyElem6, "HMEDICO", hMedico.trim());
+						//****************************************************************************
+						} else if (nombre.trim().equals("EXPEDIENTEFISICO")) {
+							String expFisico = value.trim();
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], expFisico);
+						//****************************************************************************
 						}else if (nombre.trim().equals("DIAGNOSTICO2") || nombre.trim().equals("DIAGNOSTICO3") || nombre.trim().equals("DIAGNOSTICO4")){ 
 								if (!value.trim().equals("0")){
 									logger.debug("entro diagnostico: "+nombre+" - "+value);

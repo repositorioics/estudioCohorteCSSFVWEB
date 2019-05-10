@@ -33,5 +33,6 @@
   <mapping class="ni.com.sts.estudioCohorteCSSFV.modelo.ControlCambios"/>
   <mapping class="ni.com.sts.estudioCohorteCSSFV.modelo.EstudioCatalogo" />
   <mapping class="ni.com.sts.estudioCohorteCSSFV.modelo.ResultadoExamenMuestra" />
+  <mapping class="ni.com.sts.estudioCohorteCSSFV.modelo.HojaZika" />
  </session-factory>
 </hibernate-configuration>

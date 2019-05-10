@@ -1,14 +1,21 @@
 package ni.com.sts.estudioCohorteCssfv.datos.reportes;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
+import org.apache.axis.types.Day;
+import org.apache.poi.hssf.record.formula.functions.Days360;
 import org.hibernate.Query;
+import org.hibernate.mapping.Fetchable;
 
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaInfluenza;
+import ni.com.sts.estudioCohorteCssfv.dto.OrdenesExamenes;
 import ni.com.sts.estudioCohorteCssfv.servicios.ReportesService;
 import ni.com.sts.estudioCohorteCssfv.util.FiltroReporte;
 import ni.com.sts.estudioCohorteCssfv.util.Generico;
@@ -266,5 +273,164 @@ public class ReportesDA implements ReportesService {
    	 		}	
         }
         return resultado;
+	}		
+
+	//REPORTE HOJA INFLUENZA
+	@Override
+	public List<Generico> getReporteHojaInfluenza(String estado) throws Exception {
+		List<Generico> result = new ArrayList<Generico>();
+		try {
+			
+			String sql = " select h.numHojaSeguimiento, h.codExpediente, "
+					+ " to_char(fechaInicio, 'dd/MM/yyyy'), h.fis, h.fif, h.cerrado "
+					+ " from HojaInfluenza h ";
+			
+			/*if (estado == "N") {
+				sql = sql + " where to_char(h.fechaInicio, 'dd/MM/yyyy') < to_char(current_date, 'dd/MM/yyyy' -14) ";
+			}*/
+			
+			sql = sql + "order by h.numHojaSeguimiento";
+			Query query = hibernateResource.getSession().createQuery(sql);
+			// query.setParameter("estado", estado);
+			
+			List<Object[]> lista = (List<Object[]>) query.list();
+			if (lista != null && lista.size() > 0) {
+				for (Object[] object : lista) {
+					
+					Generico data = new Generico();
+
+				    String fechaInicio = object[2].toString();
+				    Date fechaI = UtilDate.StringToDate(fechaInicio, "dd/MM/yyyy");
+				    Date fechaActual = new Date();
+				    long days = (fechaActual.getTime() - fechaI.getTime());
+				    long diffDays = days / (24 * 60 * 60 * 1000);
+				    String day = Long.toString(diffDays);
+				    
+					data.setTexto1(object[0].toString()); // Número Hoja Seguimiento
+					data.setTexto2(object[1].toString()); // Código Expediente
+					// data.setTexto1(UtilDate.DateToString((Date)object[2], "dd/MM/yyyy"));
+					data.setTexto3(object[2].toString()); // Fecha Inicio
+					data.setTexto4(object[3].toString()); // FIS
+					data.setTexto5(object[4].toString()); // FIF
+					
+					if (estado.equals("S")) {
+						data.setTexto6("");
+					}else {
+						data.setTexto6(day);
+					}
+					
+					//se filtra por estado
+					if (estado.equals("N") && diffDays > 14) { // estado pendiente
+						if (object[5].toString().charAt(0) == 'N'){
+							result.add(data);
+						}
+					}
+					if (estado.equals("S")) { // estado cerrado
+						if(object[5].toString().charAt(0) == 'S') {
+							result.add(data);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+	 		throw new Exception(e);
+		} finally {
+			if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}	
+        }
+		 return result;
+	}
+	
+	//REPORTE HOJA ZIKA
+	@Override
+	public List<Generico> getReporteHojaZika(String estado) throws Exception {
+		List<Generico> result = new ArrayList<Generico>();
+		try {
+			
+			String sql = " select h.numHojaSeguimiento, h.codExpediente, "
+					+ " to_char(fechaInicio, 'dd/MM/yyyy'), h.fis, h.fif, h.cerrado, "
+					+ " h.sintomaInicial1, h.sintomaInicial2, h.sintomaInicial3, h.sintomaInicial4 "
+					+ " from HojaZika h ";
+			
+			sql = sql + "order by h.numHojaSeguimiento";
+			Query query = hibernateResource.getSession().createQuery(sql);
+			// query.setParameter("estado", estado);
+			
+			List<Object[]> lista = (List<Object[]>) query.list();
+			if (lista != null && lista.size() > 0) {
+				for (Object[] object : lista) {
+					
+					Generico data = new Generico();
+
+				    String fechaInicio = object[2].toString();
+				    Date fechaI = UtilDate.StringToDate(fechaInicio, "dd/MM/yyyy");
+				    Date fechaActual = new Date();
+				    long days = (fechaActual.getTime() - fechaI.getTime());
+				    long diffDays = days / (24 * 60 * 60 * 1000);
+				    String day = Long.toString(diffDays);
+				    
+					data.setTexto1(object[0].toString()); // Número Hoja Seguimiento
+					data.setTexto2(object[1].toString()); // Código Expediente
+					data.setTexto3(object[2].toString()); // Fecha Inicio
+					data.setTexto4(object[3].toString()); // FIS
+					data.setTexto5(object[4].toString()); // FIF
+					
+					if(object[6] != null)
+					{
+						data.setTexto6(object[6].toString()); // Sintoma Inicial1
+					}else {
+						data.setTexto6("");
+					}
+					if(object[7] != null)
+					{
+						data.setTexto7(object[7].toString()); // Sintoma Inicial2
+					}else {
+						data.setTexto7("");
+					}
+					if(object[8] != null)
+					{
+						data.setTexto8(object[8].toString()); // Sintoma Inicial3
+					}else {
+						data.setTexto8("");
+					}
+					if(object[9] != null) {
+						data.setTexto9(object[9].toString()); // Sintoma Inicial4
+					}else {
+						data.setTexto9("");
+					}
+					
+					
+					if (estado.equals("S")) {
+						data.setTexto10("");
+					}else {
+						data.setTexto10(day);
+					}
+					
+					//se filtra por estado
+					if (estado.equals("N") && diffDays > 21) { // estado pendiente
+						if (object[5].toString().charAt(0) == 'N'){
+							result.add(data);
+						}
+					}
+					if (estado.equals("S")) { // estado cerrado
+						if(object[5].toString().charAt(0) == 'S') {
+							result.add(data);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+	 		throw new Exception(e);
+		} finally {
+			if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}	
+        }
+		 return result;
 	}
 }
