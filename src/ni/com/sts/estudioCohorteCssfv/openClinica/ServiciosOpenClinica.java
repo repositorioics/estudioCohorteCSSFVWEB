@@ -485,18 +485,24 @@ public class ServiciosOpenClinica {
 						//***************************************************************************
 						}else if(nombre.trim().equals("FECHACIERRE")){
 							Date fechaCierre = hoja.getFechaCierre();
+							logger.error("FECHACIERRE");
 							String fMedico = UtilDate.DateToString(fechaCierre, "yyyy-MM-dd");
-							String fMedicoHora = UtilDate.DateToString(fechaCierre, "yyyy-MM-dd HH:mm aa");
+							logger.error("valor FMEDICO: " + fMedico);
+							String hMedico = UtilDate.DateToString(hoja.getFechaCierre(), "HH:mm");
+							logger.error("valor HMEDICO: " + hMedico);
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fMedico);
-							String hMedico = UtilDate.DateToString(UtilDate.StringToDate(fMedicoHora, "yyyy-MM-dd hh:mm aa"),"HH:mm");
-							addSoapItem(name7, soapBodyElem6, "HMEDICO", hMedico.trim());
+							addSoapItem(name7, soapBodyElem6, "HMEDICO", hMedico);
 						//****************************************************************************
 						} else if (nombre.trim().equals("EXPEDIENTEFISICO")) {
+							logger.error("EXPEDIENTEFISICO");
 							String expFisico = value.trim();
+							logger.error("valor EXPEDIENTEFISICO: " + expFisico);
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], expFisico);
 						//****************************************************************************
 						} else if (nombre.trim().equals("COLEGIO")) {
+							logger.error("COLEGIO");
 							String colegio = value.trim();
+							logger.error("valor COLEGIO: " + colegio);
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], colegio);
 						//****************************************************************************	
 						}else if (nombre.trim().equals("DIAGNOSTICO2") || nombre.trim().equals("DIAGNOSTICO3") || nombre.trim().equals("DIAGNOSTICO4")){ 

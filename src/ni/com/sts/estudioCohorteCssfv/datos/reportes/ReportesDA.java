@@ -299,8 +299,9 @@ public class ReportesDA implements ReportesService {
 					
 					Generico data = new Generico();
 
-				    String fechaInicio = object[2].toString();
-				    Date fechaI = UtilDate.StringToDate(fechaInicio, "dd/MM/yyyy");
+				    String fechaInicio = object[2].toString();//esta es la fecha que se estaba pasando
+				    String fis = object[3].toString();
+				    Date fechaI = UtilDate.StringToDate(fis, "dd/MM/yyyy");
 				    Date fechaActual = new Date();
 				    long days = (fechaActual.getTime() - fechaI.getTime());
 				    long diffDays = days / (24 * 60 * 60 * 1000);
