@@ -96,7 +96,7 @@ public class ReporteHojaZikaController extends SelectorComposer<Component>{
     	Generico[] resultado = (Generico[]) ExportarListBox.copyArrayListObject(listaExportar.toArray(), Generico.class);
     	String [] metodos = {"getTexto1","getTexto2","getTexto3","getTexto4","getTexto5","getTexto6","getTexto7","getTexto8","getTexto9","getTexto10"};
 		try {
-			ExportarListBox.export_to_csv(listaResultados,metodos,resultado,"reporteHojaInfluenza","Registros Encontrados");
+			ExportarListBox.export_to_csv(listaResultados,metodos,resultado,"reporteHojaZika","Registros Encontrados");
 		} catch (Exception e) {
 			e.printStackTrace();			
 			Mensajes.enviarMensaje(Mensajes.ERROR_EXPORTAR_EXCEL + ". \n " +e.getMessage() , Mensajes.TipoMensaje.ERROR);

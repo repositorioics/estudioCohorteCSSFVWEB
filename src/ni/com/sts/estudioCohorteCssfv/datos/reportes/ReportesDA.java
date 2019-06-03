@@ -311,8 +311,8 @@ public class ReportesDA implements ReportesService {
 					data.setTexto2(object[1].toString()); // Código Expediente
 					// data.setTexto1(UtilDate.DateToString((Date)object[2], "dd/MM/yyyy"));
 					data.setTexto3(object[2].toString()); // Fecha Inicio
-					data.setTexto4(object[3].toString()); // FIS
-					data.setTexto5(object[4].toString()); // FIF
+					data.setTexto4(object[3] != null ? object[3].toString() : ""); // FIS
+					data.setTexto5(object[4] != null ? object[4].toString() : ""); // FIF
 					
 					if (estado.equals("S")) {
 						data.setTexto6("");
@@ -367,7 +367,8 @@ public class ReportesDA implements ReportesService {
 					Generico data = new Generico();
 
 				    String fechaInicio = object[2].toString();
-				    Date fechaI = UtilDate.StringToDate(fechaInicio, "dd/MM/yyyy");
+				    String fis = object[3].toString();
+				    Date fechaI = UtilDate.StringToDate(fis, "dd/MM/yyyy");
 				    Date fechaActual = new Date();
 				    long days = (fechaActual.getTime() - fechaI.getTime());
 				    long diffDays = days / (24 * 60 * 60 * 1000);
@@ -376,8 +377,8 @@ public class ReportesDA implements ReportesService {
 					data.setTexto1(object[0].toString()); // Número Hoja Seguimiento
 					data.setTexto2(object[1].toString()); // Código Expediente
 					data.setTexto3(object[2].toString()); // Fecha Inicio
-					data.setTexto4(object[3].toString()); // FIS
-					data.setTexto5(object[4].toString()); // FIF
+					data.setTexto4(object[3] != null ? object[3].toString() : ""); // FIS
+					data.setTexto5(object[4] != null ? object[4].toString() : ""); // FIF
 					
 					if(object[6] != null)
 					{
