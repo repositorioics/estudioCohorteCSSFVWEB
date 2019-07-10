@@ -5,7 +5,10 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.xml.soap.MessageFactory;
@@ -28,6 +31,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaInfluenza;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaZika;
+import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoInfluenza;
+import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoZika;
 import ni.com.sts.estudioCohorteCSSFV.modelo.UsuariosView;
 import ni.com.sts.estudioCohorteCssfv.datos.usuario.UsuariosDA;
 import ni.com.sts.estudioCohorteCssfv.servicios.UsuariosService;
@@ -256,8 +263,719 @@ public class ServiciosOpenClinica {
 		}
 		logger.info("consumirDataCliente()  :: fin");
 		return resultado;
-	}	
+	}
+	//--------------------------------------------------------------------------------------------------------------------
+	/**
+	 * Método para consumir el web service Data de OpenClinica creando manualmente la petición SOAP
+	 * @param hojaInfluenza que se va a ingresar data
+	 * @return InfoResultado con el resultado de la petición
+	 */
+	public InfoResultado consumirDataHojaInfluenza(HojaInfluenza hojaInfluenza, List<SeguimientoInfluenza> seguimientoInfluenzas, int sec, String repeatKey) {
 
+		logger.info("consumirDataCliente()  :: inicio");
+		
+		InfoResultado resultado = new InfoResultado();
+		
+		try {
+			String urlServicio = config.getString("data.import.urlService");
+			logger.info("data.import.urlService :: "+urlServicio);
+			
+			// Create SOAP Connection
+            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+
+            // Send SOAP Message to SOAP Server
+            SOAPMessage soapResponse = soapConnection.call(createSOAPRequestHojaInfluenza(hojaInfluenza, seguimientoInfluenzas, sec, repeatKey), urlServicio);
+
+			 // Process the SOAP Response
+            resultado = printSOAPResponse(soapResponse);
+           
+            soapConnection.close();
+			
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			e.printStackTrace();
+			logger.error("AxisFault :: Error consumir servico Data",e);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			e.printStackTrace();
+			logger.error("RemoteException :: Error consumir servico Data",e);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			e.printStackTrace();
+			logger.error("MalformedURLException :: Error consumir servico Data",e);
+		} catch (Exception e){
+			e.printStackTrace();
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			logger.error("Exception :: Error consumir servico Data",e);
+		}
+		logger.info("consumirDataCliente()  :: fin");
+		return resultado;
+	}
+	
+	private SOAPMessage createSOAPRequestHojaInfluenza(HojaInfluenza hojaInfluenza, List<SeguimientoInfluenza> seguimientoInfluenza, int sec, String repeatKey) throws Exception {
+		
+		MessageFactory messageFactory = MessageFactory.newInstance();
+        SOAPMessage soapMessage = messageFactory.createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
+        SOAPFactory soapFactory = SOAPFactory.newInstance();
+        
+        String serverURI = config.getString("data.import.serverURI");
+        
+        Date dFechaHoy = new Date();
+		//String studyEventRepeatKey = config.getString("data.import.studyEventRepeatKey");
+		String itemGroupRepeatKey = config.getString("data.import.itemGroupRepeatKey");
+		String fileOID = String.valueOf(sec)+"D"+UtilDate.DateToString(dFechaHoy, "yyyyMMddHHmmss"); //1D20140223130400;
+		logger.debug("fileOID :: "+fileOID);
+		String formOID = config.getString("data.import.form.OID.HI"); //F_SEGUIMIENTOP_33;
+		String subjectKey = config.getString("data.import.subjectKey")+String.valueOf(hojaInfluenza.getCodExpediente());
+		logger.debug("formOID :: "+formOID);
+		
+		// SOAP Envelope
+        SOAPEnvelope envelope = soapPart.getEnvelope();
+        envelope.addNamespaceDeclaration("v1", serverURI);
+        
+        /*****************HEADER**********************/
+        //QName name = new QName("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security","wsse");
+        Name nameh = soapFactory.createName("Security","wsse","http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
+        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+        
+        SOAPHeaderElement headerElement = soapHeader.addHeaderElement(nameh);
+        headerElement.setMustUnderstand(true);
+        headerElement.setActor(null);
+       
+        
+		SOAPElement userNameToken = headerElement.addChildElement("UsernameToken","wsse");
+		userNameToken.setAttribute("wsu:Id", config.getString("openClinica.security.usernameToken.id"));
+		userNameToken.setAttribute("xmlns:wsu", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");			
+
+		String clntUserName = config.getString("openClinica.security.user");
+		String clntPassword = config.getString("openClinica.security.password");
+		
+		SOAPElement UNElement = userNameToken.addChildElement("Username","wsse");
+		UNElement.addTextNode(clntUserName);
+
+		SOAPElement PwdElement = userNameToken.addChildElement("Password","wsse");
+		PwdElement.setAttribute("Type", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText");
+		PwdElement.addTextNode(clntPassword);
+        /*****************BODY*****************/
+        SOAPBody soapBody = envelope.getBody();
+        SOAPElement soapBodyElem = soapBody.addChildElement("importRequest", "v1");
+        Name name1 = soapFactory.createName("ODM");
+        SOAPElement soapBodyElem1 = soapBodyElem.addChildElement(name1);
+        
+        //<ClinicalData StudyOID="S_S_1" MetaDataVersionOID="v1.3.0">
+        Name name2 = soapFactory.createName("ClinicalData");
+        SOAPElement soapBodyElem2 = soapBodyElem1.addChildElement(name2);
+        soapBodyElem2.setAttribute("StudyOID", config.getString("study.OID"));
+        soapBodyElem2.setAttribute("MetaDataVersionOID", "v1.3.0");
+        
+        //<SubjectData SubjectKey="SS_8413">
+        Name name3 = soapFactory.createName("SubjectData");
+        SOAPElement soapBodyElem3 = soapBodyElem2.addChildElement(name3);
+        soapBodyElem3.setAttribute("SubjectKey", subjectKey);
+        
+        //<StudyEventData StudyEventOID="SE_CONSULTACS" StudyEventRepeatKey="1">        
+        Name name4 = soapFactory.createName("StudyEventData");
+        SOAPElement soapBodyElem4 = soapBodyElem3.addChildElement(name4);
+        soapBodyElem4.setAttribute("StudyEventOID", config.getString("data.import.eventDefinitionOID.HI"));
+        if (hojaInfluenza.getRepeatKey() == null) {
+        	soapBodyElem4.setAttribute("StudyEventRepeatKey", repeatKey);
+        } else {
+        	soapBodyElem4.setAttribute("StudyEventRepeatKey", hojaInfluenza.getRepeatKey());
+        }
+        
+        
+        //<FormData FormOID="F_HOJADECONSUL_23">
+        Name name5 = soapFactory.createName("FormData");
+        SOAPElement soapBodyElem5 = soapBodyElem4.addChildElement(name5);
+        soapBodyElem5.setAttribute("FormOID", formOID);
+        
+        //<ItemGroupData ItemGroupOID="IG_HOJAD_UNGROUPED" ItemGroupRepeatKey="1" TransactionType="Insert">
+        Name name6 = soapFactory.createName("ItemGroupData");
+        SOAPElement soapBodyElem6 = soapBodyElem5.addChildElement(name6);
+        soapBodyElem6.setAttribute("ItemGroupOID", config.getString("data.import.itemGroupOID.HI"));
+        soapBodyElem6.setAttribute("ItemGroupRepeatKey", itemGroupRepeatKey);
+        if (hojaInfluenza.getRepeatKey() == null) {
+        	soapBodyElem6.setAttribute("TransactionType", "Insert");
+        } else {
+        	soapBodyElem6.setAttribute("TransactionType", "Update");
+        }
+        
+        
+        //<ItemData ItemOID="I_HOJAD_NUM" Value="4"/>
+		Name name7 = soapFactory.createName("ItemData");
+		
+		Class objClass = hojaInfluenza.getClass();
+		
+		Method[] methodos = objClass.getMethods();
+		
+		for(Method metodo : methodos) {
+			String nombre = metodo.getName();
+			String datosCrf = null;
+			String value="";
+			
+			if (!nombre.toUpperCase().contains("CLASS") && nombre.contains("get")) {
+				Object val = metodo.invoke(hojaInfluenza, null);
+				if (val != null) {
+					nombre = nombre.replaceAll("get", "").toUpperCase();
+					if (val instanceof BigDecimal)
+						value = String.valueOf((BigDecimal)val);
+					else if (val instanceof Short)
+						value = String.valueOf((Short)val);
+					else if (val instanceof Date)
+						value = String.valueOf((Date)val);
+					else if (val instanceof Character) { // Se asingnan los valores
+						value = String.valueOf(val);
+						if (value.trim().equals("N"))
+							value = "0";
+						else if (value.trim().equals("S"))
+							value = "1";
+						else if (value.trim().equals("D"))
+							value = "2";
+						else if (value.trim().equals("NA"))
+							value = "3";
+					} 
+					else	
+						value = val.toString();
+						logger.error("HI"+" "+nombre+" "+ value);
+					try{
+						datosCrf = config.getString(nombre+"HI").toUpperCase();
+					} catch(Exception ex) {
+						logger.error("no se encontró propertie para: "+nombre);
+						datosCrf = null;
+					}
+					
+					if (datosCrf!=null && !datosCrf.isEmpty()) { 
+						String[] datosCrfArray = datosCrf.trim().split(":");
+						//NUMERO DE HOJA SEGUIMIENTO
+						/*if (nombre.trim().equals("NUMHOJASEGUIMIENTO")) {
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim(), 2);
+						}*/
+						//FIS
+						if (nombre.trim().equals("FIF")) {
+							if (value.trim() != null) {
+								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+								Date dateFif = format.parse(value.trim());
+								String fif = UtilDate.DateToString(dateFif, "yyyy-MM-dd");
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fif, 2);
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], "", 2);
+							}
+						}
+						//FIF
+						else if (nombre.trim().equals("FIS")) {
+							if (value.trim() != null) {
+								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+								Date dateFis = format.parse(value.trim());
+								String fis = UtilDate.DateToString(dateFis, "yyyy-MM-dd");
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fis, 2);
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], "", 2);
+							}
+						} else {
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim(), 2);
+						}
+					}
+				} else {
+					logger.debug("metodo valor null: "+nombre);
+					nombre = nombre.replaceAll("get", "").toUpperCase();
+					try{
+						datosCrf = config.getString(nombre+"HI").toUpperCase();
+					} catch(Exception ex){
+						logger.error("valor null. no se encontró propertie para: "+nombre);
+						datosCrf = null;
+					}
+				}
+			}
+		}
+		//HCE
+		addSoapItem(name7, soapBodyElem6, config.getString("HCEHI"), "1", 2); //Desarrollo
+		/*addSoapItem(name7, soapBodyElem6, "HOJACONSULTA", "1", 2);*/ //Producion 
+		
+		for(SeguimientoInfluenza segInfluenza:seguimientoInfluenza) {
+			//<ItemGroupData ItemGroupOID="IG_SEGUI_SINTOMAS" ItemGroupRepeatKey="1" TransactionType="Insert">
+	        Name name8 = soapFactory.createName("ItemGroupData");
+	        SOAPElement soapBodyElem8 = soapBodyElem5.addChildElement(name8);
+	        soapBodyElem8.setAttribute("ItemGroupOID", config.getString("data.import.itemGroupOID.SEG.HI"));
+	        soapBodyElem8.setAttribute("ItemGroupRepeatKey", String.valueOf(segInfluenza.getControlDia())); // dia
+	        soapBodyElem8.setAttribute("TransactionType", "Insert");
+	        			
+			Class objClassSeg = segInfluenza.getClass();
+			
+			Method[] methodosSeg = objClassSeg.getMethods();
+			for(Method metodo : methodosSeg) {
+				String nombre = metodo.getName();
+				String datosCrf = null;
+				String value="";
+				
+				if (!nombre.toUpperCase().contains("CLASS") && nombre.contains("get")) {
+					Object val = metodo.invoke(segInfluenza, null);
+					if (val != null) {
+						nombre = nombre.replaceAll("get", "").toUpperCase();
+						if (val instanceof BigDecimal)
+							value = String.valueOf((BigDecimal)val);
+						else if (val instanceof Short)
+							value = String.valueOf((Short)val);
+						else if (val instanceof Date)
+							value = String.valueOf((Date)val);
+						else if (val instanceof Character) { // Se asingnan los valores
+							value = String.valueOf(val);
+							if (value.trim().equals("N"))
+								value = "0";
+							else if (value.trim().equals("S"))
+								value = "1";
+							else if (value.trim().equals("D"))
+								value = "2";
+							else if (value.trim().equals("NA"))
+								value = "3";
+						} 
+						else	
+							value = val.toString();
+						if (value.trim().equals("N"))
+							value = "0";
+						else if (value.trim().equals("S"))
+							value = "1";
+						else if (value.trim().equals("D"))
+							value = "2";
+						else if (value.trim().equals("NA"))
+							value = "3";
+							logger.error("SEG-HI"+" "+ nombre+" "+ value);
+						try{
+							datosCrf = config.getString(nombre+"HI").toUpperCase();
+						} catch(Exception ex) {
+							logger.error("no se encontró propertie para: "+nombre);
+							datosCrf = null;
+						}
+						
+						if (datosCrf!=null && !datosCrf.isEmpty()){ 
+							String[] datosCrfArray = datosCrf.trim().split(":");
+							//USUARIOMEDICO
+							if (nombre.trim().equals("USUARIOMEDICO")) {
+								UsuariosView usuario = usuarioService.obtenerUsuarioById(Integer.valueOf(value.trim()));
+								//si se encontró el usuario, y tiene código personal se agrega al ODM
+								if (usuario!=null && usuario.getCodigoPersonal()!=null){
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], usuario.getCodigoPersonal(), 2);
+								}
+							}
+							//FECHASEGUIMIENTO
+							else if(nombre.trim().equals("FECHASEGUIMIENTO")) {
+								Date fechaSeguimiento = segInfluenza.getFechaSeguimiento();
+								String fecha = UtilDate.DateToString(fechaSeguimiento, "yyyy-MM-dd");
+								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], fecha.trim(), 2);
+							} else {
+								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], value.trim(), 2);
+							}
+						}
+					} else {
+						logger.debug("metodo valor null: "+nombre);
+						nombre = nombre.replaceAll("get", "").toUpperCase();
+						try{
+							datosCrf = config.getString(nombre+"HI").toUpperCase();
+						} catch(Exception ex){
+							logger.error("valor null. no se encontró propertie para: "+nombre);
+							datosCrf = null;
+						}
+					}
+				}
+			}
+		}
+		
+		MimeHeaders headers = soapMessage.getMimeHeaders();
+        headers.addHeader("SOAPAction", serverURI+"import");
+
+        soapMessage.saveChanges();
+        
+        System.out.print("Request SOAP Message = ");
+        soapMessage.writeTo(System.out);
+        System.out.println();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        soapMessage.writeTo(baos);
+        logger.debug("Request SOAP Message = ");
+        logger.debug(baos.toString());
+        
+        return soapMessage;
+	}
+	
+	//--------------------------------------------------------------------------------------------------------------------
+	/**
+	 * Método para consumir el web service Data de OpenClinica creando manualmente la petición SOAP
+	 * @return InfoResultado con el resultado de la petición
+	 */
+	public InfoResultado consumirDataHojaZika(HojaZika hojaZika, List<SeguimientoZika> seguimientoZikas, int sec, String repeatKey) {
+
+		logger.info("consumirDataCliente()  :: inicio");
+		
+		InfoResultado resultado = new InfoResultado();
+		
+		try {
+			String urlServicio = config.getString("data.import.urlService");
+			logger.info("data.import.urlService :: "+urlServicio);
+			
+			// Create SOAP Connection
+            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+
+            // Send SOAP Message to SOAP Server
+            SOAPMessage soapResponse = soapConnection.call(createSOAPRequestHojaZika(hojaZika, seguimientoZikas, sec, repeatKey), urlServicio);
+
+			 // Process the SOAP Response
+            resultado = printSOAPResponse(soapResponse);
+           
+            soapConnection.close();
+			
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			e.printStackTrace();
+			logger.error("AxisFault :: Error consumir servico Data",e);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			e.printStackTrace();
+			logger.error("RemoteException :: Error consumir servico Data",e);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			e.printStackTrace();
+			logger.error("MalformedURLException :: Error consumir servico Data",e);
+		} catch (Exception e){
+			e.printStackTrace();
+			resultado.setOk(false);
+			resultado.setMensaje(e.getMessage());
+			logger.error("Exception :: Error consumir servico Data",e);
+		}
+		logger.info("consumirDataCliente()  :: fin");
+		return resultado;
+	}
+	
+	private SOAPMessage createSOAPRequestHojaZika(HojaZika hojaZika, List<SeguimientoZika> seguimientoZika, int sec, String repeatKey) throws Exception {
+		MessageFactory messageFactory = MessageFactory.newInstance();
+        SOAPMessage soapMessage = messageFactory.createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
+        SOAPFactory soapFactory = SOAPFactory.newInstance();
+        
+        String serverURI = config.getString("data.import.serverURI");
+        
+        Date dFechaHoy = new Date();
+		//String studyEventRepeatKey = config.getString("data.import.studyEventRepeatKey");
+		String itemGroupRepeatKey = config.getString("data.import.itemGroupRepeatKey");
+		String fileOID = String.valueOf(sec)+"D"+UtilDate.DateToString(dFechaHoy, "yyyyMMddHHmmss"); //1D20140223130400;
+		logger.debug("fileOID :: "+fileOID);
+		String formOID = config.getString("data.import.form.OID.ZK"); //F_SEGUIMIENTOP;
+		String subjectKey = config.getString("data.import.subjectKey")+String.valueOf(hojaZika.getCodExpediente());
+		logger.debug("formOID :: "+formOID);
+		
+		// SOAP Envelope
+        SOAPEnvelope envelope = soapPart.getEnvelope();
+        envelope.addNamespaceDeclaration("v1", serverURI);
+        
+        /*****************HEADER**********************/
+        //QName name = new QName("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security","wsse");
+        Name nameh = soapFactory.createName("Security","wsse","http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
+        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+        
+        SOAPHeaderElement headerElement = soapHeader.addHeaderElement(nameh);
+        headerElement.setMustUnderstand(true);
+        headerElement.setActor(null);
+       
+        
+		SOAPElement userNameToken = headerElement.addChildElement("UsernameToken","wsse");
+		userNameToken.setAttribute("wsu:Id", config.getString("openClinica.security.usernameToken.id"));
+		userNameToken.setAttribute("xmlns:wsu", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");			
+
+		String clntUserName = config.getString("openClinica.security.user");
+		String clntPassword = config.getString("openClinica.security.password");
+		
+		SOAPElement UNElement = userNameToken.addChildElement("Username","wsse");
+		UNElement.addTextNode(clntUserName);
+
+		SOAPElement PwdElement = userNameToken.addChildElement("Password","wsse");
+		PwdElement.setAttribute("Type", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText");
+		PwdElement.addTextNode(clntPassword);
+        /*****************BODY*****************/
+        SOAPBody soapBody = envelope.getBody();
+        SOAPElement soapBodyElem = soapBody.addChildElement("importRequest", "v1");
+        Name name1 = soapFactory.createName("ODM");
+        SOAPElement soapBodyElem1 = soapBodyElem.addChildElement(name1);
+        
+        //<ClinicalData StudyOID="S_S_1" MetaDataVersionOID="v1.3.0">
+        Name name2 = soapFactory.createName("ClinicalData");
+        SOAPElement soapBodyElem2 = soapBodyElem1.addChildElement(name2);
+        soapBodyElem2.setAttribute("StudyOID", config.getString("study.OID"));
+        soapBodyElem2.setAttribute("MetaDataVersionOID", "v1.3.0");
+        
+        //<SubjectData SubjectKey="SS_8413">
+        Name name3 = soapFactory.createName("SubjectData");
+        SOAPElement soapBodyElem3 = soapBodyElem2.addChildElement(name3);
+        soapBodyElem3.setAttribute("SubjectKey", subjectKey);
+        
+        //<StudyEventData StudyEventOID="SE_CONSULTACS" StudyEventRepeatKey="1">        
+        Name name4 = soapFactory.createName("StudyEventData");
+        SOAPElement soapBodyElem4 = soapBodyElem3.addChildElement(name4);
+        soapBodyElem4.setAttribute("StudyEventOID", config.getString("data.import.eventDefinitionOID.ZK"));
+        if (hojaZika.getRepeatKey() == null) {
+        	soapBodyElem4.setAttribute("StudyEventRepeatKey", repeatKey);
+        } else {
+        	soapBodyElem4.setAttribute("StudyEventRepeatKey", hojaZika.getRepeatKey());
+        }
+        
+        
+        //<FormData FormOID="F_HOJADECONSUL_23">
+        Name name5 = soapFactory.createName("FormData");
+        SOAPElement soapBodyElem5 = soapBodyElem4.addChildElement(name5);
+        soapBodyElem5.setAttribute("FormOID", formOID);
+        
+        //<ItemGroupData ItemGroupOID="IG_HOJAD_UNGROUPED" ItemGroupRepeatKey="1" TransactionType="Insert">
+        Name name6 = soapFactory.createName("ItemGroupData");
+        SOAPElement soapBodyElem6 = soapBodyElem5.addChildElement(name6);
+        soapBodyElem6.setAttribute("ItemGroupOID", config.getString("data.import.itemGroupOID.ZK")); //Prod "IG_SEGUI_UNGROUPED_3790"
+        soapBodyElem6.setAttribute("ItemGroupRepeatKey", itemGroupRepeatKey);
+        if (hojaZika.getRepeatKey() == null) {
+        	soapBodyElem6.setAttribute("TransactionType", "Insert");
+        } else {
+        	soapBodyElem6.setAttribute("TransactionType", "Update");
+        }
+        
+        //<ItemData ItemOID="I_HOJAD_NUM" Value="4"/>
+		Name name7 = soapFactory.createName("ItemData");
+		
+		Class objClass = hojaZika.getClass();
+		
+		Method[] methodos = objClass.getMethods();
+		
+		for(Method metodo : methodos) {
+			String nombre = metodo.getName();
+			String datosCrf = null;
+			String value="";
+			
+			if (!nombre.toUpperCase().contains("CLASS") && nombre.contains("get")) {
+				Object val = metodo.invoke(hojaZika, null);
+				if (val != null) {
+					nombre = nombre.replaceAll("get", "").toUpperCase();
+					if (val instanceof BigDecimal)
+						value = String.valueOf((BigDecimal)val);
+					else if (val instanceof Short)
+						value = String.valueOf((Short)val);
+					else if (val instanceof Date)
+						value = String.valueOf((Date)val);
+					else if (val instanceof Character) { // Se asingnan los valores
+						value = String.valueOf(val);
+						if (value.trim().equals("N"))
+							value = "0";
+						else if (value.trim().equals("S"))
+							value = "1";
+						else if (value.trim().equals("D"))
+							value = "2";
+						else if (value.trim().equals("NA"))
+							value = "3";
+					} 
+					else	
+						value = val.toString();
+						logger.error("ZK"+" "+nombre+" "+ value);
+					try{
+						datosCrf = config.getString(nombre+"ZK").toUpperCase();
+					} catch(Exception ex) {
+						logger.error("no se encontró propertie para: "+nombre);
+						datosCrf = null;
+					}
+					
+					if (datosCrf!=null && !datosCrf.isEmpty()) {
+						String[] datosCrfArray = datosCrf.trim().split(":");
+						if (nombre.trim().equals("FIF")) {
+							String ff = "";
+							if (value.trim() != null) {
+								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+								Date dateFif = format.parse(value.trim());
+								String fif = UtilDate.DateToString(dateFif, "yyyy-MM-dd");
+								ff = fif;
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fif, 2);
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], ff, 2);
+							}
+						}
+						//FIF
+						else if (nombre.trim().equals("FIS")) {
+							String fs = "";
+							if (value.trim() != null) {
+								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+								Date dateFis = format.parse(value.trim());
+								String fis = UtilDate.DateToString(dateFis, "yyyy-MM-dd");
+								fs = fis;
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fis, 2); // Prod FIF_7212
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fs, 2);
+							}
+						
+						}				
+						// SINTOMAINICIAL1
+						else if (nombre.trim().equals("SINTOMAINICIAL1")) {
+							if (value.trim() != null) {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], SetValorSintomasZika(value.trim()), 2);
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], "", 2);
+							}
+						}
+						// SINTOMAINICIAL2
+						else if (nombre.trim().equals("SINTOMAINICIAL2")) {
+							if (value.trim() != null) {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], SetValorSintomasZika(value.trim()), 2);
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], "", 2);
+							}
+						}
+						// SINTOMAINICIAL3
+						else if (nombre.trim().equals("SINTOMAINICIAL3")) {
+							if (value.trim() != null) {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], SetValorSintomasZika(value.trim()), 2);
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], "", 2);
+							}
+							
+						}
+						// SINTOMAINICIAL4
+						else if (nombre.trim().equals("SINTOMAINICIAL4")) {
+							if (value.trim() != null) {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], SetValorSintomasZika(value.trim()), 2);
+							} else {
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], "", 2);
+							}
+						} else {
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim(), 2);
+						}
+					}
+				} else {
+					logger.debug("metodo valor null: "+nombre);
+					nombre = nombre.replaceAll("get", "").toUpperCase();
+					try{
+						datosCrf = config.getString(nombre+"ZK").toUpperCase();
+					} catch(Exception ex){
+						logger.error("valor null. no se encontró propertie para: "+nombre);
+						datosCrf = null;
+					}
+				}
+			}
+		}
+		//HCE
+		addSoapItem(name7, soapBodyElem6, config.getString("HCEZK"), "1", 2);
+		
+		for(SeguimientoZika segZika:seguimientoZika) {
+			//<ItemGroupData ItemGroupOID="IG_SEGUI_SINTOMAS" ItemGroupRepeatKey="1" TransactionType="Insert">
+	        Name name8 = soapFactory.createName("ItemGroupData");
+	        SOAPElement soapBodyElem8 = soapBodyElem5.addChildElement(name8);
+	        soapBodyElem8.setAttribute("ItemGroupOID", config.getString("data.import.itemGroupOID.SEG.ZK")); // Prod "IG_SEGUI_SINTOMAS_4930"
+	        soapBodyElem8.setAttribute("ItemGroupRepeatKey", String.valueOf(segZika.getControlDia())); // dia
+	        soapBodyElem8.setAttribute("TransactionType", "Insert");
+	        			
+			Class objClassSeg = segZika.getClass();
+			
+			Method[] methodosSeg = objClassSeg.getMethods();
+			for(Method metodo : methodosSeg) {
+				String nombre = metodo.getName();
+				String datosCrf = null;
+				String value="";
+				
+				if (!nombre.toUpperCase().contains("CLASS") && nombre.contains("get")) {
+					Object val = metodo.invoke(segZika, null);
+					if (val != null) {
+						nombre = nombre.replaceAll("get", "").toUpperCase();
+						if (val instanceof BigDecimal)
+							value = String.valueOf((BigDecimal)val);
+						else if (val instanceof Short)
+							value = String.valueOf((Short)val);
+						else if (val instanceof Date)
+							value = String.valueOf((Date)val);
+						else if (val instanceof Character) { // Se asingnan los valores
+							value = String.valueOf(val);
+							if (value.trim().equals("N"))
+								value = "0";
+							else if (value.trim().equals("S"))
+								value = "1";
+							else if (value.trim().equals("D"))
+								value = "2";
+							else if (value.trim().equals("NA"))
+								value = "3";
+						} 
+						else	
+							value = val.toString();
+						if (value.trim().equals("N"))
+							value = "0";
+						else if (value.trim().equals("S"))
+							value = "1";
+						else if (value.trim().equals("D"))
+							value = "2";
+						else if (value.trim().equals("NA"))
+							value = "3";
+							logger.error("SEG-ZK"+" "+ nombre+" "+ value);
+						try{
+							datosCrf = config.getString(nombre+"ZK").toUpperCase();
+						} catch(Exception ex) {
+							logger.error("no se encontró propertie para: "+nombre);
+							datosCrf = null;
+						}
+						
+						if (datosCrf!=null && !datosCrf.isEmpty()){ 
+							String[] datosCrfArray = datosCrf.trim().split(":");
+							//USUARIOMEDICO
+							if (nombre.trim().equals("USUARIOMEDICO")) {
+								UsuariosView usuario = usuarioService.obtenerUsuarioById(Integer.valueOf(value.trim()));
+								//si se encontró el usuario, y tiene código personal se agrega al ODM
+								if (usuario!=null && usuario.getCodigoPersonal()!=null){
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], usuario.getCodigoPersonal(), 2);
+								}
+							}
+							//FECHASEGUIMIENTO
+							else if(nombre.trim().equals("FECHASEGUIMIENTO")) {
+								Date fechaSeguimiento = segZika.getFechaSeguimiento();
+								String fecha = UtilDate.DateToString(fechaSeguimiento, "yyyy-MM-dd");
+								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], fecha.trim(), 2); //Prod FECHA_2128
+							} else {
+								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], value.trim(), 2);
+							}
+						}
+					} else {
+						logger.debug("metodo valor null: "+nombre);
+						nombre = nombre.replaceAll("get", "").toUpperCase();
+						try{
+							datosCrf = config.getString(nombre+"ZK").toUpperCase();
+						} catch(Exception ex){
+							logger.error("valor null. no se encontró propertie para: "+nombre);
+							datosCrf = null;
+						}
+					}
+				}
+			}
+		}
+		
+		MimeHeaders headers = soapMessage.getMimeHeaders();
+        headers.addHeader("SOAPAction", serverURI+"import");
+
+        soapMessage.saveChanges();
+        
+        System.out.print("Request SOAP Message = ");
+        soapMessage.writeTo(System.out);
+        System.out.println();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        soapMessage.writeTo(baos);
+        logger.debug("Request SOAP Message = ");
+        logger.debug(baos.toString());
+        
+        return soapMessage;
+	}
+
+	//-------------------------------------------------------------------------------------------------------
 	/**
 	 * Método para consumir el web service Data de OpenClinica creando manualmente la petición SOAP
 	 * @param hoja que se va a ingresar data
@@ -444,7 +1162,7 @@ public class ServiciosOpenClinica {
 									//si aún no se  agrega estado nutricional. se setea el primero que se encuentre como SI
 									if (!estadoNutricional){
 										String[] datosCrfCompletar = config.getString("ESTNUT").toUpperCase().trim().split(":");
-										addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], valorEspecial.trim());
+										addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], valorEspecial.trim(), 1);
 									}
 									estadoNutricional = true;
 								}
@@ -456,31 +1174,31 @@ public class ServiciosOpenClinica {
 							UsuariosView usuario = usuarioService.obtenerUsuarioById(Integer.valueOf(value.trim()));
 							//si se encontró el usuario, y tiene código personal se agrega al ODM
 							if (usuario!=null && usuario.getCodigoPersonal()!=null){
-								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], usuario.getCodigoPersonal());
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], usuario.getCodigoPersonal(), 1);
 							}
 						}else if (nombre.trim().equals("USUARIOMEDICO")){
 							UsuariosView usuario = usuarioService.obtenerUsuarioById(Integer.valueOf(value.trim()));
 							//si se encontró el usuario, y tiene código personal se agrega al ODM
 							if (usuario!=null && usuario.getCodigoPersonal()!=null){
-								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], usuario.getCodigoPersonal());
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], usuario.getCodigoPersonal(), 1);
 							}
 						}else if (nombre.trim().equals("HORAULTDOSISANTIPIRETICO")){
 							String ampm = hoja.getAmPmUltDosisAntipiretico();
 							String soloHora = UtilDate.DateToString(hoja.getHoraUltDosisAntipiretico(),"hh:mm:ss");
 							String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampm.toUpperCase() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
-							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora.trim());
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora.trim(), 1);
 						}else if (nombre.trim().equals("FECHACONSULTA")){
 							//sacar FSUPERVISOR,FENFERMERIA
 							Date fecConsulta =hoja.getFechaConsulta();
 							String fecha = UtilDate.DateToString(fecConsulta, "yyyy-MM-dd");
 							
-							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fecha);
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fecha, 1);
 							
 							/*String[] datosCrfCompletar = config.getString("FSUPERVISOR").toUpperCase().trim().split(":");
 							addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], fecha.trim());*/
 							
 							String[] datosCrfCompletar = config.getString("FENFERMERIA").toUpperCase().trim().split(":");
-							addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], fecha.trim());
+							addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], fecha.trim(), 1);
 							
 						//***************************************************************************
 						}else if(nombre.trim().equals("FECHACIERRE")){
@@ -490,25 +1208,25 @@ public class ServiciosOpenClinica {
 							logger.error("valor FMEDICO: " + fMedico);
 							String hMedico = UtilDate.DateToString(hoja.getFechaCierre(), "HH:mm");
 							logger.error("valor HMEDICO: " + hMedico);
-							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fMedico);
-							addSoapItem(name7, soapBodyElem6, "HMEDICO", hMedico);
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fMedico, 1);
+							addSoapItem(name7, soapBodyElem6, "HMEDICO", hMedico, 1);
 						//****************************************************************************
 						} else if (nombre.trim().equals("EXPEDIENTEFISICO")) {
 							logger.error("EXPEDIENTEFISICO");
 							String expFisico = value.trim();
 							logger.error("valor EXPEDIENTEFISICO: " + expFisico);
-							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], expFisico);
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], expFisico, 1);
 						//****************************************************************************
 						} else if (nombre.trim().equals("COLEGIO")) {
 							logger.error("COLEGIO");
 							String colegio = value.trim();
 							logger.error("valor COLEGIO: " + colegio);
-							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], colegio);
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], colegio, 1);
 						//****************************************************************************	
 						}else if (nombre.trim().equals("DIAGNOSTICO2") || nombre.trim().equals("DIAGNOSTICO3") || nombre.trim().equals("DIAGNOSTICO4")){ 
 								if (!value.trim().equals("0")){
 									logger.debug("entro diagnostico: "+nombre+" - "+value);
-									addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim());
+									addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim(), 1);
 								}
 						}/*else if (nombre.equals("OTROEXAMENLAB")){
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim());
@@ -518,19 +1236,19 @@ public class ServiciosOpenClinica {
 							String fecha = UtilDate.DateToString(new Date(), "yyyy-MM-dd");
 							fecha = fecha + " " + value.trim();
 							String hora24 = UtilDate.DateToString(UtilDate.StringToDate(fecha, "yyyy-MM-dd hh:mm aa"),"HH:mm");
-							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora24);
+							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora24, 1);
 						}else if (nombre.equals("TELEF")) {
 							if (value.trim().isEmpty() || value.trim().equalsIgnoreCase("0") || !(value.trim().length()==8)) {
 								logger.debug("telefono no válido: "+nombre+" - "+value);
 							}else {
-								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim());
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim(), 1);
 							}
 						}else{
 							String valorEspecial = valorCasosEspeciales(nombre, value.trim());
 							if (valorEspecial!=null){
-								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], valorEspecial.trim());
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], valorEspecial.trim(), 1);
 							}else{
-									addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim());
+									addSoapItem(name7, soapBodyElem6, datosCrfArray[0], value.trim(), 1);
 							}
 						}
 					}
@@ -551,7 +1269,7 @@ public class ServiciosOpenClinica {
 									//si aún no se  agrega estado nutricional. se setea el primero que se encuentre como SI
 									if (!estadoNutricional){
 										String[] datosCrfCompletar = config.getString("ESTNUT").toUpperCase().trim().split(":");
-										addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], valorEspecial.trim());
+										addSoapItem(name7, soapBodyElem6, datosCrfCompletar[0], valorEspecial.trim(), 1);
 									}
 									estadoNutricional = true;
 								}
@@ -567,7 +1285,7 @@ public class ServiciosOpenClinica {
 						if (datosCrfArray[2].equals("1")){																
 							String defecto = valorDefecto(nombre);
 							if (defecto!=null){
-								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], defecto.trim());
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], defecto.trim(), 1);
 							}
 						}
 					}
@@ -622,11 +1340,18 @@ public class ServiciosOpenClinica {
         return resultado;
     }
     
-	private void addSoapItem(Name name, SOAPElement soapBodyElem, String nombreItem, String valorItem){
+	private void addSoapItem(Name name, SOAPElement soapBodyElem, String nombreItem, String valorItem, int valor){
 		SOAPElement soapBodyElem7;
 		try {
 			soapBodyElem7 = soapBodyElem.addChildElement(name);
-	        soapBodyElem7.setAttribute("ItemOID", "I_HOJAD_"+nombreItem);
+			if (valor == 1) {
+				soapBodyElem7.setAttribute("ItemOID", "I_HOJAD_"+nombreItem);
+			} else if (valor == 2) {
+				soapBodyElem7.setAttribute("ItemOID", "I_SEGUI_"+nombreItem);
+			} /*else {
+				soapBodyElem7.setAttribute("ItemOID", "I_HOJAD_"+nombreItem);
+			}*/
+	        
 	        soapBodyElem7.setAttribute("Value", valorItem);
 		} catch (SOAPException e) {
 			logger.error(e);
@@ -635,7 +1360,156 @@ public class ServiciosOpenClinica {
 
 	}
 	
-	private String valorCasosEspeciales(String nombreCampo, String valorCampo){
+	private String SetValorSintomasZika(String valorCampo) {
+		String valor = "";
+		if (valorCampo.equals("Adenopatia Cervical Anterior")) {
+			return "1";
+		} 
+		if (valorCampo.equals("Adenopatia Cervical Posterior")) {
+			return "2";
+		} 
+		if (valorCampo.equals("Adenopatia RetroAuricular")) {
+			return "3";
+		} 
+		if (valorCampo.equals("Artralgia Distal")) {
+			return "4";
+		} 
+		if (valorCampo.equals("Artralgia Proximal")) {
+			return "5";
+		} 
+		if (valorCampo.equals("Astenia")) {
+			return "6";
+		} 
+		if (valorCampo.equals("Cefalea")) {
+			return "7";
+		} 
+		if (valorCampo.equals("Conjuntivitis no purulenta")) {
+			return "8";
+		} 
+		if (valorCampo.equals("Convulsiones")) {
+			return "9";
+		} 
+		if (valorCampo.equals("Debilidad Muscular en MI")) {
+			return "10";
+		} 
+		if (valorCampo.equals("Debilidad Muscular en MS")) {
+			return "11";
+		} 
+		if (valorCampo.equals("Diarrea")) {
+			return "12";
+		} 
+		if (valorCampo.equals("Dificultad Respiratoria")) {
+			return "13";
+		} 
+		if (valorCampo.equals("Dolor Abdominal Continuo")) {
+			return "14";
+		} 
+		if (valorCampo.equals("Dolor Garganta")) {
+			return "15";
+		} 
+		if (valorCampo.equals("Dolor retroocular")) {
+			return "16";
+		} 
+		if (valorCampo.equals("Edema articular Distal en MI")) {
+			return "17";
+		} 
+		if (valorCampo.equals("Edema articular Distal en MS")) {
+			return "18";
+		}
+		if (valorCampo.equals("Edema articular Proximal en MI")) {
+			return "19";
+		}
+		if (valorCampo.equals("Edema articular Proximal en MS")) {
+			return "20";
+		} 
+		if (valorCampo.equals("Edema Periauricular")) {
+			return "21";
+		} 
+		if (valorCampo.equals("Epistaxis")) {
+			return "22";
+		} 
+		if (valorCampo.equals("Equimosis")) {
+			return "23";
+		} 
+		if (valorCampo.equals("Escalosfrios")) {
+			return "24";
+		} 
+		if (valorCampo.equals("Fiebre")) {
+			return "25";
+		} 
+		if (valorCampo.equals("Gingivorragia")) {
+			return "26";
+		} 
+		if (valorCampo.equals("Hematemesis")) {
+			return "27";
+		} 
+		if (valorCampo.equals("Mal estado general")) {
+			return "28";
+		}
+		if (valorCampo.equals("Melena")) {
+			return "29";
+		} 
+		if (valorCampo.equals("Mialgia")) {
+			return "30";
+		} 
+		if (valorCampo.equals("Nauseas")) {
+			return "31";
+		} 
+		if (valorCampo.equals("Oftalmoplejia")) {
+			return "32";
+		} 
+		if (valorCampo.equals("Paralisis Muscular MI")) {
+			return "33";
+		} 
+		if (valorCampo.equals("Paralisis Muscular MS")) {
+			return "34";
+		} 
+		if (valorCampo.equals("Parestesia MI")) {
+			return "35";
+		} 
+		if (valorCampo.equals("Parestesia MS")) {
+			return "36";
+		} 
+		if (valorCampo.equals("Petequias espontaneas")) {
+			return "37";
+		} 
+		if (valorCampo.equals("Poco apetito")) {
+			return "38";
+		} 
+		if (valorCampo.equals("Prueba de torniquete Positiva")) {
+			return "39";
+		} 
+		if (valorCampo.equals("Prurito")) {
+			return "40";
+		} 
+		if (valorCampo.equals("Rash")) {
+			return "41";
+		} 
+		if (valorCampo.equals("Rigidez de cuello")) {
+			return "42";
+		} 
+		if (valorCampo.equals("Rinorrea")) {
+			return "43";
+		}
+		if (valorCampo.equals("Tos")) {
+			return "44";
+		} 
+		if (valorCampo.equals("Vomitos")) {
+			return "45";
+		}
+		if (valorCampo.equals("Fotofobia")) {
+			return "46";
+		} 
+		if (valorCampo.equals("Mareos")) {
+			return "47";
+		} 
+		if (valorCampo.equals("Sudoracion")) {
+			return "48";
+		} 
+		return valor;
+	}
+		
+	private String valorCasosEspeciales(String nombreCampo, String valorCampo) {
 		String valor=null;
 		if (nombreCampo.equals("LUGARATENCION")){
 			if (valorCampo.toUpperCase().equals("CS SFV"))
@@ -683,7 +1557,6 @@ public class ServiciosOpenClinica {
 			else if (valorCampo.trim().equals("1"))
 				return "0";
 		}
-			
 		return valor;
 	}
 

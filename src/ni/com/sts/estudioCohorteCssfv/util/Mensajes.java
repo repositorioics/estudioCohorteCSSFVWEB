@@ -60,7 +60,7 @@ public class Mensajes {
     public static final String PACIENTE_RETIRADO = "Paciente en estado Retirado";
     public static final String EXPEDIENTE_NO_ENCONTRADO = "Código no encontrado";
     public static final String ERROR_CONSULTAR_PROP_CONFIG="Se produjo error al consultar propiedades de configuración.";
-    public static final String PROCESO_OPEN_CLINICA_TERMINADO = "Proceso de carga manual servicio openClinica terminado. Hojas procesadas {0}";
+    public static final String PROCESO_OPEN_CLINICA_TERMINADO = "Proceso de carga manual servicio openClinica terminado. Hojas Consulta procesadas {0}, Hojas Influenza procesadas {1}, Hojas Zika procesadas {2} ";
     
     public static final String ERROR_EXPORTAR_EXCEL = "Error al exportar a excel";
 

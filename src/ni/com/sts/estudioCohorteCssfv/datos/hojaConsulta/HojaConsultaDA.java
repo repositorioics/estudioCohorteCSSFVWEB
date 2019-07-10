@@ -7,6 +7,10 @@ import org.hibernate.Query;
 
 import ni.com.sts.estudioCohorteCSSFV.modelo.EstadosHoja;
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaInfluenza;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaZika;
+import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoInfluenza;
+import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoZika;
 import ni.com.sts.estudioCohorteCssfv.servicios.HojaConsultaService;
 import ni.com.sts.estudioCohorteCssfv.util.HibernateResource;
 
@@ -39,7 +43,122 @@ public class HojaConsultaDA implements HojaConsultaService {
         }
         return resultado;
 	}
-
+	
+	// Obteniendo todas las hojas de influenza que estan pendientes de subir a OpenClinica
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<HojaInfluenza> getHojasInfluenzasPendientesCarga() throws Exception {
+		List <HojaInfluenza> result = new ArrayList<HojaInfluenza>();
+		try {
+			String sql = "select hi"
+					+ " from HojaInfluenza hi"
+					+ " where hi.cerrado = :estado "
+					+ " and (hi.estadoCarga = :estadoCarga or hi.estadoCarga is null)";
+			
+			Query q = hibernateResource.getSession().createQuery(sql);
+			q.setCharacter("estado", 'S');
+			q.setParameter("estadoCarga", '0');
+			
+			result = q.list();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+	 		throw new Exception(e);
+		} finally {
+			if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}	
+		}
+		return result;
+	}
+	
+	// Obteniendo todos los dias de seguimiento influenza por el numero de hoja influenza
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SeguimientoInfluenza> getSeguimientoInfluenza(int secHojaInfluenza) throws Exception {
+		List<SeguimientoInfluenza> result = new ArrayList<SeguimientoInfluenza>();
+		try {
+			String sql = "select si "
+					+ " from SeguimientoInfluenza si "
+					+ " where si.secHojaInfluenza = :secHojaInfluenza "
+					+ " order by si.controlDia asc";
+			
+			Query q = hibernateResource.getSession().createQuery(sql);
+			q.setParameter("secHojaInfluenza", secHojaInfluenza);
+			
+			result = q.list();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+	 		throw new Exception(e);
+		} finally {
+			if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}	
+		}
+		return result;
+	}
+	
+	// Obteniendo todas las hojas de zika que estan pendientes de subir a OpenClinica
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<HojaZika> getHojasZikaPendientesCarga() throws Exception {
+		List<HojaZika> result = new ArrayList<HojaZika>();
+		try {
+			String sql = "select a "
+					+ " from HojaZika a "
+					+ " where a.cerrado = :estado "
+					+ " and (a.estadoCarga = :estadoCarga or a.estadoCarga is null)";
+			
+			Query q = hibernateResource.getSession().createQuery(sql);
+			q.setCharacter("estado", 'S');
+			q.setParameter("estadoCarga", '0');
+			
+			result = q.list();
+			
+		}  catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+	 		throw new Exception(e);
+		} finally {
+			if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}	
+		}
+		return result;
+	}
+	
+	// Obteniendo todos los dias de segumiento zika por el numero de hoja zika
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SeguimientoZika> getSeguimientoZika(int secHojaZika) throws Exception {
+		List<SeguimientoZika> result = new ArrayList<SeguimientoZika>();
+		try {
+			String sql = "select a "
+					+ " from  SeguimientoZika a "
+					+ " where a.secHojaZika = :secHojaZika "
+					+ " order by a.controlDia asc";
+			
+			Query q = hibernateResource.getSession().createQuery(sql);
+			q.setParameter("secHojaZika", secHojaZika);
+			
+			result = q.list();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+	 		throw new Exception(e);
+		} finally {
+			if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}	
+		}
+		return result;
+	}
+	
+	
 	public void updateHojaConsulta(HojaConsulta hoja) throws Exception{
 		try {
 			hibernateResource.begin();
@@ -263,5 +382,37 @@ public class HojaConsultaDA implements HojaConsultaService {
    	 		}
    	 	}
    	 	return lista;	
+	}
+	
+	public void updateHojaInfluenza(HojaInfluenza hoja) throws Exception {
+		try {
+			hibernateResource.begin();
+            hibernateResource.getSession().update(hoja);
+            hibernateResource.getSession().flush();
+            hibernateResource.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            hibernateResource.rollback();
+        } finally {
+            if (hibernateResource.getSession().isOpen()) {
+                hibernateResource.close();
+            }
+        }
+	}
+	
+	public void updateHojaZika(HojaZika hoja) throws Exception {
+		try {
+			hibernateResource.begin();
+            hibernateResource.getSession().update(hoja);
+            hibernateResource.getSession().flush();
+            hibernateResource.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            hibernateResource.rollback();
+        } finally {
+            if (hibernateResource.getSession().isOpen()) {
+                hibernateResource.close();
+            }
+        }
 	}
 }
