@@ -1,0 +1,160 @@
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+
+<window id="windowActualizarDatos"
+	apply="ni.com.sts.estudioCohorteCssfv.controller.actualizarDatos.ActualizarDatosController">
+	<div width="100%"
+		style="padding-left:4px;padding-right:4px;padding-top:25px;">
+		<vlayout>
+			<!-- Breadcrumb -->
+			<hbox style="margin-bottom:10px">
+				<image src="/recursos/imagenes/marker_squared_red.png" />
+				<label
+					style="color: #008FBB;font-size:14px;font-style:italic;">
+					Actualización de Datos
+				</label>
+			</hbox>
+			<auxhead>
+				<auxheader>
+					<groupbox width="99%" height="100%"
+						closable="false">
+						<vbox style="padding:10px;">
+							<hbox>
+								<div style="width: 176px;">
+									<label>Num Hoja:</label>
+									(
+									<label style="color: red">*</label>
+									)
+								</div>
+								<div style="width: 140px!important;">
+									<intbox id="txtNumHoja"
+										style="font-weight: bold;" tabindex="1" width="90%"
+										readonly="false" maxlength="10" />
+								</div>
+
+							</hbox>
+							<space height="2px" />
+							<hbox pack="center">
+								<div style="width: 175px;">
+									<label>Nombre Tabla:</label>
+									(
+									<label style="color: red">*</label>
+									)
+								</div>
+								<div>
+									<combobox id="cmbTablasDb"
+										tabindex="1" width="100%" cols="20">
+										<comboitem value="0"
+											label="Seleccione" />
+										<comboitem value="hoja_consulta"
+											label="hoja_consulta" />
+										<comboitem
+											value="hoja_influenza" label="hoja_influenza" />
+										<comboitem value="hoja_zika"
+											label="hoja_zika" />
+										<comboitem
+											value="seguimiento_influenza" label="seguimiento_influenza" />
+										<comboitem
+											value="seguimiento_zika" label="seguimiento_zika" />
+									</combobox>
+								</div>
+								<div style="width: 35px;">
+									<label></label>
+								</div>
+
+								<div style="width: 20px;"></div>
+								<div style="width: 90px;">
+									<label id="lblControlDia">
+										Control Día:
+									</label>
+									(
+									<label id="lblControlDiaRequired"
+										style="color: red">
+										*
+									</label>
+									)
+								</div>
+								<div style="width: 50px!important;">
+									<intbox id="txtControlDia"
+										style="font-weight: bold;" tabindex="1" width="90%"
+										readonly="true" maxlength="2" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox>
+								<div style="width: 175px;">
+									<label>
+										Nombre Campo a Modificar:
+									</label>
+									(
+									<label style="color: red">*</label>
+									)
+								</div>
+								<div style="width: 200px!important;">
+									<combobox id="cmbCampoModificar"
+										autodrop="true" tabindex="2" width="100%" cols="24" />
+
+								</div>
+								<div
+									style="width: 90px;margin-left:42px!important">
+									<label id="lblValorAnterior"
+										visible="false">
+										Valor Actual:
+									</label>
+								</div>
+								<div>
+									<textbox id="txtValorAnterior"
+										visible="false" style="font-weight: bold;" tabindex="1"
+										width="120%" readonly="true" />
+								</div>
+							</hbox>
+							<space height="2px" />
+							<hbox>
+								<div style="width: 420px;">
+									<label>Valor:</label>
+									(
+									<label style="color: red">*</label>
+									)
+								</div>
+								<div style="width: 60px;">
+									<label>Valor Null:</label>
+								</div>
+								<div style="width: 50px;">
+									<checkbox id="chkValorNull">
+									</checkbox>
+								</div>
+							</hbox>
+							<hbox pack="center">
+								<div style="width: 685px;!important">
+									<textbox id="txtValor" cols="4"
+										rows="4" tabindex="2" width="100%" />
+								</div>
+							</hbox>
+						</vbox>
+					</groupbox>
+					<space height="5px" />
+					<hbox width="50%" pack="center" align="center">
+						<div style="width:100px;" align="center">
+							<button id="btnGuardar" tabindex="5"
+								width="120px" label="Guardar" autodisable="self"
+								sclass="myBlack" mold="trendy" height="29px" />
+						</div>
+						<div style="width:100px;margin-left:25px"
+							align="center">
+							<button id="btnCancelar" tabindex="5"
+								width="120px" label="Cancelar" autodisable="self"
+								sclass="myBlack" mold="trendy" height="29px" />
+						</div>
+					</hbox>
+				</auxheader>
+			</auxhead>
+			<space />
+			<div style="width:98%;" align="right"></div>
+		</vlayout>
+	</div>
+	<zscript><![CDATA[
+	public void closeWindow() {
+		Executions.sendRedirect("/contenido.zul");
+		Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowActualizarDatos, null);
+	}
+]]></zscript>
+</window>

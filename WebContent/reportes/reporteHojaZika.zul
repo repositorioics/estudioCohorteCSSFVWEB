@@ -1,6 +1,6 @@
 <?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
 
-<window id="windowReporteHojaInfluenza" apply="ni.com.sts.estudioCohorteCssfv.controller.reportes.ReporteHojaZikaController" >
+<window id="windowReporteHojaZika" apply="ni.com.sts.estudioCohorteCssfv.controller.reportes.ReporteHojaZikaController" >
     <div width="100%" style="padding-left:4px;padding-right:4px;padding-top:25px;">
         <vlayout>
             <!-- Breadcrumb -->
@@ -86,7 +86,7 @@
     <zscript><![CDATA[
         public void closeWindow() {
         	Executions.sendRedirect("/contenido.zul");
-        	Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowReporteHojaInfluenza , null);
+        	Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowReporteHojaZika , null);
         }
     ]]></zscript>
 </window>

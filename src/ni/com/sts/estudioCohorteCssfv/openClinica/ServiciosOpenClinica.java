@@ -461,7 +461,8 @@ public class ServiciosOpenClinica {
 						}*/
 						//FIS
 						if (nombre.trim().equals("FIF")) {
-							if (value.trim() != null) {
+							//if (value.trim() != null) {
+							if (value != null && value.trim() != null && !value.trim().isEmpty()) {
 								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 								Date dateFif = format.parse(value.trim());
 								String fif = UtilDate.DateToString(dateFif, "yyyy-MM-dd");
@@ -472,7 +473,8 @@ public class ServiciosOpenClinica {
 						}
 						//FIF
 						else if (nombre.trim().equals("FIS")) {
-							if (value.trim() != null) {
+							//if (value.trim() != null) {
+							if (value != null && value.trim() != null && !value.trim().isEmpty()) {
 								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 								Date dateFis = format.parse(value.trim());
 								String fis = UtilDate.DateToString(dateFis, "yyyy-MM-dd");
@@ -795,7 +797,8 @@ public class ServiciosOpenClinica {
 						String[] datosCrfArray = datosCrf.trim().split(":");
 						if (nombre.trim().equals("FIF")) {
 							String ff = "";
-							if (value.trim() != null) {
+							//if (value.trim() != null) {
+							if (value != null && value.trim() != null && !value.trim().isEmpty()) {
 								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 								Date dateFif = format.parse(value.trim());
 								String fif = UtilDate.DateToString(dateFif, "yyyy-MM-dd");
@@ -808,7 +811,8 @@ public class ServiciosOpenClinica {
 						//FIF
 						else if (nombre.trim().equals("FIS")) {
 							String fs = "";
-							if (value.trim() != null) {
+							//if (value.trim() != null) {
+							if (value != null && value.trim() != null && !value.trim().isEmpty()) {
 								DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 								Date dateFis = format.parse(value.trim());
 								String fis = UtilDate.DateToString(dateFis, "yyyy-MM-dd");
