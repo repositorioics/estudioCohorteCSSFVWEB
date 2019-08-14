@@ -227,7 +227,8 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("repeat_key")
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("sec_hoja_zika")
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("sec_seg_influenza")
-						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("sec_seg_zika")) {
+						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("sec_seg_zika")
+						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("supervisor")) {
 
 					columnTableName.add(rs.getString("COLUMN_NAME"));
 				}
@@ -288,6 +289,8 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 			Mensajes.enviarMensaje(resultado);
 		} else {
 			this.txtValor.setText("");
+			this.chkValorNull.setChecked(false);
+			this.txtValor.setReadonly(false);
 			this.obtenerValorAnterior();
 			Mensajes.enviarMensaje(resultado);
 		}
@@ -307,6 +310,8 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 
 		} else {
 			this.txtValor.setText("");
+			this.chkValorNull.setChecked(false);
+			this.txtValor.setReadonly(false);
 			this.obtenerValorAnterior();
 			Mensajes.enviarMensaje(resultado);
 		}
