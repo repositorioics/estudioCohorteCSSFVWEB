@@ -176,6 +176,7 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 	public void txtNumHoja_onOk() {
 		if (this.txtNumHoja.getValue() != null && this.cmbCampoModificar.getSelectedItem() != null
 				&& this.cmbTablasDb.getSelectedItem() != null) {
+			this.txtValor.setText("");
 			this.obtenerValorAnterior();
 		}
 	}
@@ -187,6 +188,7 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 	public void txtControlDia_onOk() {
 		if (this.txtNumHoja.getValue() != null && this.cmbCampoModificar.getSelectedItem() != null
 				&& this.cmbTablasDb.getSelectedItem() != null) {
+			this.txtValor.setText("");
 			this.obtenerValorAnterior();
 		}
 	}

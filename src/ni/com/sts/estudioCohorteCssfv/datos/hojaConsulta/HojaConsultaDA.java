@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import ni.com.sts.estudioCohorteCSSFV.modelo.Diagnostico;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EstadosHoja;
+import ni.com.sts.estudioCohorteCSSFV.modelo.EstudioCatalogo;
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaInfluenza;
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaZika;
@@ -32,7 +34,38 @@ public class HojaConsultaDA implements HojaConsultaService {
 			q.setCharacter("estado", '7');
 			q.setParameter("estadoCarga", '0');
    
-   			resultado = q.list();
+			String sql2 = "select d from Diagnostico d";
+			Query q2 = hibernateResource.getSession().createQuery(sql2);
+			
+			//Diagnostico diagnostico  = ((Diagnostico) q2.uniqueResult());
+			List<Diagnostico> diagnostico = (List<Diagnostico>) q2.list();
+			
+			resultado = q.list();
+			
+			for (int i=0; i < resultado.size(); i++) {
+				for (int j=0; j < diagnostico.size(); j++) {
+					if (resultado.get(i).getDiagnostico1() != null) {
+						if (resultado.get(i).getDiagnostico1() == diagnostico.get(j).getSecDiagnostico()) {
+							resultado.get(i).setDiagnostico1(diagnostico.get(j).getCodigoDignostico());
+						}
+					}
+					if (resultado.get(i).getDiagnostico2() != null) {
+						if (resultado.get(i).getDiagnostico2() == diagnostico.get(j).getSecDiagnostico()) {
+							resultado.get(i).setDiagnostico2(diagnostico.get(j).getCodigoDignostico());
+						}
+					}
+					if (resultado.get(i).getDiagnostico3() != null) {
+						if (resultado.get(i).getDiagnostico3() == diagnostico.get(j).getSecDiagnostico()) {
+							resultado.get(i).setDiagnostico3(diagnostico.get(j).getCodigoDignostico());
+						}
+					}
+					if (resultado.get(i).getDiagnostico4() != null) {
+						if (resultado.get(i).getDiagnostico4() == diagnostico.get(j).getSecDiagnostico()) {
+							resultado.get(i).setDiagnostico4(diagnostico.get(j).getCodigoDignostico());
+						}
+					}
+				}
+			}
 		} catch (Exception e) {
 		 		e.printStackTrace();
 		 		throw new Exception(e);

@@ -17,6 +17,7 @@ import org.hibernate.Query;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EghResultados;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EgoResultados;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EstudioCatalogo;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
 import ni.com.sts.estudioCohorteCSSFV.modelo.InfluenzaMuestra;
 import ni.com.sts.estudioCohorteCSSFV.modelo.MalariaResultados;
 import ni.com.sts.estudioCohorteCSSFV.modelo.OrdenLaboratorio;
@@ -50,12 +51,20 @@ public class LaboratorioDA implements LaboratorioService {
 					+ " from HojaConsulta h, Paciente p, UsuariosView uv"
 					+ " where h.codExpediente = p.codExpediente "
 					+ " and CASE WHEN h.medicoCambioTurno is null THEN h.usuarioMedico ELSE h.medicoCambioTurno END = uv.id "
-					+ " and h.fechaOrdenLaboratorio is not null";
+					+ " and h.fechaOrdenLaboratorio is not null"
+					+ " and h.numOrdenLaboratorio is not null";
 			if (codigoExpediente!=null){
 				sql = sql +" and h.codExpediente = :codigoExpediente ";
 			}
 			if (codigoExpediente==null && estado==null){
 				sql = sql + " and to_char(h.fechaOrdenLaboratorio, 'yyyyMMdd') = to_char(current_date, 'yyyyMMdd') ";
+			}
+			
+			if (estado != null) {
+				if (estado.trim().equals("Pendiente")) {
+					sql = sql +" and h.fechaOrdenLaboratorio > current_date - 30";
+					//fecha_inicio < current_date -14
+				}
 			}
 					sql = sql + " group by h.secHojaConsulta, h.codExpediente, uv.nombre, h.numOrdenLaboratorio, "
 					+ " h.fechaOrdenLaboratorio, "
@@ -107,6 +116,14 @@ public class LaboratorioDA implements LaboratorioService {
 					//se filtra por estado
 					if (estado !=null) {
 						if (ordenesExamenes.getEstado().equals(estado)){
+							/*Date fechaI = ordenesExamenes.getFechaOrdenLaboratorio().getTime();
+						    Date fechaActual = new Date();
+						    long days = (fechaActual.getTime() - fechaI.getTime());
+						    long diffDays = days / (24 * 60 * 60 * 1000);
+						    String day = Long.toString(diffDays);
+						    if (diffDays <= 30) {
+						    	result.add(ordenesExamenes);
+						    }*/
 							result.add(ordenesExamenes);
 						}
 					}else{
@@ -172,6 +189,32 @@ public class LaboratorioDA implements LaboratorioService {
 		return result;
 	}
 
+	@Override 
+	public HojaConsulta obtenerHCBySec(int secHojaConsulta) {
+		HojaConsulta result = new HojaConsulta();
+		try {
+			String sql = "Select a"
+					+ " from HojaConsulta a"
+					+ " where a.secHojaConsulta = :secHojaConsulta";
+			
+			Query q = HIBERNATE_RESOURCE.getSession().createQuery(sql);
+			q.setParameter("secHojaConsulta", secHojaConsulta);
+			
+			HojaConsulta hojaConsulta = (HojaConsulta) q.uniqueResult();
+			if (hojaConsulta != null) {
+				result = hojaConsulta;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (HIBERNATE_RESOURCE.getSession().isOpen()) {
+				HIBERNATE_RESOURCE.close();
+			}
+		}
+		return result;
+	}
+	
 	@Override
 	public Paciente obtenerInfoPaciente(int codExpediente) {
 		Paciente result = new Paciente();

@@ -70,6 +70,8 @@ public class Mensajes {
     public static final String EXAMEN_ESTADO_PENDIENTE= "El resultado del exámen está pendiente. No se puede generar PDF";
     public static final String EXAMEN_ESTADO_CANCELADO= "Examen cancelado. No se puede generar PDF";
     public static final String ERROR_GENERAR_PDF = "Error al generar PDF";
+    
+    public static final String PACIENTE_EN_CONSULTA="El codigo del paciente ya fue ingresado";
 
 
     static{

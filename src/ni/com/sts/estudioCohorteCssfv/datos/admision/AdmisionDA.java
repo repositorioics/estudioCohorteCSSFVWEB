@@ -73,14 +73,42 @@ public class AdmisionDA implements AdmisionService {
 
         try {
 
-            hibernateResource.begin();
-            hibernateResource.getSession().save(admision);
-            hibernateResource.getSession().flush();
-            hibernateResource.commit();
+        	String sql = "select a " + 
+        			"from HojaConsulta a " + 
+        			"where to_char(a.fechaConsulta, 'yyyyMMdd') = to_char(current_date, 'yyyyMMdd') " + 
+        			"and a.codExpediente = :codExpediente " + 
+        			"and a.estado not in ('7', '8') ";
+        	Query q = hibernateResource.getSession().createQuery(sql);
+            q.setInteger("codExpediente",  admision.getCodExpediente());
+            
+            HojaConsulta hojaConsulta = (HojaConsulta) q.uniqueResult();
+            String tipoConsulta = admision.getTipoConsulta().getCodigo().toString();
+            if (hojaConsulta == null) {
+            	 hibernateResource.begin();
+                 hibernateResource.getSession().save(admision);
+                 hibernateResource.getSession().flush();
+                 hibernateResource.commit();
 
-            infoResultado.setOk(true);
-            infoResultado.setObjeto(admision);
-            infoResultado.setMensaje(Mensajes.REGISTRO_GUARDADO);
+                 infoResultado.setOk(true);
+                 infoResultado.setObjeto(admision);
+                 infoResultado.setMensaje(Mensajes.REGISTRO_GUARDADO);
+            } else {
+            	if (!tipoConsulta.trim().equals("CONSULTA")) {
+                	hibernateResource.begin();
+                    hibernateResource.getSession().save(admision);
+                    hibernateResource.getSession().flush();
+                    hibernateResource.commit();
+
+                    infoResultado.setOk(true);
+                    infoResultado.setObjeto(admision);
+                }
+            } 
+             /*else {
+            	infoResultado.setOk(false);
+            	infoResultado.setGravedad(infoResultado.ERROR);
+            	infoResultado.setMensaje(Mensajes.PACIENTE_EN_CONSULTA);
+                infoResultado.setFuenteError("Admisión");
+            }   */
         } catch (Exception e) {
             e.printStackTrace();
             hibernateResource.rollback();

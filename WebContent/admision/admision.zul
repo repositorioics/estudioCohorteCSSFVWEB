@@ -218,7 +218,7 @@
 
 	<!-- Modal admisiones pendientes de recepción cuando es admisión-->
 	<window id="popAdmisionesPendientes" visible="false" zindex="1000"
-		sizable="false" closable="true" width="600px" height="450px"
+		sizable="false" closable="true" width="600px" height="550px"
 		border="none" position="center">
 		<vlayout style="padding:20px;" spacing="7px">
 			<hbox style="margin-bottom:10px">
@@ -238,7 +238,7 @@
 
 				</vbox>
 			</hbox>
-			<listbox id="listaAdmisiones" mold="paging" pageSize="6"
+			<listbox id="listaAdmisiones" mold="paging" pageSize="4"
 				emptyMessage="No hay resultados que mostrar">
 				<listhead sizable="true">
 					<listheader label="Código" />
@@ -317,7 +317,7 @@
 	<!-- Modal admisiones pendientes de recepción cuando es recepción -->
 	<window id="popAdmisionesPendientesRecep" visible="false"
 		zindex="1000" sizable="false" closable="true" width="600px"
-		height="450px" border="none" position="center">
+		height="550px" border="none" position="center">
 		<vlayout style="padding:20px;" spacing="7px">
 			<hbox style="margin-bottom:10px">
 				<image src="/recursos/imagenes/marker_squared_red.png" />

@@ -37,6 +37,17 @@
 				<label value="Sexo:"/>
 				<textbox id="txtSexo" cols="4" readonly="true" tabindex="2" width="100px;" sclass="texbox_linea_estilo"/>
 			</div>
+			
+			
+			
+			<space width="10px"/>
+			<div id="divFif" visible="false">
+				<label style="font-weight:bold" value="FIF:"/>
+				<textbox style="font-weight:bold" id="txtFif" cols="4" readonly="true" tabindex="2" width="100px;" sclass="texbox_linea_estilo"/>
+			</div>
+			
+			
+			
 		</hbox>
 		<space height="40px"/>
     <listbox id = "lstIngresoResultados" mold="paging" pageSize="15" emptyMessage="No hay resultados que mostrar">

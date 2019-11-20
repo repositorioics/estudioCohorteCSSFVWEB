@@ -1,5 +1,6 @@
 package ni.com.sts.estudioCohorteCssfv.datos.actualizarDatos;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -73,7 +74,7 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 				} else if (type == Types.TIME) {
 					pst.setNull(1, Types.TIME);
 				} else if (type == Types.SMALLINT) {
-					pst.setInt(1, Types.SMALLINT);
+					pst.setNull(1, Types.SMALLINT);
 				} else if (type == Types.INTEGER)
 					pst.setNull(1, Types.INTEGER);
 				else if (type == Types.FLOAT || type == Types.REAL)
@@ -82,15 +83,35 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 				if (type == Types.VARCHAR)
 					pst.setString(1, valor);
 				else if (type == Types.CHAR)
-					pst.setString(1, String.valueOf(valor.charAt(0)));
+					/*if (nombreCampo.equals("consulta")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("colegio")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("am_pm_ult_dia_fiebre")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("am_pm_ult_dosis_antipiretico")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("categoria")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("horario_clases")) {
+						pst.setString(1, valor);
+					}*/
+					if (valor.length() > 1) {
+						pst.setString(1, valor);
+					} else { 
+						pst.setString(1, String.valueOf(valor.charAt(0)));
+					}
 				else if (type == Types.DATE) {
 					if (valor.trim().contains(" ")) {
+						pst.setDate(1, new java.sql.Date(UtilDate.StringToDate(valor, "dd/MM/yyyy").getTime()));
+					} else  {
 						pst.setDate(1, new java.sql.Date(UtilDate.StringToDate(valor, "dd/MM/yyyy").getTime()));
 					}
 				} else if (type == Types.SMALLINT) {
 					pst.setInt(1, Integer.parseInt(valor));
 				} else if (type == Types.NUMERIC) {
-					pst.setLong(1, Long.parseLong(valor));
+					BigDecimal valorDecimal = new BigDecimal(valor);
+					pst.setBigDecimal(1, valorDecimal);
 				} else if (type == Types.TIME) {
 					SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 					long ms = sdf.parse(valor).getTime();
@@ -190,14 +211,14 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 					pst.setNull(1, Types.CHAR);
 				else if (type == Types.DATE) {
 					pst.setNull(1, Types.DATE);
-				} else if (type == Types.TIME) {
-					pst.setNull(1, Types.TIME);
 				} else if (type == Types.NUMERIC) {
 					pst.setNull(1, Types.NUMERIC);
 				} else if (type == Types.TIMESTAMP) {
 					pst.setNull(1, Types.TIMESTAMP);
+				} else if (type == Types.TIME) {
+					pst.setNull(1, Types.TIME);
 				} else if (type == Types.SMALLINT) {
-					pst.setInt(1, Types.SMALLINT);
+					pst.setNull(1, Types.SMALLINT);
 				} else if (type == Types.INTEGER)
 					pst.setNull(1, Types.INTEGER);
 				else if (type == Types.FLOAT || type == Types.REAL)
@@ -206,15 +227,35 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 				if (type == Types.VARCHAR)
 					pst.setString(1, valor);
 				else if (type == Types.CHAR)
-					pst.setString(1, String.valueOf(valor.charAt(0)));
+					/*if (nombreCampo.equals("consulta")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("colegio")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("am_pm_ult_dia_fiebre")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("am_pm_ult_dosis_antipiretico")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("categoria")) {
+						pst.setString(1, valor);
+					} else if (nombreCampo.equals("horario_clases")) {
+						pst.setString(1, valor);
+					}*/
+					if (valor.length() > 1) {
+						pst.setString(1, valor);
+					} else { 
+						pst.setString(1, String.valueOf(valor.charAt(0)));
+					}
 				else if (type == Types.DATE) {
 					if (valor.trim().contains(" ")) {
+						pst.setDate(1, new java.sql.Date(UtilDate.StringToDate(valor, "dd/MM/yyyy").getTime()));
+					} else  {
 						pst.setDate(1, new java.sql.Date(UtilDate.StringToDate(valor, "dd/MM/yyyy").getTime()));
 					}
 				} else if (type == Types.SMALLINT) {
 					pst.setInt(1, Integer.parseInt(valor));
 				} else if (type == Types.NUMERIC) {
-					pst.setLong(1, Long.parseLong(valor));
+					BigDecimal valorDecimal = new BigDecimal(valor);
+					pst.setBigDecimal(1, valorDecimal);
 				} else if (type == Types.TIME) {
 					SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 					long ms = sdf.parse(valor).getTime();
@@ -375,7 +416,11 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 			pstmBitacora = conn.prepareStatement(builderInsert.toString());
 
 			pstmBitacora.setString(1, "modificacion_manual_cc");
-			pstmBitacora.setInt(2, numHoja);
+			if (nombreTabla.trim().equals("seguimiento_influenza") || nombreTabla.trim().equals("seguimiento_zika")) {
+				pstmBitacora.setInt(2, id);
+			} else {
+				pstmBitacora.setInt(2, numHoja);
+			}
 			pstmBitacora.setString(3, nombreTabla);
 			pstmBitacora.setString(4, nombreCampo);
 			pstmBitacora.setString(5, valor);

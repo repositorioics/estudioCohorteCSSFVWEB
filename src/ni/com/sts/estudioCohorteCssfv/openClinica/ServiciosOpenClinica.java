@@ -572,7 +572,71 @@ public class ServiciosOpenClinica {
 								Date fechaSeguimiento = segInfluenza.getFechaSeguimiento();
 								String fecha = UtilDate.DateToString(fechaSeguimiento, "yyyy-MM-dd");
 								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], fecha.trim(), 2);
-							} else {
+							} 
+							//INTESIDAD FIEBRE
+							else if (nombre.trim().equals("FIEBRELEVE") || nombre.trim().equals("FIEBREMODERADA") || 
+									nombre.trim().equals("FIEBRESEVERA")) {
+								logger.debug("entra intensidad fiebre: "+nombre+"-"+value.trim());
+								String intensidadFiebre = intensidadSintomas(nombre, value.trim());
+								if (intensidadFiebre != null) {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], intensidadFiebre, 2);	
+								}
+							}
+							//INTESIDAD TOS
+							else if (nombre.trim().equals("TOSLEVE") || nombre.trim().equals("TOSMODERADA") ||
+									nombre.trim().equals("TOSSEVERA")) {
+								logger.debug("entra intensidad tos: "+nombre+"-"+value.trim());
+								String intensidadTos = intensidadSintomas(nombre, value.trim());
+								if (intensidadTos != null) {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], intensidadTos, 2);	
+								}
+							}
+							//INTESIDAD SECRECION NASAL
+							else if (nombre.trim().equals("SECRECIONNASALLEVE") || nombre.trim().equals("SECRECIONNASALMODERADA") ||
+									nombre.trim().equals("SECRECIONNASALSEVERA")) {
+								logger.debug("entra intensidad secrecion nasal: "+nombre+"-"+value.trim());
+								String intensidadSecrecionNasal = intensidadSintomas(nombre, value.trim());
+								if (intensidadSecrecionNasal != null) {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], intensidadSecrecionNasal, 2);
+								}
+							}
+							//INTESIDAD DOLOR GARGANTA
+							else if (nombre.trim().equals("DOLORGARGANTALEVE") || nombre.trim().equals("DOLORGARGANTAMODERADA") ||
+									nombre.trim().equals("DOLORGARGANTASEVERA")) {
+								logger.debug("entra intensidad dolor de garganta: "+nombre+"-"+value.trim());
+								String intensidadDolorGarganta = intensidadSintomas(nombre, value.trim());
+								if (intensidadDolorGarganta != null) {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], intensidadDolorGarganta, 2);	
+								}
+							}
+							//INTESIDAD DOLOR CABEZA
+							else if (nombre.trim().equals("DOLORCABEZALEVE") || nombre.trim().equals("DOLORCABEZAMODERADA") ||
+									nombre.trim().equals("DOLORCABEZASEVERA")) {
+								logger.debug("entra intensidad dolor de cabeza: "+nombre+"-"+value.trim());
+								String intensidadDolorCabeza = intensidadSintomas(nombre, value.trim());
+								if (intensidadDolorCabeza != null) {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], intensidadDolorCabeza, 2);	
+								}
+							}
+							//INTESIDAD DOLOR MUSCULAR
+							else if (nombre.trim().equals("DOLORMUSCULARLEVE") || nombre.trim().equals("DOLORMUSCULARMODERADA") ||
+									nombre.trim().equals("DOLORMUSCULARSEVERA")) {
+								logger.debug("entra intensidad dolor muscular: "+nombre+"-"+value.trim());
+								String intensidadDolorMuscular = intensidadSintomas(nombre, value.trim());
+								if (intensidadDolorMuscular != null) {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], intensidadDolorMuscular, 2);
+								}
+							}
+							//INTESIDAD DOLOR ARTICULAR
+							else if (nombre.trim().equals("DOLORARTICULARLEVE") || nombre.trim().equals("DOLORARTICULARMODERADA") ||
+									nombre.trim().equals("DOLORARTICULARSEVERA")) {
+								logger.debug("entra intensidad dolor articular: "+nombre+"-"+value.trim());
+								String intensidadDolorArticular = intensidadSintomas(nombre, value.trim());
+								if (intensidadDolorArticular != null) {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], intensidadDolorArticular, 2);	
+								}
+							}
+							else {
 								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], value.trim(), 2);
 							}
 						}
@@ -1564,7 +1628,6 @@ public class ServiciosOpenClinica {
 		return valor;
 	}
 
-	
 	private String valorDefecto(String nombreCampo){
 		String valor=null;
 		if (nombreCampo.equals("OEL"))
@@ -1605,6 +1668,53 @@ public class ServiciosOpenClinica {
 			return "00:00";
 		if (nombreCampo.equals("HORASV"))
 			return "00:00";
+		return valor;
+	}
+	
+	private String intensidadSintomas(String nombreCampo, String valorCampo) {
+		String valor = null;
+		if (nombreCampo.equals("FIEBRELEVE") && valorCampo.equals("1"))
+			return "1";
+		if (nombreCampo.equals("FIEBREMODERADA") && valorCampo.equals("1"))
+			return "2";
+		if (nombreCampo.equals("FIEBRESEVERA") && valorCampo.equals("1"))
+			return "3";
+		if (nombreCampo.equals("TOSLEVE") && valorCampo.equals("1"))
+			return "1";
+		if (nombreCampo.equals("TOSMODERADA") && valorCampo.equals("1"))
+			return "2";
+		if (nombreCampo.equals("TOSSEVERA") && valorCampo.equals("1"))
+			return "3";
+		if (nombreCampo.equals("SECRECIONNASALLEVE") && valorCampo.equals("1"))
+			return "1";
+		if (nombreCampo.equals("SECRECIONNASALMODERADA") && valorCampo.equals("1"))
+			return "2";
+		if (nombreCampo.equals("SECRECIONNASALSEVERA") && valorCampo.equals("1"))
+			return "3";
+		if (nombreCampo.equals("DOLORGARGANTALEVE") && valorCampo.equals("1"))
+			return "1";
+		if (nombreCampo.equals("DOLORGARGANTAMODERADA") && valorCampo.equals("1"))
+			return "2";
+		if (nombreCampo.equals("DOLORGARGANTASEVERA") && valorCampo.equals("1"))
+			return "3";
+		if (nombreCampo.equals("DOLORCABEZALEVE") && valorCampo.equals("1"))
+			return "1";
+		if (nombreCampo.equals("DOLORCABEZAMODERADA") && valorCampo.equals("1"))
+			return "2";
+		if (nombreCampo.equals("DOLORCABEZASEVERA") && valorCampo.equals("1"))
+			return "3";
+		if (nombreCampo.equals("DOLORMUSCULARLEVE") && valorCampo.equals("1"))
+			return "1";
+		if (nombreCampo.equals("DOLORMUSCULARMODERADA") && valorCampo.equals("1"))
+			return "2";
+		if (nombreCampo.equals("DOLORMUSCULARSEVERA") && valorCampo.equals("1"))
+			return "3";
+		if (nombreCampo.equals("DOLORARTICULARLEVE") && valorCampo.equals("1"))
+			return "1";
+		if (nombreCampo.equals("DOLORARTICULARMODERADA") && valorCampo.equals("1"))
+			return "2";
+		if (nombreCampo.equals("DOLORARTICULARSEVERA") && valorCampo.equals("1"))
+			return "3";
 		return valor;
 	}
 }

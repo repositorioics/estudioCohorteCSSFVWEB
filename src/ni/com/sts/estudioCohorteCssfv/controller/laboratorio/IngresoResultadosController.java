@@ -1,6 +1,7 @@
 package ni.com.sts.estudioCohorteCssfv.controller.laboratorio;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import ni.com.sts.estudioCohorteCSSFV.modelo.EghResultados;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EgoResultados;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
 import ni.com.sts.estudioCohorteCSSFV.modelo.MalariaResultados;
 import ni.com.sts.estudioCohorteCSSFV.modelo.OrdenLaboratorio;
 import ni.com.sts.estudioCohorteCSSFV.modelo.Paciente;
@@ -38,6 +40,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Div;
 import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
@@ -87,6 +90,12 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 
 	@Wire("[id$=lstIngresoResultados]")
 	private Listbox lstIngresoResultados;
+	
+	@Wire("[id$=txtFif]")
+	private Textbox txtFif;
+	
+	@Wire("[id$=divFif]")
+	private Div divFif;
 
 	@Listen("onClick=[id$=btnCerrar]")
     public void btnCerrar_onClick() {
@@ -346,6 +355,19 @@ public class IngresoResultadosController extends SelectorComposer<Component> {
 					.getAttribute("ordenExamenSeleccionada");
 			Paciente paciente = laboratorioService
 					.obtenerInfoPaciente(ordenesExamenes.getCodigoExpediente());
+			
+			/*Nuevo campo agregado (FIF)*/
+			HojaConsulta hc = laboratorioService.obtenerHCBySec(ordenesExamenes.getSecHojaConsulta());
+			if (hc != null) {
+				if (hc.getSerologiaDengue() != null && hc.getSerologiaDengue().toString().compareTo("0") == 0) {
+					if (hc.getFif() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); 
+						String strFif = sdf.format(hc.getFif());
+						txtFif.setText(strFif);
+						divFif.setVisible(true);
+					}
+				}
+			}
 			/*txtNombrePaciente.setText(paciente.getNombre1() + " "
 					+ paciente.getNombre2() + " " + paciente.getApellido1()
 					+ " " + paciente.getApellido2());*/

@@ -5,6 +5,7 @@ import java.util.List;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EghResultados;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EghResultadosId;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EgoResultados;
+import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
 import ni.com.sts.estudioCohorteCSSFV.modelo.InfluenzaMuestra;
 import ni.com.sts.estudioCohorteCSSFV.modelo.MalariaResultados;
 import ni.com.sts.estudioCohorteCSSFV.modelo.OrdenLaboratorio;
@@ -63,5 +64,7 @@ public interface LaboratorioService {
 	public InfoResultado guardarResultadoExamen(ResultadoExamenMuestra resultadoExamen);
 
 	String obtenerEdadCalculadaPaciente(int codExpediente);
+
+	public HojaConsulta obtenerHCBySec(int secHojaConsulta);
 
 }
