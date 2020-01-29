@@ -9,7 +9,7 @@ public interface ActualizarDatosService {
 			Boolean valorNull, String usuario);
 
 	InfoResultado updateSeguimientos(String nombreTabla, String secHoja, int numHoja, String nombreCampo, String valor,
-			Boolean valorNull, String usuario, int dia);
+			Boolean valorNull, String usuario, int dia,  String secSegSeguimiento);
 
 	String getValorAnterior(String nombreTabla, int numHoja, String nombreCampo, int controlDia);
 }

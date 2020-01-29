@@ -304,9 +304,9 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 	 * @throws Exception
 	 */
 	private void actualizarSeguimientos(String nombreTabla, String secHoja, Integer numHoja, String nombreCampo,
-			String valor, Boolean valorNull, String usuario, Integer dia) throws Exception {
+			String valor, Boolean valorNull, String usuario, Integer dia, String secSegSeguimiento) throws Exception {
 		InfoResultado resultado = actualizarDatosService.updateSeguimientos(nombreTabla, secHoja, numHoja, nombreCampo,
-				valor, valorNull, usuario, dia);
+				valor, valorNull, usuario, dia, secSegSeguimiento);
 		if (resultado.isOk() && resultado.getObjeto() != null) {
 			Mensajes.enviarMensaje(resultado);
 
@@ -365,12 +365,14 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 		String usuario = user.getUsuario();
 		if (nombreTabla.equals("seguimiento_influenza")) {
 			String secHoja = "sec_hoja_influenza";
+			String secSegSeguimiento = "sec_seg_influenza";
 			Integer dia = this.txtControlDia.getValue();
-			actualizarSeguimientos(nombreTabla, secHoja, numHoja, nombreCampo, valor, valorNull, usuario, dia);
+			actualizarSeguimientos(nombreTabla, secHoja, numHoja, nombreCampo, valor, valorNull, usuario, dia, secSegSeguimiento);
 		} else if (nombreTabla.equals("seguimiento_zika")) {
 			String secHoja = "sec_hoja_zika";
 			Integer dia = this.txtControlDia.getValue();
-			actualizarSeguimientos(nombreTabla, secHoja, numHoja, nombreCampo, valor, valorNull, usuario, dia);
+			String secSegSeguimiento = "sec_seg_zika";
+			actualizarSeguimientos(nombreTabla, secHoja, numHoja, nombreCampo, valor, valorNull, usuario, dia, secSegSeguimiento);
 		} else {
 			actualizarHojaConsulta(nombreTabla, numHoja, nombreCampo, valor, valorNull, usuario);
 		}

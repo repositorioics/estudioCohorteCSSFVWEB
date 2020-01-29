@@ -36,85 +36,88 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Toolbarbutton;
 
-public class ReporteHojaInfluenzaController extends SelectorComposer<Component>{
+public class ReporteHojaInfluenzaController extends SelectorComposer<Component> {
 
 	private static final long serialVersionUID = 1L;
 	private static ReportesService reporteService = new ReportesDA();
-	
+
 	private CompositeConfiguration config;
-	
+
 	private List<Generico> listaExportar = new ArrayList<Generico>();
-	
+
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		init();
 	}
-	
+
 	private void init() {
-    	config = UtilProperty.getConfigurationfromExternalFile("EstudioCohorteCssfvWEBExt.properties");
-    }
-	
+		config = UtilProperty.getConfigurationfromExternalFile("EstudioCohorteCssfvWEBExt.properties");
+	}
+
 	@Wire("[id$=cmbTipoEstado]")
-    private Combobox cmbTipoEstado;
-	
+	private Combobox cmbTipoEstado;
+
 	@Wire("[id$=listaResultados]")
 	private Listbox listaResultados;
-	
+
 	@Wire("[id$=btnGenerar]")
-    private Button btnGenerar;
-    
-    @Wire("[id$=btnHojaExcel]")
-    private Button btnHojaExcel;
-    
-    @Listen("onClick=[id$=btnGenerar]")
-    public void btnGenerar_onClick() {
-    	buscar();
-    }
-    
-    @Listen("onClick=[id$=btnLimpiar]")
-    public void btnLimpiar_onClick() {
-    	limpiar();
-    }
-    
-  @Listen("onClick=[id$=btnHojaExcel]")
-    public void btnHojaExcel_onClick() {
-    	exportarExcel();
-    }
-    
-    private void limpiar() {
-    	this.listaResultados.setModel(new ListModelList<Generico>(new ArrayList<Generico>()));
-    	listaExportar = new ArrayList<Generico>();
-    	this.cmbTipoEstado.setSelectedIndex(0);
+	private Button btnGenerar;
+
+	@Wire("[id$=btnHojaExcel]")
+	private Button btnHojaExcel;
+
+	@Listen("onClick=[id$=btnGenerar]")
+	public void btnGenerar_onClick() {
+		buscar();
 	}
-    
-    private void buscar() {
-    	this.listaResultados.setModel(new ListModelList<Generico>(new ArrayList<Generico>()));
-    	String estado = "";
-    	try {
-        	if (this.cmbTipoEstado.getSelectedIndex() > 0) {
-        		estado = cmbTipoEstado.getSelectedItem().getValue().toString();
-    			if (!estado.isEmpty()){
-    				listaExportar = reporteService.getReporteHojaInfluenza(estado);
-    			}
-    		}
-        	if (listaExportar.size() > 0) {
+
+	@Listen("onClick=[id$=btnLimpiar]")
+	public void btnLimpiar_onClick() {
+		limpiar();
+	}
+
+	@Listen("onClick=[id$=btnHojaExcel]")
+	public void btnHojaExcel_onClick() {
+		exportarExcel();
+	}
+
+	private void limpiar() {
+		this.listaResultados.setModel(new ListModelList<Generico>(new ArrayList<Generico>()));
+		listaExportar = new ArrayList<Generico>();
+		this.cmbTipoEstado.setSelectedIndex(0);
+	}
+
+	private void buscar() {
+		this.listaResultados.setModel(new ListModelList<Generico>(new ArrayList<Generico>()));
+		String estado = "";
+		try {
+			if (this.cmbTipoEstado.getSelectedIndex() > 0) {
+				estado = cmbTipoEstado.getSelectedItem().getValue().toString();
+				if (!estado.isEmpty()) {
+					listaExportar = reporteService.getReporteHojaInfluenza(estado);
+				}
+			}
+			if (listaExportar.size() > 0) {
 				this.listaResultados.setModel(new ListModelList<Generico>(listaExportar));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
-		}	
-    }
-    
-    private void exportarExcel(){
-    	Generico[] resultado = (Generico[]) ExportarListBox.copyArrayListObject(listaExportar.toArray(), Generico.class);
-    	String [] metodos = {"getTexto1","getTexto2","getTexto3","getTexto4","getTexto5","getTexto6"};
-		try {
-			ExportarListBox.export_to_csv(listaResultados,metodos,resultado,"reporteHojaInfluenza","Registros Encontrados");
-		} catch (Exception e) {
-			e.printStackTrace();			
-			Mensajes.enviarMensaje(Mensajes.ERROR_EXPORTAR_EXCEL + ". \n " +e.getMessage() , Mensajes.TipoMensaje.ERROR);
 		}
-    }
+	}
+
+	private void exportarExcel() {
+		Generico[] resultado = (Generico[]) ExportarListBox.copyArrayListObject(listaExportar.toArray(),
+				Generico.class);
+		String[] metodos = { "getTexto1", "getTexto2", "getTexto3", "getTexto4", "getTexto5", "getTexto6" };
+		try {
+			ExportarListBox.export_to_csv(listaResultados, metodos, resultado, "reporteHojaInfluenza",
+					"Registros Encontrados");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Mensajes.enviarMensaje(Mensajes.ERROR_EXPORTAR_EXCEL + ". \n " + e.getMessage(),
+					Mensajes.TipoMensaje.ERROR);
+		}
+	}
 }

@@ -1,5 +1,6 @@
 package ni.com.sts.estudioCohorteCssfv.servicios;
 
+import java.util.Date;
 import java.util.List;
 
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaInfluenza;
@@ -11,5 +12,6 @@ public interface ReportesService {
 	public List<Generico> getReporteGeneral(FiltroReporte filtro) throws Exception;
 	public List<Generico> getReporteAuditoria(FiltroReporte filtro) throws Exception;
 	public List<Generico> getReporteHojaInfluenza(String estado) throws Exception;
-	List<Generico> getReporteHojaZika(String estado) throws Exception;
+	public List<Generico> getReporteHojaZika(String estado) throws Exception;
+	public List<Generico> getReporteCorrecciones(Date fechaInicio, Date fechaFin) throws Exception;
 }

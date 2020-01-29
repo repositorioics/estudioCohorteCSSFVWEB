@@ -137,7 +137,8 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 				String secHoja = "";
 				int dia = 0;
 				int id = 0;
-				insertBitacora(nombreTabla, numHoja, usuario, nombreCampo, conn, valor, secHoja, dia, id);
+				String secSegSeguimiento = null;
+				insertBitacora(nombreTabla, numHoja, usuario, nombreCampo, conn, valor, secHoja, dia, id, secSegSeguimiento);
 			}
 
 			pst.executeUpdate();
@@ -172,7 +173,7 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 	 */
 	@SuppressWarnings("static-access")
 	public InfoResultado updateSeguimientos(String nombreTabla, String secHoja, int numHoja, String nombreCampo,
-			String valor, Boolean valorNull, String usuario, int dia) {
+			String valor, Boolean valorNull, String usuario, int dia, String secSegSeguimiento) {
 
 		InfoResultado infoResultado = new InfoResultado();
 		int id = 0;
@@ -272,7 +273,7 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 					pst.setFloat(1, Float.valueOf(valor));
 			}
 
-			insertBitacora(nombreTabla, numHoja, usuario, nombreCampo, conn, valor, secHoja, dia, id);
+			insertBitacora(nombreTabla, numHoja, usuario, nombreCampo, conn, valor, secHoja, dia, id, secSegSeguimiento);
 
 			pst.executeUpdate();
 			infoResultado.setOk(true);
@@ -348,7 +349,7 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 			pstm.setString(5, "Modificacion");
 			pstm.setString(6, nombreCampo);
 			pstm.setString(7, valorAnterior);
-			pstm.setString(8, "modificacion_manual_cc");
+			pstm.setString(8, "modificacion_web_cc");
 
 			pstm.executeUpdate();
 
@@ -371,7 +372,7 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 	 * cambios realizados
 	 */
 	public void insertBitacora(String nombreTabla, int numHoja, String usuario, String nombreCampo, Connection conn,
-			String valor, String secHoja, int dia, int id) {
+			String valor, String secHoja, int dia, int id, String secSegSeguimiento) {
 		
 		PreparedStatement pstmBitacora = null;
 		try {
@@ -383,7 +384,7 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 						.append(" WHERE ").append(" num_hoja_seguimiento ").append(" = ").append(numHoja);
 				// pstmBitacora = conn.prepareStatement(builderSelect.toString());
 			} else {
-				builderSelect.append("SELECT ").append(nombreCampo).append(" FROM ").append(nombreTabla)
+				builderSelect.append("SELECT ").append(nombreCampo).append(" , ").append(secSegSeguimiento).append(" FROM ").append(nombreTabla)
 						.append(" WHERE ").append(secHoja).append(" = ").append(id).append(" AND ")
 						.append(" control_dia = ").append(dia);
 				// pstmBitacora = conn.prepareStatement(builderSelect.toString());
@@ -392,9 +393,13 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 			pstmBitacora = conn.prepareStatement(builderSelect.toString());
 			ResultSet rs = pstmBitacora.executeQuery();
 			String valorAnterior = null;
+			String valorSeg = null;
 
 			while (rs.next()) {
 				valorAnterior = rs.getString(1);
+				if (secSegSeguimiento != null) {
+					valorSeg = rs.getString(2);	//Cambio aplicado el 27/11/2019 (Oteniendo el secSegSeguimiento) para guardarlo en bitacora
+				}
 			}
 
 			if (valorAnterior == null) {
@@ -415,9 +420,9 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 
 			pstmBitacora = conn.prepareStatement(builderInsert.toString());
 
-			pstmBitacora.setString(1, "modificacion_manual_cc");
+			pstmBitacora.setString(1, "modificacion_web_cc");
 			if (nombreTabla.trim().equals("seguimiento_influenza") || nombreTabla.trim().equals("seguimiento_zika")) {
-				pstmBitacora.setInt(2, id);
+				pstmBitacora.setString(2, valorSeg);
 			} else {
 				pstmBitacora.setInt(2, numHoja);
 			}

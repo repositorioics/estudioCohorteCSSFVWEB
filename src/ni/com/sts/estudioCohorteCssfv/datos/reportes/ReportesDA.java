@@ -435,4 +435,82 @@ public class ReportesDA implements ReportesService {
         }
 		 return result;
 	}
+	
+	//REPORTE CORRECCIONES FECHA CREACION: 21/11/2019 SC
+	public List<Generico> getReporteCorrecciones(Date fechaInicio, Date fechaFin) throws Exception {
+		List<Generico> result = new ArrayList<Generico>();
+		try {
+			
+			String sql = "select a.nombre, " + 
+					"(select count(hc.usuario_medico) as cantidad_correcion_hc from control_cambios cc " + 
+					"inner join hoja_consulta hc on hc.num_hoja_consulta = cc.num_hoja_consulta " + 
+					"inner join usuarios_view uv on uv.id = hc.usuario_medico " + 
+					"where cc.usuario in (select a.usuario from usuarios_view a inner join roles_view b on a.usuario = b.usuario where b.nombre = 'Actualizar Datos') " + 
+					"and hc.usuario_medico = a.id " +
+ 					"and to_char(cc.fecha, 'yyyyMMdd') >= :fechaInicio " +
+ 					"and to_char(cc.fecha, 'yyyyMMdd') <= :fechaFin " +
+ 					"and cc.controlador = 'modificacion_web_cc' " +
+					"group by uv.nombre, hc.usuario_medico " + 
+					"), " + 
+					"(select count(hc.usuario_medico) as cantidad_correcion_seg_zika from bitacora cc " + 
+					"inner join seguimiento_zika hc on cast(hc.sec_seg_zika as VARCHAR) = cc.id_entidad " + 
+					"inner join usuarios_view uv on uv.id = hc.usuario_medico " + 
+					"where cc.nombre_usuario in (select a.usuario from usuarios_view a inner join roles_view b on a.usuario = b.usuario where b.nombre = 'Actualizar Datos') " + 
+					"and hc.usuario_medico = a.id " + 
+					"and cc.nombre_entidad = 'seguimiento_zika' " +
+					"and to_char(cc.fecha_operacion, 'yyyyMMdd') >= :fechaInicio " +
+ 					"and to_char(cc.fecha_operacion, 'yyyyMMdd') <= :fechaFin " +
+ 					"and cc.controlador = 'modificacion_web_cc' " +
+ 					"and cc.nombre_entidad = 'seguimiento_zika'" +
+					"group by uv.nombre, hc.usuario_medico " + 
+					"), " + 
+					"(select count(hc.usuario_medico) as cantidad_correcion_seg_inf from bitacora cc " + 
+					"inner join seguimiento_influenza hc on cast(hc.sec_seg_influenza as VARCHAR) = cc.id_entidad " + 
+					"inner join usuarios_view uv on uv.id = hc.usuario_medico " + 
+					"where cc.nombre_usuario in (select a.usuario from usuarios_view a inner join roles_view b on a.usuario = b.usuario where b.nombre = 'Actualizar Datos') " + 
+					"and hc.usuario_medico = a.id " +
+					"and cc.nombre_entidad = 'seguimiento_influenza' " +
+					"and to_char(cc.fecha_operacion, 'yyyyMMdd') >= :fechaInicio " +
+ 					"and to_char(cc.fecha_operacion, 'yyyyMMdd') <= :fechaFin " +
+					"and cc.controlador = 'modificacion_web_cc' " +
+					"and cc.nombre_entidad = 'seguimiento_influenza'" +
+					"group by uv.nombre, hc.usuario_medico " + 
+					") " + 
+					"from usuarios_view a inner join roles_view b on a.usuario = b.usuario where b.nombre = 'Médico' " + 
+					"and (a.nombre like 'DR.%' or a.nombre like 'DRA.%') " + 
+					"and (a.nombre not in('DR. ROMERO','DRA. KUAN')) " + 
+					"order by a.nombre";
+			
+			String fechaI = UtilDate.DateToString(fechaInicio,"yyyyMMdd");
+			String fechaF = UtilDate.DateToString(fechaFin,"yyyyMMdd");
+			
+			Query query = hibernateResource.getSession().createSQLQuery(sql);
+			query.setParameter("fechaInicio", fechaI);
+			query.setParameter("fechaFin", fechaF);
+			
+			List<Object[]> lista = (List<Object[]>) query.list();
+			
+			if (lista != null && lista.size() > 0) {
+				for (Object[] object : lista) {
+					Generico data = new Generico();
+					data.setTexto1(object[0] != null ? object[0].toString() : null); // nombre usuario
+					data.setTexto2(object[1] != null ? object[1].toString() : null); // cantidadCorrecionHC
+					data.setTexto3(object[2] != null ? object[2].toString() : null); // cantidadCorrecionSegZika
+					data.setTexto4(object[3] != null ? object[3].toString() : null); // cantidadCorrecionSegInf
+					
+					result.add(data);
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+	 		throw new Exception(e);
+		} finally {
+			if (hibernateResource.getSession().isOpen()) {
+   	 			hibernateResource.close();
+   	 		}	
+        }
+		return result;
+	}
 }
