@@ -221,7 +221,7 @@ public class ActualizarDatosController extends SelectorComposer<Component> {
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("sec_hoja_consulta")
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("num_hoja_consulta")
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("num_orden_llegada")
-						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("lugar_atencion")
+						//&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("lugar_atencion")
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("estudios_participantes")
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("estado_carga")
 						&& !rs.getString("COLUMN_NAME").equalsIgnoreCase("sec_hoja_influenza")

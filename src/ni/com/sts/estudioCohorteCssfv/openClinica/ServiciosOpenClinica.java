@@ -1165,7 +1165,12 @@ public class ServiciosOpenClinica {
         Name name4 = soapFactory.createName("StudyEventData");
         SOAPElement soapBodyElem4 = soapBodyElem3.addChildElement(name4);
         soapBodyElem4.setAttribute("StudyEventOID", config.getString("data.import.eventDefinitionOID"));
-        soapBodyElem4.setAttribute("StudyEventRepeatKey", repeatKey);
+        //soapBodyElem4.setAttribute("StudyEventRepeatKey", repeatKey);
+        if (hoja.getRepeatKey() == null) {
+        	soapBodyElem4.setAttribute("StudyEventRepeatKey", repeatKey);
+        } else {
+        	soapBodyElem4.setAttribute("StudyEventRepeatKey", hoja.getRepeatKey());
+        }
         
         //<FormData FormOID="F_HOJADECONSUL_23">
         Name name5 = soapFactory.createName("FormData");
@@ -1177,7 +1182,12 @@ public class ServiciosOpenClinica {
         SOAPElement soapBodyElem6 = soapBodyElem5.addChildElement(name6);
         soapBodyElem6.setAttribute("ItemGroupOID", "IG_HOJAD_UNGROUPED");
         soapBodyElem6.setAttribute("ItemGroupRepeatKey", itemGroupRepeatKey);
-        soapBodyElem6.setAttribute("TransactionType", "Insert");
+        //soapBodyElem6.setAttribute("TransactionType", "Insert");
+        if (hoja.getRepeatKey() == null) {
+        	soapBodyElem6.setAttribute("TransactionType", "Insert");
+        } else {
+        	soapBodyElem6.setAttribute("TransactionType", "Update");
+        }
         
         //<ItemData ItemOID="I_HOJAD_NUM" Value="4"/>
 		Name name7 = soapFactory.createName("ItemData");
@@ -1252,8 +1262,11 @@ public class ServiciosOpenClinica {
 							}
 						}else if (nombre.trim().equals("HORAULTDOSISANTIPIRETICO")){
 							String ampm = hoja.getAmPmUltDosisAntipiretico();
+							String ampmResult1 = ampm.replaceAll(" ", "");
+							String ampmResult = ampmResult1.replaceAll("\\.", "");
 							String soloHora = UtilDate.DateToString(hoja.getHoraUltDosisAntipiretico(),"hh:mm:ss");
-							String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampm.toUpperCase() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
+							//String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampm.toUpperCase() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
+							String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampmResult.toUpperCase().trim() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora.trim(), 1);
 						}else if (nombre.trim().equals("FECHACONSULTA")){
 							//sacar FSUPERVISOR,FENFERMERIA

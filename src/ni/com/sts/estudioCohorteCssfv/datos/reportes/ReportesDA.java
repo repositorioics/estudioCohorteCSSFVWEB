@@ -321,7 +321,7 @@ public class ReportesDA implements ReportesService {
 					}
 					
 					//se filtra por estado
-					if (estado.equals("N") && diffDays > 14) { // estado pendiente
+					if (estado.equals("N") && diffDays >= 30) { // estado pendiente
 						if (object[5].toString().charAt(0) == 'N'){
 							result.add(data);
 						}

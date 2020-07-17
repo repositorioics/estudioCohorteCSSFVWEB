@@ -78,33 +78,46 @@ public class CargaManualController extends SelectorComposer<Component> {
         		ServiciosOpenClinica cliente = new ServiciosOpenClinica();
         		for(HojaConsulta hoja:hojasPendientesCarga){
 					InfoResultado resultado = new InfoResultado();
-					//se consumen webservices
-					Paciente paciente = pacienteService.getPacienteById(hoja.getCodExpediente());
-					eventParams = new EventScheduleParams();
-					eventParams.setLabel(String.valueOf(paciente.getCodExpediente())); //<label>9803</label>
-					eventParams.setEventDefinitionOID(config.getString("event.schedule.eventDefinitionOID"));//<eventDefinitionOID>SE_CONSULTACS</eventDefinitionOID>
-					eventParams.setLocation(config.getString("event.schedule.location")); //<location>CS</location>
-					eventParams.setIdentifier(config.getString("event.schedule.identifier")); //<identifier>S_1</identifier>
-					eventParams.setSiteidentifier(config.getString("event.schedule.site.identifier")); //<identifier></identifier>
-					eventParams.setStartDate(hoja.getFechaConsulta()); //<startDate>2008-12-12</startDate> //<startTime>12:00</startTime>
-					if (hoja.getFechaCierre()!=null){
-						eventParams.setEndDate(hoja.getFechaCierre()); //<endDate>2008-12-12</endDate> //<endTime>15:00</endTime>
-					}else {
-						eventParams.setEndDate(null);
-					}
-						resultado = cliente.consumirEventCliente(eventParams);
-						if (resultado.isOk()){
-							resultado = cliente.consumirDataClienteV2(hoja, sec, resultado.getMensaje());
+					
+					if (hoja.getRepeatKey() == null) { //07/02/2020 
+						//se consumen webservices
+						Paciente paciente = pacienteService.getPacienteById(hoja.getCodExpediente());
+						eventParams = new EventScheduleParams();
+						eventParams.setLabel(String.valueOf(paciente.getCodExpediente())); //<label>9803</label>
+						eventParams.setEventDefinitionOID(config.getString("event.schedule.eventDefinitionOID"));//<eventDefinitionOID>SE_CONSULTACS</eventDefinitionOID>
+						eventParams.setLocation(config.getString("event.schedule.location")); //<location>CS</location>
+						eventParams.setIdentifier(config.getString("event.schedule.identifier")); //<identifier>S_1</identifier>
+						eventParams.setSiteidentifier(config.getString("event.schedule.site.identifier")); //<identifier></identifier>
+						eventParams.setStartDate(hoja.getFechaConsulta()); //<startDate>2008-12-12</startDate> //<startTime>12:00</startTime>
+						if (hoja.getFechaCierre()!=null){
+							eventParams.setEndDate(hoja.getFechaCierre()); //<endDate>2008-12-12</endDate> //<endTime>15:00</endTime>
+						}else {
+							eventParams.setEndDate(null);
+						}
+							resultado = cliente.consumirEventCliente(eventParams);
 							if (resultado.isOk()){
-								//se registra estado carga cerrado
-								hoja.setEstadoCarga('1');
+								hoja.setRepeatKey(resultado.getMensaje());
 								hojaConsultaService.updateHojaConsulta(hoja);
-								registrosProcesados++;
-							}
-						//logger.debug("Hoja de consulta procesada: "+resultado.getObjeto().toString());
+								resultado = cliente.consumirDataClienteV2(hoja, sec, resultado.getMensaje());
+								if (resultado.isOk()){
+									//se registra estado carga cerrado
+									hoja.setEstadoCarga('1');
+									hojaConsultaService.updateHojaConsulta(hoja);
+									registrosProcesados++;
+								}
+							//logger.debug("Hoja de consulta procesada: "+resultado.getObjeto().toString());
+						}
+						//se registra estado carga cerrado
+						 //hojaConsultaService.updateHojaConsulta(hoja);
+					} else {
+						resultado = cliente.consumirDataClienteV2(hoja, sec, resultado.getMensaje());
+						if (resultado.isOk()){
+							//se registra estado carga cerrado
+							hoja.setEstadoCarga('1');
+							hojaConsultaService.updateHojaConsulta(hoja);
+							registrosProcesados++;
+						}
 					}
-					//se registra estado carga cerrado
-					 hojaConsultaService.updateHojaConsulta(hoja);
 				}
         	//Mensajes.enviarMensaje(Mensajes.PROCESO_OPEN_CLINICA_TERMINADO.replace("{0}", String.valueOf(registrosProcesados)), Mensajes.TipoMensaje.INFO);
         	}/*else{
