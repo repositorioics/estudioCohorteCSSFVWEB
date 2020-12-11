@@ -44,4 +44,6 @@ public interface HojaConsultaService {
 	public List<SeguimientoZika> getSeguimientoZika(int secHojaZika) throws Exception;
 	
 	public void updateHojaZika(HojaZika hoja) throws Exception;
+	
+	public void updateHojaConsultaRepeatKey(HojaConsulta hoja) throws Exception;
 }

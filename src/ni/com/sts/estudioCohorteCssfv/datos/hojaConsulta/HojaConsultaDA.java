@@ -1,5 +1,7 @@
 package ni.com.sts.estudioCohorteCssfv.datos.hojaConsulta;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +16,16 @@ import ni.com.sts.estudioCohorteCSSFV.modelo.HojaZika;
 import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoInfluenza;
 import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoZika;
 import ni.com.sts.estudioCohorteCssfv.servicios.HojaConsultaService;
+import ni.com.sts.estudioCohorteCssfv.util.ConnectionDAO;
 import ni.com.sts.estudioCohorteCssfv.util.HibernateResource;
 
 public class HojaConsultaDA implements HojaConsultaService {
 
 	private static final HibernateResource hibernateResource = new HibernateResource();
+	
+	private ConnectionDAO connectionDAOClass = new ConnectionDAO();
+	private Connection conn = null;
+	PreparedStatement pst = null;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -195,17 +202,54 @@ public class HojaConsultaDA implements HojaConsultaService {
 	
 	public void updateHojaConsulta(HojaConsulta hoja) throws Exception{
 		try {
-			hibernateResource.begin();
+			conn = connectionDAOClass.getConection();
+			pst = conn.prepareStatement("UPDATE hoja_consulta SET estado_carga = '1' where sec_hoja_consulta = ?");
+            pst.setInt(1, hoja.getSecHojaConsulta());
+            pst.executeUpdate();
+			/*hibernateResource.begin();
             hibernateResource.getSession().update(hoja);
             hibernateResource.getSession().flush();
-            hibernateResource.commit();
+            hibernateResource.commit();*/
         } catch (Exception e) {
             e.printStackTrace();
-            hibernateResource.rollback();
+            /*hibernateResource.rollback();*/
         } finally {
-            if (hibernateResource.getSession().isOpen()) {
+            /*if (hibernateResource.getSession().isOpen()) {
                 hibernateResource.close();
-            }
+            }*/
+        	 if (pst != null) {
+                 pst.close();
+             }
+             if (conn != null) {
+                 conn.close();
+             }
+        }
+	}
+	
+	public void updateHojaConsultaRepeatKey(HojaConsulta hoja) throws Exception {
+		try {
+			conn = connectionDAOClass.getConection();
+            pst = conn.prepareStatement("UPDATE hoja_consulta SET repeat_key = ? where sec_hoja_consulta = ?");
+			pst.setString(1, hoja.getRepeatKey());
+			pst.setInt(2, hoja.getSecHojaConsulta());
+	        pst.executeUpdate();
+			/*hibernateResource.begin();
+            hibernateResource.getSession().update(hoja);
+            hibernateResource.getSession().flush();
+            hibernateResource.commit();*/
+        } catch (Exception e) {
+            e.printStackTrace();
+            /*hibernateResource.rollback();*/
+        } finally {
+            /*if (hibernateResource.getSession().isOpen()) {
+                hibernateResource.close();
+            }*/
+        	 if (pst != null) {
+                 pst.close();
+             }
+             if (conn != null) {
+                 conn.close();
+             }
         }
 	}
 

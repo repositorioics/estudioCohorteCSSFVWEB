@@ -79,6 +79,9 @@ public class CargaManualController extends SelectorComposer<Component> {
         		for(HojaConsulta hoja:hojasPendientesCarga){
 					InfoResultado resultado = new InfoResultado();
 					
+					/*Obteniendo la hoja de consulta por numero de hoja para actualizar*/
+					HojaConsulta hojaConsultaByNum = hojaConsultaService.getHojaConsultaByNumHoja(hoja.getNumHojaConsulta());
+					
 					if (hoja.getRepeatKey() == null) { //07/02/2020 
 						//se consumen webservices
 						Paciente paciente = pacienteService.getPacienteById(hoja.getCodExpediente());
@@ -97,7 +100,7 @@ public class CargaManualController extends SelectorComposer<Component> {
 							resultado = cliente.consumirEventCliente(eventParams);
 							if (resultado.isOk()){
 								hoja.setRepeatKey(resultado.getMensaje());
-								hojaConsultaService.updateHojaConsulta(hoja);
+								hojaConsultaService.updateHojaConsultaRepeatKey(hoja);
 								resultado = cliente.consumirDataClienteV2(hoja, sec, resultado.getMensaje());
 								if (resultado.isOk()){
 									//se registra estado carga cerrado
