@@ -36,7 +36,7 @@ public class HojaConsultaDA implements HojaConsultaService {
 			String sql = "select hc from HojaConsulta hc "+
 							"where hc.estado = :estado "+
 							"and (hc.estadoCarga = :estadoCarga or hc.estadoCarga is null) " +
-							"and to_char(fechaCierre, 'yyyyMMdd') < to_char(current_date, 'yyyyMMdd')";
+							"and to_char(fechaCierre, 'yyyyMMdd') <= to_char(current_date, 'yyyyMMdd')";
 			
 			Query q = hibernateResource.getSession().createQuery(sql);
 			q.setCharacter("estado", '7');
