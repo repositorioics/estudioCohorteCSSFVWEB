@@ -1,0 +1,74 @@
+<?init class="ni.com.sts.estudioCohorteCssfv.controller.seguridad.InitController" ?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+<window id="ordenesExamenes"
+	apply="ni.com.sts.estudioCohorteCssfv.controller.hojaConsulta.ExpedienteController">
+	<div width="100%"
+		style="padding-left:4px;padding-right:4px;padding-top:25px;">
+		<vlayout>
+			<!-- Breadcrumb -->
+			<hbox style="margin-bottom:10px">
+				<image src="/recursos/imagenes/marker_squared_red.png" />
+				<label
+					style="color: #008FBB;font-size:14px;font-style:italic;">
+					CONTROL DE EXPEDIENTES - HOJA CONSULTA
+				</label>
+			</hbox>
+		</vlayout>
+		<vbox style="padding:10px;">
+			<hbox pack="center">
+				<div style="width: 60px;">
+					<label>Código:</label>
+				</div>
+				<div style="width: 140px!important;">
+					<intbox id="txtCodExpediente"
+						style="font-weight: bold;" tabindex="1" width="90%"
+						readonly="false" maxlength="10" />
+				</div>
+				<div style="width:120px;" align="center">
+					<button id="btnBuscar" tabindex="5" width="120px"
+						label="Buscar" autodisable="self" sclass="myBlack" mold="trendy"
+						height="29px" />
+				</div>
+			</hbox>
+		</vbox>
+		<groupbox width="100%">
+			<space height="40px" />
+			<listbox id="listaHojaConsulta" mold="paging" pageSize="10"
+				emptyMessage="No hay resultados que mostrar">
+				<listhead sizable="true">
+					<listheader label="Num. Hoja Consulta" width="20%" />
+					<listheader label="Fecha" width="20%" />
+					<listheader label="Hora" width="10%" />
+					<listheader label="Médico" width="20%" />
+					<listheader label="Estado" width="10%" />
+					<listheader label="Imprimir PDF" width="10%" />
+					<listheader label="Ver PDF" width="10%" />
+				</listhead>
+				<template name="model">
+					<listitem>
+						<zk>
+							<listcell label="${each.numeroHoja}" />
+							<listcell label="${each.fechaCierre}" />
+							<listcell label="${each.horaCierre}" />
+							<listcell label="${each.medico}" />
+							<listcell label="${each.estado}" />
+						</zk>
+						<listcell>
+							<toolbarbutton
+								image="/recursos/imagenes/pdf.png"
+								tooltiptext="Imprimir PDF"
+								forward="onClick=listaHojaConsulta.onImprimirPdf" />
+						</listcell>
+						<listcell>
+							<toolbarbutton
+								image="/recursos/imagenes/pdf.png"
+								tooltiptext="Ver PDF"
+								forward="onClick=listaHojaConsulta.onVerPdf" />
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+		</groupbox>
+	</div>
+</window>

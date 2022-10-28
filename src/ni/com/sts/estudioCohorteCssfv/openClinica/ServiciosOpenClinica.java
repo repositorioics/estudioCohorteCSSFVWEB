@@ -566,6 +566,13 @@ public class ServiciosOpenClinica {
 								if (usuario!=null && usuario.getCodigoPersonal()!=null){
 									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], usuario.getCodigoPersonal(), 2);
 								}
+								if (hojaInfluenza.getSupervisor() != null) {
+									String supervisor = usuarioService.obtenerCodigoPersonalById(Integer.valueOf(hojaInfluenza.getSupervisor()));
+									addSoapItem(name7, soapBodyElem8, "SUPERVISOR", supervisor, 2);
+								} else {
+									addSoapItem(name7, soapBodyElem8, "SUPERVISOR", "", 2);
+								} 
+								
 							}
 							//FECHASEGUIMIENTO
 							else if(nombre.trim().equals("FECHASEGUIMIENTO")) {
@@ -1002,13 +1009,30 @@ public class ServiciosOpenClinica {
 								if (usuario!=null && usuario.getCodigoPersonal()!=null){
 									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], usuario.getCodigoPersonal(), 2);
 								}
+								if (hojaZika.getSupervisor() != null) {
+									String supervisor = usuarioService.obtenerCodigoPersonalById(Integer.valueOf(hojaZika.getSupervisor()));
+									addSoapItem(name7, soapBodyElem8, "SUPERVISOR_7422", supervisor, 2);
+								} else {
+									addSoapItem(name7, soapBodyElem8, "SUPERVISOR_7422", "", 2);
+								}
 							}
 							//FECHASEGUIMIENTO
 							else if(nombre.trim().equals("FECHASEGUIMIENTO")) {
 								Date fechaSeguimiento = segZika.getFechaSeguimiento();
 								String fecha = UtilDate.DateToString(fechaSeguimiento, "yyyy-MM-dd");
 								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], fecha.trim(), 2); //Prod FECHA_2128
-							} else {
+							} 
+							//SUPERVISOR
+							/*else if (nombre.trim().equals("SUPERVISOR")) {
+								if (hojaZika.getSupervisor() != null) {
+									String supervisor = usuarioService.obtenerCodigoPersonalById(Integer.valueOf(hojaZika.getSupervisor()));
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], supervisor, 2);
+								} else {
+									addSoapItem(name7, soapBodyElem8, datosCrfArray[0], "", 2);
+								}
+								
+							}*/
+							else {
 								addSoapItem(name7, soapBodyElem8, datosCrfArray[0], value.trim(), 2);
 							}
 						}
@@ -1260,14 +1284,31 @@ public class ServiciosOpenClinica {
 							if (usuario!=null && usuario.getCodigoPersonal()!=null){
 								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], usuario.getCodigoPersonal(), 1);
 							}
+						}else if(nombre.trim().equals("SUPERVISOR")) {
+							if (hoja.getSupervisor() != null) {
+								UsuariosView usuario = usuarioService.obtenerUsuarioById(Integer.valueOf(hoja.getSupervisor()));
+								if (usuario!=null && usuario.getCodigoPersonal()!=null){
+									addSoapItem(name7, soapBodyElem6, datosCrfArray[0], usuario.getCodigoPersonal(), 1);
+								}
+							}
 						}else if (nombre.trim().equals("HORAULTDOSISANTIPIRETICO")){
 							String ampm = hoja.getAmPmUltDosisAntipiretico();
-							String ampmResult1 = ampm.replaceAll(" ", "");
-							String ampmResult = ampmResult1.replaceAll("\\.", "");
-							String soloHora = UtilDate.DateToString(hoja.getHoraUltDosisAntipiretico(),"hh:mm:ss");
-							//String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampm.toUpperCase() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
-							String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampmResult.toUpperCase().trim() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
-							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora.trim(), 1);
+							if (ampm != null && !ampm.trim().equals("")) {
+								String ampmResult1 = ampm.replaceAll(" ", "");
+								String ampmResult = ampmResult1.replaceAll("\\.", "");
+								//String ampmResult2 = ampmResult.replaceAll(" ","");
+								if (ampmResult.trim().equals("p m")) {
+									ampmResult = "pm";
+								}
+								if (ampmResult.trim().equals("a m")) {
+									ampmResult = "am";
+								}
+								String soloHora = UtilDate.DateToString(hoja.getHoraUltDosisAntipiretico(),"hh:mm:ss");
+								//String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampm.toUpperCase() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
+								String hora = UtilDate.DateToString(UtilDate.StringToDate(UtilDate.DateToString(new Date(), "dd/MM/yyyy") + " " + soloHora + " " + ampmResult.toUpperCase().trim() , "dd/MM/yyyy h:mm:ss a",Locale.US),"HH:mm");
+								addSoapItem(name7, soapBodyElem6, datosCrfArray[0], hora.trim(), 1);
+							}
+							
 						}else if (nombre.trim().equals("FECHACONSULTA")){
 							//sacar FSUPERVISOR,FENFERMERIA
 							Date fecConsulta =hoja.getFechaConsulta();
@@ -1291,6 +1332,7 @@ public class ServiciosOpenClinica {
 							logger.error("valor HMEDICO: " + hMedico);
 							addSoapItem(name7, soapBodyElem6, datosCrfArray[0], fMedico, 1);
 							addSoapItem(name7, soapBodyElem6, "HMEDICO", hMedico, 1);
+							addSoapItem(name7, soapBodyElem6, "FSUPERVISOR", fMedico, 1);
 						//****************************************************************************
 						} else if (nombre.trim().equals("EXPEDIENTEFISICO")) {
 							logger.error("EXPEDIENTEFISICO");

@@ -2,12 +2,16 @@ package ni.com.sts.estudioCohorteCssfv.servicios;
 
 import java.util.List;
 
+import ni.com.sts.estudioCohorteCSSFV.modelo.Diagnostico;
+import ni.com.sts.estudioCohorteCSSFV.modelo.EscuelaCatalogo;
 import ni.com.sts.estudioCohorteCSSFV.modelo.EstadosHoja;
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaConsulta;
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaInfluenza;
 import ni.com.sts.estudioCohorteCSSFV.modelo.HojaZika;
 import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoInfluenza;
 import ni.com.sts.estudioCohorteCSSFV.modelo.SeguimientoZika;
+import ni.com.sts.estudioCohorteCssfv.dto.ExpedienteDTO;
+import ni.com.sts.estudioCohorteCssfv.util.InfoResultado;
 
 public interface HojaConsultaService {
 
@@ -46,4 +50,13 @@ public interface HojaConsultaService {
 	public void updateHojaZika(HojaZika hoja) throws Exception;
 	
 	public void updateHojaConsultaRepeatKey(HojaConsulta hoja) throws Exception;
+	
+	//Hoja consulta web
+	public List<Diagnostico> getDiagnosticos() throws Exception;
+	
+	public List<EscuelaCatalogo> getColegios() throws Exception;
+
+	public InfoResultado guardarHojaConsulta(HojaConsulta hojaConsulta);
+	
+	public List<ExpedienteDTO> listaExpedienteHojaConsulta(int codigoExpediente);
 }

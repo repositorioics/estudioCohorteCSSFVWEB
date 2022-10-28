@@ -15,4 +15,10 @@ public interface UsuariosService {
 	List<UsuariosView> obtenerUsuarios();
 
 	List<UsuariosView> obtenerUsuariosByPerfiles(String perfiles);
+
+	public List<UsuariosView> obtenerUsuariosMedicos();
+
+	public List<UsuariosView> obtenerSupervisores();
+
+	String obtenerCodigoPersonalById(Integer id);
 }

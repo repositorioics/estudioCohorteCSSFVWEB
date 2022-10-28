@@ -1,0 +1,4369 @@
+<?style href="/recursos/css/estilo_texto.css" type="text/css" ?>
+<?link rel="stylesheet" type="text/css" href="/recursos/css/buttons.css"?>
+<window id="windowHojaConsulta"
+	apply="ni.com.sts.estudioCohorteCssfv.controller.hojaConsulta.HojaConsultaController"
+	height="100%"  contentStyle="overflow:auto">
+	<zk>
+		<style>
+			z-combobox-disd * { cursor: default !important; color:
+			#000000 !important; background: none repeat scroll 0% 0%
+			#FAFAFA; }
+			body { overflow: hidden;}
+		</style>
+	</zk>
+	<div style="padding-left:4px;padding-right:4px;padding-top:25px;">
+		<vlayout hflex="1">
+			<!-- Breadcrumb -->
+			<hbox style="margin-bottom:10px">
+				<image src="/recursos/imagenes/marker_squared_red.png" />
+				<label
+					style="color: #008FBB;font-size:14px;font-style:italic;">
+					Hoja de Consulta
+				</label>
+			</hbox>
+			<auxhead>
+				<auxheader>
+					<groupbox width="99%" closable="false">
+						<vbox style="padding:10px;">
+							<hbox pack="center">
+								<div style="width: 50px;">
+									<label>Código</label>
+								</div>
+								<div style="width: 140px!important;">
+									<intbox id="txtCodExpediente"
+										style="font-weight: bold;" tabindex="1" width="90%"
+										readonly="false" maxlength="10" />
+								</div>
+								<div style="width: 70px;">
+									<button id="btnBuscar" tabindex="5"
+										width="50px" autodisable="self" sclass="myGreen" mold="trendy"
+										height="29px" image="/recursos/imagenes/buscar.png" />
+								</div>
+							</hbox>
+							<space height="1px" />
+							<hbox pack="center">
+								<div style="width: 120px;">
+									<label>Nombre y Apellidos</label>
+								</div>
+								<div style="width: 300px!important;">
+									<textbox id="txtNombrePaciente"
+										cols="4" style="font-weight: bold;" tabindex="1" width="100%"
+										readonly="true" maxlength="128" />
+								</div>
+								<div
+									style="width: 160px; margin-left: 20px!important;">
+									<label>
+										Estudios del Participante
+									</label>
+								</div>
+								<div style="width: 300px!important;">
+									<textbox id="txtEstudiosPaciente"
+										cols="4" style="font-weight: bold;" tabindex="1" width="100%"
+										readonly="true" maxlength="128" />
+								</div>
+							</hbox>
+							<space height="5px" />
+							<hbox pack="center">
+								<div style="width: 70px;">
+									<label>Expediente</label>
+								</div>
+								<div style="width: 80px!important;">
+									<textbox id="txtExpediente" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										readonly="true" maxlength="128" />
+								</div>
+								<div
+									style="width: 60px; margin-left: 20px!important;">
+									<label>Edad</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtEdad" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										readonly="true" maxlength="128" />
+								</div>
+								<div
+									style="width: 60px; margin-left: 20px!important;">
+									<label>Sexo</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtSexo" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										readonly="true" maxlength="128" />
+								</div>
+								<div
+									style="width: 90px; margin-left: 20px!important;">
+									<label>Fecha Consulta</label>
+								</div>
+								<div style="width: 180px!important;">
+									<datebox id="txtFechaConsulta"
+										cols="16" style="font-weight: bold;" tabindex="2" width="95%"
+										maxlength="10" format="dd/MM/yyyy" locale="es"
+										constraint="no future: no se permiten fechas posteriores a hoy" />
+								</div>
+								<div>
+									<label>Hora Consulta</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtHoraConsulta"
+										cols="4" style="font-weight: bold;" placeholder="00:00" tabindex="3"
+										width="100%" maxlength="5" />
+								</div>
+								<div style="width: 125px; margin-left: 5px;">
+									<label style="color: red">
+										(Formato 24 horas)
+									</label>
+								</div>
+
+							</hbox>
+							<space height="5px" />
+							<hbox pack="center">
+								<div style="width: 70px;">
+									<label>Peso(Kg):</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtPeso" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										maxlength="7"
+										placeholder="00.00" />
+								</div>
+								<div
+									style="width: 60px; margin-left: 20px!important;">
+									<label>Talla(Cm):</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtTalla" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										maxlength="7"
+										placeholder="00.00" />
+								</div>
+								<div
+									style="width: 60px; margin-left: 20px!important;">
+									<label>Temp(°C):</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtTemp" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										maxlength="7"
+										placeholder="00.00" />
+								</div>
+
+								<div style="margin-left: 20px">
+									<label>Hora Enfermeria</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtHora" cols="4"
+										style="font-weight: bold;" placeholder="00:00" tabindex="3"
+										width="100%" maxlength="5" />
+								</div>
+								<div>
+									<combobox id="cmbHora" tabindex="4"
+										width="100%" cols="5">
+										<comboitem value="am" label="AM"
+											focus="true" />
+										<comboitem value="pm"
+											label="PM" />
+									</combobox>
+								</div>
+								<div style="margin-left: 20px">
+									<label>Hora Médico</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox id="txtHoraMedico" cols="4"
+										style="font-weight: bold;" placeholder="00:00" tabindex="3"
+										width="100%" maxlength="5" />
+								</div>
+								<div>
+									<combobox id="cmbHoraMedico" tabindex="4"
+										width="100%" cols="5">
+										<comboitem value="am" label="AM"
+											focus="true" />
+										<comboitem value="pm"
+											label="PM" />
+									</combobox>
+								</div>
+							</hbox>
+							<space height="1px" />
+							<hbox style="margin-bottom:10px">
+								<label
+									style="color: #008FBB;font-size:14px;font-style:italic;">
+									Generales
+								</label>
+							</hbox>
+							<hbox pack="center">
+								<div style="width: 70px;">
+									<label>Pas:</label>
+								</div>
+								<div style="width: 100px!important;">
+									<textbox id="txtPas" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										placeholder="00"
+										maxlength="3" />
+								</div>
+								<div
+									style="width: 70px; margin-left: 20px!important;">
+									<label>Pad:</label>
+								</div>
+								<div style="width: 100px!important;">
+									<textbox id="txtPad" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										placeholder="00"
+										maxlength="3" />
+								</div>
+								<div
+									style="width: 70px; margin-left: 20px!important;">
+									<label>Fcia Resp:</label>
+								</div>
+								<div style="width: 100px!important;">
+									<textbox id="txtFciaResp" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										placeholder="00"
+										maxlength="3" />
+								</div>
+								<div
+									style="width: 70px; margin-left: 20px!important;">
+									<label>Fcia Card:</label>
+								</div>
+								<div style="width: 100px!important;">
+									<textbox id="txtFciaCard" cols="4"
+										style="font-weight: bold;" tabindex="1" width="100%"
+										placeholder="00"
+										maxlength="3" />
+								</div>
+							</hbox>
+							<space height="10px" />
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<label
+											value="Lugar de Atención" />
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>CSSFV</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCssfv">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>Terreno</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTerreno">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<label value="Consulta" />
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>Inicial</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCInicial">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>
+													Seguimiento
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCSeguimiento">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>
+													Convaleciente
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCConvaleciente">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<label value="Seguimiento CHIK" />
+										<space height="1px" />
+										<hbox pack="center">
+											<div style="width: 5px;">
+												<label>1</label>
+											</div>
+											<div style="width: 30px;">
+												<checkbox
+													id="chkSChik1">
+												</checkbox>
+											</div>
+											<div style="width: 5px;">
+												<label>2</label>
+											</div>
+											<div style="width: 30px;">
+												<checkbox
+													id="chkSChik2">
+												</checkbox>
+											</div>
+											<div style="width: 5px;">
+												<label>3</label>
+											</div>
+											<div style="width: 30px;">
+												<checkbox
+													id="chkSChik3">
+												</checkbox>
+											</div>
+											<div style="width: 5px;">
+												<label>4</label>
+											</div>
+											<div style="width: 30px;">
+												<checkbox
+													id="chkSChik4">
+												</checkbox>
+											</div>
+											<div style="width: 5px;">
+												<label>5</label>
+											</div>
+											<div style="width: 30px;">
+												<checkbox
+													id="chkSChik5">
+												</checkbox>
+											</div>
+										</hbox>
+									</vlayout>
+									<vlayout>
+										<label value="Turno" />
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>Regular</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRegular">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>Noche</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNoche">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>
+													Fin Semana
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFinSemana">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+							<space height="10px" />
+							<hbox pack="center">
+								<div>
+									<label>FIS</label>
+								</div>
+								<div>
+									<datebox id="txtFis" cols="16"
+										style="font-weight: bold;" tabindex="2" width="95%"
+										maxlength="10" format="dd/MM/yyyy" locale="es"
+										constraint="no future: no se permiten fechas posteriores a hoy" />
+								</div>
+								<div
+									style="margin-left: 20px!important;">
+									<label>FIF</label>
+								</div>
+								<div>
+									<datebox id="txtFif" cols="16"
+										style="font-weight: bold;" tabindex="2" width="95%"
+										maxlength="10" format="dd/MM/yyyy" locale="es"
+										constraint="no future: no se permiten fechas posteriores a hoy" />
+								</div>
+								<div
+									style="width: 80px; margin-left: 20px!important;">
+									<label>Ultimo día fiebre</label>
+								</div>
+								<div>
+									<datebox id="txtUltDiaFiebre"
+										cols="16" style="font-weight: bold;" tabindex="2" width="95%"
+										maxlength="10" format="dd/MM/yyyy" locale="es"
+										constraint="no future: no se permiten fechas posteriores a hoy" />
+								</div>
+								<div>
+									<combobox id="cmbUltDiaFiebre"
+										tabindex="4" width="100%" cols="5">
+										<comboitem value="am" label="AM"
+											focus="true" />
+										<comboitem value="pm"
+											label="PM" />
+									</combobox>
+								</div>
+								<div
+									style="width: 80px; margin-left: 20px!important;">
+									<label>
+										Ultima Dosis Antipiretico
+									</label>
+								</div>
+								<div>
+									<datebox
+										id="txtUltDosisAntipiretico" cols="16"
+										style="font-weight: bold;" tabindex="2" width="95%"
+										maxlength="10" format="dd/MM/yyyy" locale="es"
+										constraint="no future: no se permiten fechas posteriores a hoy" />
+								</div>
+								<div>
+									<label>Hora</label>
+								</div>
+								<div style="width: 60px!important;">
+									<textbox
+										id="txtHoraUltDosisAntipiretico" cols="4"
+										style="font-weight: bold;" placeholder="00:00" tabindex="3"
+										width="100%" maxlength="5" />
+								</div>
+								<div>
+									<combobox id="cmbUltDosisAntipiretico"
+										tabindex="4" width="100%" cols="5">
+										<comboitem value="AM" label="AM"
+											focus="true" />
+										<comboitem value="PM"
+											label="PM" />
+									</combobox>
+								</div>
+							</hbox>
+							<space height="5px" />
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Estado General" />
+											<space height="1px" />
+											<div
+												style="margin-left:55px;" align="center">
+												<button
+													id="btnEstadoGeneralS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnEstadoGeneralN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnEstadoGeneralD" tabindex="5" width="30px" label="D"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Fiebre</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFiebreS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFiebreN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFiebreD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Astenia</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAsteniaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAsteniaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAsteniaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Anormalmente
+													Somnoliento
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAnormalMenteSomnolientoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAnormalMenteSomnolientoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Mal estado general
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMalEstadoGeneralS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMalEstadoGeneralN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Perdida de
+													conciencia
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPerdidaConcienciaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPerdidaConcienciaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Inquieto irritable
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInquietoIrritableS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInquietoIrritableN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Convulsiones
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkConvulsionesS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkConvulsionesN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Hipotermia
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHipotermiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHipotermiaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Letargia</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLetargiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLetargiaN">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Gastrointestinal" />
+											<space height="1px" />
+											<div
+												style="margin-left:55px;" align="center">
+												<button
+													id="btnGastrointestinalS" tabindex="5" width="20px"
+													label="S" autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnGastrointestinalN" tabindex="5" width="20px"
+													label="N" autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnGastrointestinalD" tabindex="5" width="30px"
+													label="D" autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Poco apetito
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPocoApetitoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPocoApetitoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPocoApetitoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Náusea</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNauseaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNauseaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNauseaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Dificultad para
+													Alimentarse
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDificultadAlimentaseS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDificultadAlimentaseN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDificultadAlimentaseD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 108px;">
+												<label>
+													Vómito # ultima 12
+													horas
+												</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtVomito12Horas" cols="4" style="font-weight: bold;"
+													tabindex="1" width="" placeholder="0" disabled="true"
+													maxlength="10" />
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVomito12HorasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVomito12HorasN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVomito12HorasD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Diarrea</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDiarreaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDiarreaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDiarreaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Diarrea con sangre
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDiarreaSangreS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDiarreaSangreN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDiarreaSangreD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Estreñimiento
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEstrenimientoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEstrenimientoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEstrenimientoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Dolor Abdominal
+													intermitente
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorAbInterS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorAbInterN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorAbInterD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Dolor Abdominal
+													continuo
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorAbContinuoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorAbContinuoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorAbContinuoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Epigastralgia
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEpigastralgiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEpigastralgiaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEpigastralgiaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Intolerancia a la
+													via Oral
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIntoleranciaViaOralS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIntoleranciaViaOralN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIntoleranciaViaOralD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Distensión abdominal
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDistensionAbdominalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDistensionAbdominalN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDistensionAbdominalD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div style="width: 80px;">
+												<label>
+													Hepatomegalia
+												</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtHepatomegalia" cols="4" style="font-weight: bold;"
+													tabindex="1" width="" placeholder="0.00" disabled="true"
+													maxlength="10" />
+											</div>
+											<div style="width: 24px;">
+												<label>cm</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHepatomegaliaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHepatomegaliaN">
+												</checkbox>
+											</div>
+
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Osteomuscular" />
+											<space height="1px" />
+											<div
+												style="margin-left:55px;" align="center">
+												<button
+													id="btnOsteomuscularS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnOsteomuscularN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnOsteomuscularD" tabindex="5" width="30px" label="D"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Artralgia</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Mialgia</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMialgiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMialgiaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMialgiaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Lumbalgia</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLumbalgiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLumbalgiaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLumbalgiaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Dolor de cuello
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorCuelloS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorCuelloN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorCuelloD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Tenosinovitis
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTenosinovitisS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTenosinovitisN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTenosinovitisD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Artralgia proximal
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaProximalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaProximalN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaProximalD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Artralgia distal
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaDistalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaDistalN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkArtralgiaDistalD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Conjuntivitis
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkConjuntivitisS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkConjuntivitisN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkConjuntivitisD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Edema Articular en
+													Muñecas
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaMunecasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaMunecasN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaMunecasD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Edema Articular en
+													Codos
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaCodosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaCodosN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaCodosD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Edema Articular en
+													Hombros
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaHombrosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaHombrosN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaHombrosD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Edema Articular en
+													Rodillas
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaRodillasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaRodillasN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaRodillasD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Edema Articular en
+													Tobillos
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaTobillosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaTobillosN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEdemaTobillosD">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+
+								</hlayout>
+							</hbox>
+							<space height="5px" />
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Cabeza" />
+											<space height="1px" />
+											<div
+												style="margin-left:103px;" align="center">
+												<button id="btnCabezaS"
+													tabindex="5" width="20px" label="S" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button id="btnCabezaN"
+													tabindex="5" width="20px" label="N" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button id="btnCabezaD"
+													tabindex="5" width="30px" label="D" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Cefalea</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCefaleaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCefaleaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCefaleaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Rigidez de cuello
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRigidezCuelloS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRigidezCuelloN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Inyección
+													Conjuntival
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInyecciónConjuntivalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInyecciónConjuntivalN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Hemorragia
+													Subconjuntival
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHemorragiaSubconjuntivalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHemorragiaSubconjuntivalN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Dolor Retroocular
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorRetroocularS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorRetroocularN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorRetroocularD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Fontanela Abombada
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFontanelaAbombadaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFontanelaAbombadaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Ictericia
+													Conjuntival
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIctericiaConjuntivalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIctericiaConjuntivalN">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Deshidratación" />
+											<space height="1px" />
+											<div
+												style="margin-left:55px;" align="center">
+												<button
+													id="btnDeshidratacionS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnDeshidratacionN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnDeshidratacionD" tabindex="5" width="30px" label="D"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Lengua y Mucosa
+													Secas
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLenguaMucosaSecasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLenguaMucosaSecasN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Pliegue cútaneo
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPliegueCutaneoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPliegueCutaneoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Orina reducida
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOrinaReducidaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOrinaReducidaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOrinaReducidaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Bebe ávido, con Seds
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBebeAvidoSedS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBebeAvidoSedN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Ojos Hundidos
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOjosHundidosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOjosHundidosN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Fontanela Hundida
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFontanelaHundidaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFontanelaHundidaN">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Cutáneo" />
+											<space height="1px" />
+											<div
+												style="margin-left:98px;" align="center">
+												<button id="btnCutaneoS"
+													tabindex="5" width="20px" label="S" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button id="btnCutaneoN"
+													tabindex="5" width="20px" label="N" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Rash Localizado
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashLocalizadoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashLocalizadoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Rash generalizado
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashGeneralizadoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashGeneralizadoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Rash eritematoso
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashEritematosoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashEritematosoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Rash macular
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashMacularS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashMacularN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Rash papular
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashPapularS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRashPapularN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Piel moteada
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPielMoteadaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPielMoteadaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Rubor Facial
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRuborFacialS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRuborFacialN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Equimosis</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEquimosisS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEquimosisN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Cianosis Central
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCianosisCentralS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCianosisCentralN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Ictericia</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIctericiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIctericiaN">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Garganta" />
+											<space height="1px" />
+											<div
+												style="margin-left:93px;" align="center">
+												<button
+													id="btnGargantaS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnGargantaN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnGargantaD" tabindex="5" width="30px" label="D"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Eritema</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEritemaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEritemaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Dolor Garganta
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorGargantaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorGargantaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDolorGargantaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Adenopatías
+													Cervicales
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAdenopatiasCervicalesS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAdenopatiasCervicalesN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Exudado</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkExudadoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkExudadoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Petequias en mucosa
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequiasMucosaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequiasMucosaN">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Renal" />
+											<space height="1px" />
+											<div
+												style="margin-left:115px;" align="center">
+												<button id="btnRenalS"
+													tabindex="5" width="20px" label="S" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button id="btnRenalN"
+													tabindex="5" width="20px" label="N" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button id="btnRenalD"
+													tabindex="5" width="30px" label="D" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Síntomas urinarios
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSintomasUrinariosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSintomasUrinariosN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSintomasUrinariosD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Leucocituria >= 10 x
+													Campo
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLeucocituriaXCampoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLeucocituriaXCampoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLeucocituriaXCampoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Nitritos</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNitritosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNitritosN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNitritosD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Eritrocitos >= 6 x
+													Campo
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEritrocitosXCampoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEritrocitosXCampoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEritrocitosXCampoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Bilirrubinuria
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBilirrubinuriaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBilirrubinuriaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBilirrubinuriaD">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Estado Nutricional" />
+											<space height="1px" />
+											<div
+												style="margin-left:38px;" align="center">
+												<button
+													id="btnEstadoNutricionalS" tabindex="5" width="20px"
+													label="S" autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnEstadoNutricionalN" tabindex="5" width="20px"
+													label="N" autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnEstadoNutricionalD" tabindex="5" width="20px"
+													label="D" autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Obeso</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkObesoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkObesoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkObesoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Sobrepeso</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSobrepesoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSobrepesoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSobrepesoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Sospecha de Problema
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSospechaProblemaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSospechaProblemaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSospechaProblemaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Normal</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNormalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNormalN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNormalD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Bajo Peso</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBajoPesoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBajoPesoN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBajoPesoD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Bajo Peso Severo
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBajoPesoSeveroS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBajoPesoSeveroN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBajoPesoSeveroD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>IMC</label>
+											</div>
+											<div
+												style="width: 100px!important;">
+												<textbox id="txtImc"
+													cols="4" style="font-weight: bold;" tabindex="1"
+													placeholder="00.00"
+													width="100%" maxlength="8" />
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Respiratorio" />
+											<space height="1px" />
+											<div
+												style="margin-left:77px;" align="center">
+												<button
+													id="btnRespiratorioS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnRespiratorioN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnRespiratorioD" tabindex="5" width="30px" label="D"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Tos</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTosN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTosD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Rinorrea</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRinorreaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRinorreaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRinorreaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Congestión Nasal
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCongestionNasalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCongestionNasalN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCongestionNasalD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Otalgia</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtalgiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtalgiaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtalgiaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Aleteo Nasal
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAleteoNasalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAleteoNasalN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Apnea</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkApneaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkApneaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Respiración Rápida
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRespiracionRapidaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRespiracionRapidaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Quejido Espiratorio
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkQuejidoEspiratorioS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkQuejidoEspiratorioN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Estridor en Reposo
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEstridorReposoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEstridorReposoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Tiraje Subcostal
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTirajeSubcostalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTirajeSubcostalN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Sibilancias
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSibilanciasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSibilanciasN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Crépitos</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCrepitosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCrepitosN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Roncos</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRoncosS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkRoncosN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Otra FIF</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtraFIFS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtraFIFN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Nueva FIF</label>
+											</div>
+											<div
+												style="width: 130px!important;">
+												<datebox
+													id="txtNuevaFif" cols="16" style="font-weight: bold;"
+													tabindex="2" width="95%" maxlength="10" format="dd/MM/yyyy"
+													disabled="true"
+													locale="es"
+													constraint="no future: no se permiten fechas posteriores a hoy" />
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Referencia" />
+											<space height="1px" />
+											<div
+												style="margin-left:84px;" align="center">
+												<button
+													id="btnReferenciaS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnReferenciaN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Interconsulta
+													Pediatra
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInterconsultaPediatraS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInterconsultaPediatraN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Referencia a
+													Hospital
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaHospitalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaHospitalN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Referencia por
+													Dengue
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaDengueS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaDengueN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Referencia por IRAG
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaIRAGS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaIRAGN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Referencia por CHIK
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaCHIKS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkReferenciaCHIKN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>ETI</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkETIS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkETIN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>IRAG</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIRAGS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIRAGN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Neumonía</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNeumoniaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkNeumoniaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>CV</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCVS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCVN">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout
+										style="margin-left:54px;">
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Vacunas" />
+											<space height="1px" />
+											<div
+												style="margin-left:96px;" align="center">
+												<button id="btnVacunasS"
+													tabindex="5" width="20px" label="S" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button id="btnVacunasN"
+													tabindex="5" width="20px" label="N" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button id="btnVacunasD"
+													tabindex="5" width="20px" label="D" autodisable="self"
+													sclass="myBlack" mold="trendy" height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Lactancia Materna
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLactanciaMaternaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLactanciaMaternaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLactanciaMaternaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Vacunas Completas
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVacunasCompletasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVacunasCompletasN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVacunasCompletasD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Vacuna Influenza
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVacunaInfluenzaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVacunaInfluenzaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkVacunaInfluenzaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Fecha de vacuna
+												</label>
+											</div>
+											<div
+												style="width: 130px!important;">
+												<datebox
+													id="txtFechaVacuna" cols="16" style="font-weight: bold;"
+													tabindex="2" width="95%" maxlength="10" format="dd/MM/yyyy"
+													locale="es"
+													disabled="true"
+													constraint="no future: no se permiten fechas posteriores a hoy" />
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Categoría" />
+											<space height="1px" />
+											<div
+												style="margin-left:90px;" align="center">
+												<button
+													id="btnCategoriaS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnCategoriaN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnCategoriaD" tabindex="5" width="30px" label="D"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Manifestación
+													Hemorrágica
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkManifestacionHemorragicaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkManifestacionHemorragicaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Prueba torniquete
+													positiva
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPruebaTorniquetePositivaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPruebaTorniquetePositivaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Petequias >= 10 en
+													PT
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequias10S">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequias10N">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Petequias >= 20 en
+													PT
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequias20S">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequias20N">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Piel y extremidades
+													frías
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPielExtremidadesFriasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPielExtremidadesFriasN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Palidez en
+													extremidades
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPalidezExtremidadesS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPalidezExtremidadesN">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+									<vlayout
+										style="margin-left: 20px;">
+										<space height="30px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Saturación 02
+												</label>
+											</div>
+											<div
+												style="width: 100px!important;">
+												<textbox
+													id="txtSaturacion" cols="4" style="font-weight: bold;"
+													tabindex="1" width="100%" maxlength="3" placeholder="00" />
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Categoría</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbCategoria" tabindex="4" width="100%" style="font-weight: bold;" cols="5">
+													<comboitem value=""
+														label="" focus="true" />
+													<comboitem value="A"
+														label="A" />
+													<comboitem value="B"
+														label="B" />
+													<comboitem value="C"
+														label="C" />
+													<comboitem value="D"
+														label="D" />
+													<comboitem
+														value="NA" label="NA" />
+												</combobox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Epistaxis</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEpistaxisS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEpistaxisN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Gingivorragia
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkGingivorragiaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkGingivorragiaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Petequias
+													Espontáneas
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequiasEspontaneasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPetequiasEspontaneasN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Llenado capilar > 2
+													seg
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLlenadoCapilarS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLlenadoCapilarN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Cianosis</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCianosisS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCianosisN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div style="width: 92px;">
+												<label>
+													Lifoncito Atipicos
+												</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtLinfocitoAtipicos" cols="4"
+													style="font-weight: bold;" tabindex="1" width="40px"
+													placeholder="0.00" disabled="false" maxlength="10" />
+											</div>
+											<div
+												style="width: 50px; margin-left: 4px;">
+												<label>% Fecha</label>
+											</div>
+											<div
+												style="width: 160px!important;">
+												<datebox
+													id="txtFechaLinfocitoAtipicos" cols="16"
+													style="font-weight: bold;" tabindex="2" width="95%"
+													maxlength="10" format="dd/MM/yyyy" locale="es"
+													constraint="no future: no se permiten fechas posteriores a hoy" />
+											</div>
+
+										</hlayout>
+									</vlayout>
+									<vlayout
+										style="margin-left: 5px;">
+										<space height="30px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Cambio de categoría
+												</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbCambioCategoria" tabindex="4" width="100%"
+													cols="5">
+													<comboitem value="0"
+														label="Si" focus="true" />
+													<comboitem value="1"
+														label="No" />
+												</combobox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Hipermenorrea
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHipermenorreaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHipermenorreaN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHipermenorreaD">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Hematemesis
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHematemesisS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHematemesisN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Melena</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMelenaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMelenaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 112px;">
+												<label>
+													Hemoconcentración
+												</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtHemoconcentracion" cols="4"
+													style="font-weight: bold;" tabindex="1" width="40px"
+													placeholder="0" disabled="true" maxlength="10" />
+											</div>
+											<div style="width: 5px;">
+												<label>%</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHemoconcentracionS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHemoconcentracionN">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHemoconcentracionD">
+												</checkbox>
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+							<space height="1px" />
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<hlayout>
+											<div
+												style="width: 400px;">
+												<label>
+													Ha sido
+													Hospitalizado en el
+													ultimo año?
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHospitalizadoUltimoAnioS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHospitalizadoUltimoAnioN">
+												</checkbox>
+											</div>
+											<div style="">
+												<textbox
+													id="txtHospitalizadoUltimoAnio" cols="4"
+													style="font-weight: bold;" tabindex="1" width="550px"
+													placeholder="Especifique" disabled="true" maxlength="500" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 400px;">
+												<label>
+													Recibió Transfusión
+													de sangre en el
+													último año?
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTransfusionSangreS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTransfusionSangreN">
+												</checkbox>
+											</div>
+											<div style="">
+												<textbox
+													id="txtTransfusionSangre" cols="4"
+													style="font-weight: bold;" tabindex="1" width="550px"
+													placeholder="Especifique" disabled="true" maxlength="500" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 400px;">
+												<label>
+													Está tomando
+													medicamento en este
+													momento?
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEstaTomandoMedicamentoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEstaTomandoMedicamentoN">
+												</checkbox>
+											</div>
+											<div style="">
+												<textbox
+													id="txtEstaTomandoMedicamento" cols="4"
+													style="font-weight: bold;" tabindex="1" width="550px"
+													placeholder="Especifique" disabled="true" maxlength="500" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 400px;">
+												<label>
+													Toma un medicamento
+													distinto al
+													mencionado en los
+													ultimos 6 meses?
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTomaMedicamentoDistintoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkTomaMedicamentoDistintoN">
+												</checkbox>
+											</div>
+											<div style="">
+												<textbox
+													id="txtTomaMedicamentoDistinto" cols="4"
+													style="font-weight: bold;" tabindex="1" width="550px"
+													placeholder="Especifique" disabled="true" maxlength="500" />
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Exámenes" />
+											<space height="1px" />
+											<div
+												style="margin-left:86px;" align="center">
+												<button
+													id="btnExamenesS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnExamenesN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>BHC</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBhcS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBhcN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Serología para
+													Dengue
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSerologiaDengueS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSerologiaDengueN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Serología para CHIK
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSerologiaChikS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSerologiaChikN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Gota Gruesa
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkGotaGruesaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkGotaGruesaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Extendido Periférico
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkExtendidoPerifericoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkExtendidoPerifericoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>EGO</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEgoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEgoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>EGH</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEghS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkEghN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Citología Fecal
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCitologiaFecalS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCitologiaFecalN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Factor Reumatoídeo
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFactorReumatoideoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFactorReumatoideoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Albumina</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAlbuminaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAlbuminaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>AST/ALT</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAstAltS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAstAltN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Bilirubinas
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBilirubinasS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkBilirubinasN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>CPK</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCpkS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkCpkN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Colesterol
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkColesterolS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkColesterolN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Influenza</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInfluenzaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkInfluenzaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div style="width: 37px;">
+												<label>Otros</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtOtroExamen" cols="4" style="font-weight: bold;"
+													tabindex="1" width="123px" placeholder="" disabled="true"
+													maxlength="32" />
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtroExamenS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtroExamenN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<space height="2px" />
+										<hlayout>
+											<label
+												style="color: #008FBB;font-size:14px;font-style:italic;"
+												value="Tratamiento" />
+											<space height="1px" />
+											<div
+												style="margin-left:77px;" align="center">
+												<button
+													id="btnTratamientoS" tabindex="5" width="20px" label="S"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+											<div
+												style="margin-left:30px;" align="center">
+												<button
+													id="btnTratamientoN" tabindex="5" width="20px" label="N"
+													autodisable="self" sclass="myBlack" mold="trendy"
+													height="29px" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Acetaminofén
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAcetaminofenS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAcetaminofenN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>ASA</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAsaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAsaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Ibuprofén</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIbuprofenS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkIbuprofenN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Penicilina
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPenicilinaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPenicilinaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Amoxicilina
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAmoxicilinaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAmoxicilinaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Dicloxacilina
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDicloxacilinaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkDicloxacilinaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div style="width: 23px;">
+												<label>Otro</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtOtroAntibiotico" cols="4" style="font-weight: bold;"
+													tabindex="1" width="137px" placeholder="" disabled="true"
+													maxlength="32" />
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtroAntibioticoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOtroAntibioticoN">
+												</checkbox>
+											</div>
+
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Furazolidona
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFurazolidonaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkFurazolidonaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Metronidazol/Tinidazol
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMetronidazolTinidazolS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkMetronidazolTinidazolN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Albendazol/Mebendazol
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAlbendazolMebendazolS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkAlbendazolMebendazolN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Sulfato ferroso
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSulfatoFerrosoS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSulfatoFerrosoN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Suero Oral
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSueroOralS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSueroOralN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Sulfato de Zinc
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSulfatoZincS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSulfatoZincN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Líquidos IV
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLiquidosIVS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkLiquidosIVN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Prednisona
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPrednisonaS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkPrednisonaN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Hidrocortisona IV
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHidrocortisonaIVS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkHidrocortisonaIVN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Salbutamol
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSalbutamolS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkSalbutamolN">
+												</checkbox>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Oseltamivir
+												</label>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOseltamivirS">
+												</checkbox>
+											</div>
+											<div style="width: 50px;">
+												<checkbox
+													id="chkOseltamivirN">
+												</checkbox>
+											</div>
+										</hlayout>
+
+									</vlayout>
+									<vlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Historia y Exámen
+													Físico
+												</label>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												width="100% !important">
+												<textbox
+													id="txtHistoriaExamenFisico" cols="4" rows="60"
+													tabindex="2" width="775px" />
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+							<hbox pack="center">
+								<hlayout spacing="30px">
+									<vlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>Planes</label>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												width="100% !important">
+												<textbox id="txtPlanes"
+													cols="4" rows="30" tabindex="2" width="278px" />
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+								<hlayout spacing="30px"
+									style="margin-left: 20px;">
+									<vlayout>
+										<space height="3px" />
+										<hlayout>
+											<div
+												style="width: 170px;">
+												<label>
+													Diagnóstico
+												</label>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 5px;">
+												<label>1</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbDiagnostico1" autodrop="true" tabindex="4" autocomplete="true"
+													width="100%" cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 5px;">
+												<label>2</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbDiagnostico2" autodrop="true" tabindex="4" autocomplete="true"
+													width="100%" cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 5px;">
+												<label>3</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbDiagnostico3" autodrop="true" tabindex="4" autocomplete="true"
+													width="100%" cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 5px;">
+												<label>4</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbDiagnostico4" autodrop="true" tabindex="4" autocomplete="true"
+													width="100%" cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 90px;">
+												<label>
+													Otro Diagnóstico
+												</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtOtroDiagnostico" cols="4" style="font-weight: bold;"
+													tabindex="1" width="300px" placeholder="" disabled="true"
+													maxlength="500" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 70px;">
+												<label>
+													Teléf. Emerg
+												</label>
+											</div>
+											<div style="">
+												<textbox
+													id="txtTelefono" cols="4" style="font-weight: bold;"
+													tabindex="1" width="100px" placeholder="" disabled="false"
+													maxlength="8" />
+											</div>
+											<div
+												style="width: 70px; margin-left: 10px;">
+												<label>
+													Próxima Cita
+												</label>
+											</div>
+											<div
+												style="width: 100% !important;">
+												<datebox
+													id="txtFechaProximaCita" cols="16"
+													style="font-weight: bold;" tabindex="2" width="95%"
+													maxlength="10" format="dd/MM/yyyy" locale="es" />
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 50px;">
+												<label>Colegio</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbColegio" autodrop="true" tabindex="4" width="100%" autocomplete="true"
+													cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div
+												style="width: 100px;">
+												<label>
+													Horario de Clases
+												</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbHorarioClases" tabindex="4" width="100%" cols="5">
+													<comboitem
+														value="AM" label="AM" focus="true" />
+													<comboitem
+														value="PM" label="PM" />
+													<comboitem
+														value="NA" label="NA" />
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 70px;">
+												<label>Médico</label>
+											</div>
+											<div>
+												<combobox id="cmbMedico"
+													autodrop="true" tabindex="4" width="100%" cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 70px;">
+												<label>
+													Enfermería
+												</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbEnfermeria" autodrop="true" tabindex="4"
+													width="100%" cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 70px;">
+												<label>
+													Supervisor
+												</label>
+											</div>
+											<div>
+												<combobox
+													id="cmbSupervisor" autodrop="true" tabindex="4"
+													width="100%" cols="26">
+												</combobox>
+											</div>
+										</hlayout>
+										<space height="1px" />
+										<hlayout>
+											<div style="width: 70px;">
+												<label>
+													Fecha Cierre
+												</label>
+											</div>
+											<div
+												style="width: 100% !important;">
+												<datebox
+													id="txtFechaCierre" cols="16" style="font-weight: bold;"
+													tabindex="2" width="95%" maxlength="10" format="dd/MM/yyyy"
+													locale="es"
+													constraint="no future: no se permiten fechas posteriores a hoy" />
+											</div>
+											<div>
+												<label>Hora Cierre:</label>
+											</div>
+											<div
+												style="width: 60px!important;">
+												<textbox
+													id="txtHoraFechaCierre" cols="4" style="font-weight: bold;"
+													placeholder="00:00" tabindex="3" width="100%" maxlength="5" />
+											</div>
+											<div style="width: 125px; margin-left: 5px;">
+												<label
+													style="color: red">
+													(Formato 24 horas)
+												</label>
+											</div>
+										</hlayout>
+										<space height="3px" />
+										<hlayout>
+											<div>
+												<label>Número Hoja Consulta</label>
+											</div>
+											<div
+												style="width: 100px!important;">
+												<textbox
+													id="txtNumHojaConsulta" cols="4" style="color: red !important; font-weight: bold;"
+													placeholder="0" tabindex="3" width="100%" maxlength="20" disabled="true"/>
+											</div>
+										</hlayout>
+										<hlayout>
+											<div
+												style="width: 100px!important;">
+												<textbox
+													id="txtSecHojaConsulta" cols="4" style="font-weight: bold;"
+													placeholder="0" tabindex="3" width="100%" maxlength="20" disabled="true" 
+													visible="false"/>
+											</div>
+										</hlayout>
+									</vlayout>
+								</hlayout>
+							</hbox>
+						</vbox>
+					</groupbox>
+					<space height="5px" />
+					<div style="width: 200px;"></div>
+					<div style="width: 100px;"></div>
+					<div style="width:98%;" align="center">
+						<button id="btnGuardar" tabindex="5"
+							width="90px" label="Guardar" autodisable="self" sclass="myGreen"
+							mold="trendy" height="29px" disabled="false" />
+						<button id="btnImprimir" tabindex="5" width="90px"
+							label="Imprimir" autodisable="self" sclass="myGreen" mold="trendy"
+							height="29px" />
+						<button id="btnVerPdf" tabindex="5" width="90px"
+							label="Pdf" autodisable="self" sclass="myGreen" mold="trendy"
+							height="29px"/>
+						<button id="btnNuevo" tabindex="5" width="90px"
+							label="Nueva" autodisable="self" sclass="myGreen" mold="trendy"
+							height="29px" />
+						<button id="btnSalir" label="Salir"
+							tabindex="20" width="110px" sclass="myRed" mold="trendy"
+							height="29px" onClick="closeWindow()" />
+						
+					</div>
+				</auxheader>
+			</auxhead>
+			<space />
+			<div style="width:98%; padding-bottom: 40%;" align="right" ></div>
+		</vlayout>
+	</div>
+	<zscript><![CDATA[
+	public void closeWindow() {
+		Executions.sendRedirect("/contenido.zul");
+		Events.sendEvent(org.zkoss.zk.ui.event.Events.ON_CLOSE, windowHojaConsulta, null);
+	}
+]]></zscript>
+</window>

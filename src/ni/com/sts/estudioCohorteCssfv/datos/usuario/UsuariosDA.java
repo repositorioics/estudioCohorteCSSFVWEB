@@ -58,6 +58,60 @@ public class UsuariosDA implements UsuariosService {
 	   	 return resultado;
 	}
 	
+	@Override 
+	public List<UsuariosView> obtenerUsuariosMedicos() {
+		List<UsuariosView> resultado = new ArrayList<UsuariosView>();
+		try {
+			// Construir query
+			
+			String sql = "select a from UsuariosView a, RolesView b "
+					+ "where a.usuario = b.usuario "
+					+ "and b.nombre = 'Médico' "
+					+ "and (a.nombre like 'DR.%' or a.nombre like 'DRA.%') "
+					+ "and (a.nombre not in('DR. ROMERO','DRA. KUAN')) order by a.nombre";
+		
+	        Query q = hibernateResource.getSession().createQuery(sql);
+	        //q.setParameter("perfil", perfil);
+	        resultado = q.list();
+	   	 } catch (Exception e) {
+	   	 	e.printStackTrace();
+	   	 } finally {
+	   	 	if (hibernateResource.getSession().isOpen()) {
+	   	 		hibernateResource.close();
+	   	 	}
+	   	 }
+	   	 return resultado;
+	}
+	
+	@Override 
+	public List<UsuariosView> obtenerSupervisores() {
+		List<UsuariosView> resultado = new ArrayList<UsuariosView>();
+		try {
+			// Construir query
+			
+			String sql = "select valores " + 
+					" from ParametrosSistemas p where p.nombreParametro ='SUPERVISORES_HC'";
+			
+			Query query = hibernateResource.getSession().createQuery(sql);
+			
+			String valorParametro = query.uniqueResult().toString();
+			
+			 sql = "SELECT a FROM UsuariosView a WHERE a.id in(" + valorParametro + ")";
+
+		
+	        Query q = hibernateResource.getSession().createQuery(sql);
+	        
+	        resultado = q.list();
+	   	 } catch (Exception e) {
+	   	 	e.printStackTrace();
+	   	 } finally {
+	   	 	if (hibernateResource.getSession().isOpen()) {
+	   	 		hibernateResource.close();
+	   	 	}
+	   	 }
+	   	 return resultado;
+	}
+	
 	@Override
 	public List<UsuariosView> obtenerUsuariosByPerfiles(String perfiles) {
 		List<UsuariosView> resultado = new ArrayList<UsuariosView>();
@@ -112,6 +166,28 @@ public class UsuariosDA implements UsuariosService {
 		
 	        Query q = hibernateResource.getSession().createQuery(sql);
 	        resultado = q.list();
+	   	 } catch (Exception e) {
+	   	 	e.printStackTrace();
+	   	 } finally {
+	   	 	if (hibernateResource.getSession().isOpen()) {
+	   	 		hibernateResource.close();
+	   	 	}
+	   	 }
+	   	 return resultado;
+	}
+	
+	@Override
+	public String obtenerCodigoPersonalById(Integer id) {
+		String resultado = null;
+		try {
+			// Construir query
+			String sql = 	"select a.codigoPersonal "+
+								"from UsuariosView a " +
+								"where a.id = :id ";
+		
+	        Query q = hibernateResource.getSession().createQuery(sql);
+	        q.setInteger("id",id);
+	        resultado = (String) q.uniqueResult();
 	   	 } catch (Exception e) {
 	   	 	e.printStackTrace();
 	   	 } finally {

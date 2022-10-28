@@ -1,0 +1,6 @@
+<window border="normal" width="90%" height="95%" closable="true"
+	mode="modal" apply="org.zkoss.bind.BindComposer"
+	title="Hoja Consulta Reporte">
+	<iframe id="iframeHojaConsulta" width="100%" height="100%"
+		style="border: 1px solid gray" />
+</window>

@@ -45,6 +45,7 @@ public class Propiedades implements PropiedadesIT
 
         propertyFromClassPath.add(fileName);
         loadPropertyfromFileSystem(fileName, userDir() + "/ni/com/sts/propertiesGenerales/");
+        
 
     }
 
