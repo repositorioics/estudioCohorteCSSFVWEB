@@ -45,22 +45,68 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 		try {
 
 			StringBuilder builder = new StringBuilder();
-
+			StringBuilder builderSelect = new StringBuilder();
+			String repeatKey = null;
+			
 			if (nombreTabla.equals("hoja_consulta")) {
-				// update en la hoja de consulta
-				builder.append(" UPDATE ").append(nombreTabla).append(" SET ").append(nombreCampo).append(" = ")
-						.append(" ? ").append(" WHERE ").append(" num_hoja_consulta ").append(" = ").append(numHoja);
+				//Obtener la hoja de consulta para verificar si tiene repeat_key
+				
+				builderSelect.append("SELECT ").append(" repeat_key ").append(" FROM ").append(nombreTabla)
+				.append(" WHERE ").append("num_hoja_consulta = ").append(numHoja);
+				
+				pst = conn.prepareStatement(builderSelect.toString());
+				ResultSet rs = pst.executeQuery();
+				while (rs.next()) {
+					repeatKey = rs.getString(1);
+				}
+				
+				if (repeatKey != null) {
+					// update en la hoja de consulta
+					builder.append(" UPDATE ").append(nombreTabla).append(" SET ").append(nombreCampo).append(" = ")
+							.append(" ? ")
+							.append(" , ")
+							.append(" estado_carga ").append(" = ").append(" ? ")
+							.append(" WHERE ").append(" num_hoja_consulta ").append(" = ").append(numHoja);
+				} else {
+					// update en la hoja de consulta
+					builder.append(" UPDATE ").append(nombreTabla).append(" SET ").append(nombreCampo).append(" = ")
+							.append(" ? ")
+							.append(" WHERE ").append(" num_hoja_consulta ").append(" = ").append(numHoja);
+				}
+				
 			} else {
-				// update para la hoja de influenza y zika
-				builder.append(" UPDATE ").append(nombreTabla).append(" SET ").append(nombreCampo).append(" = ")
-						.append(" ? ").append(" WHERE ").append(" num_hoja_seguimiento ").append(" = ").append(numHoja);
+				builderSelect.append("SELECT ").append(" repeat_key ").append(" FROM ").append(nombreTabla)
+				.append(" WHERE ").append("num_hoja_seguimiento = ").append(numHoja);
+				
+				pst = conn.prepareStatement(builderSelect.toString());
+				ResultSet rs = pst.executeQuery();
+				while (rs.next()) {
+					repeatKey = rs.getString(1);
+				}
+				
+				if (repeatKey != null) {
+					// update para la hoja de influenza y zika
+					builder.append(" UPDATE ").append(nombreTabla).append(" SET ").append(nombreCampo).append(" = ")
+							.append(" ? ")
+							.append(" , ")
+							.append(" estado_carga ").append(" = ").append(" ? ")
+							.append(" WHERE ").append(" num_hoja_seguimiento ").append(" = ").append(numHoja);
+				} else {
+					// update para la hoja de influenza y zika
+					builder.append(" UPDATE ").append(nombreTabla).append(" SET ").append(nombreCampo).append(" = ")
+							.append(" ? ")
+							.append(" WHERE ").append(" num_hoja_seguimiento ").append(" = ").append(numHoja);
+				}
 			}
 
 			pst = conn.prepareStatement(builder.toString());
-
+			if (repeatKey != null) {
+				pst.setString(2, null);
+			}
+			
 			int type = getColumnType(nombreTabla, nombreCampo, conn);
-
 			if (valorNull) {
+				
 				if (type == Types.VARCHAR)
 					pst.setNull(1, Types.VARCHAR);
 				else if (type == Types.CHAR)
@@ -178,22 +224,51 @@ public class ActualizarDatosDA extends ConnectionDAO implements ActualizarDatosS
 		InfoResultado infoResultado = new InfoResultado();
 		int id = 0;
 		conn = getConection();
-
 		try {
-
 			StringBuilder builderSelect = new StringBuilder();
+			StringBuilder builder = new StringBuilder();
+			String repeatKey = null;
 			if (nombreTabla.equals("seguimiento_influenza")) {
-				builderSelect.append("SELECT ").append(secHoja).append(" FROM ").append(" hoja_influenza ")
+				builderSelect.append("SELECT ").append(secHoja + ", " + "repeat_key ").append(" FROM ").append(" hoja_influenza ")
 						.append(" WHERE ").append("num_hoja_seguimiento = ").append(numHoja);
+				
+				pst = conn.prepareStatement(builderSelect.toString());
+				ResultSet rs = pst.executeQuery();
+				while (rs.next()) {
+					id = rs.getInt(1);
+					repeatKey = rs.getString(2);
+				}
+				
+				if (repeatKey != null) {
+					builder.append(" UPDATE ").append(" hoja_influenza ").append(" SET ")
+					.append(" estado_carga ").append(" = ").append(" ? ")
+					.append(" WHERE ").append(" num_hoja_seguimiento ").append(" = ").append(numHoja);
+					
+					pst = conn.prepareStatement(builder.toString());
+					pst.setString(1, null);
+					pst.executeUpdate();
+				}
 			} else {
-				builderSelect.append("SELECT ").append(secHoja).append(" FROM ").append(" hoja_zika ").append(" WHERE ")
+				builderSelect.append("SELECT ").append(secHoja  + ", " + "repeat_key ").append(" FROM ").append(" hoja_zika ")
+						.append(" WHERE ")
 						.append("num_hoja_seguimiento = ").append(numHoja);
-			}
-
-			pst = conn.prepareStatement(builderSelect.toString());
-			ResultSet rs = pst.executeQuery();
-			while (rs.next()) {
-				id = rs.getInt(1);
+				
+				pst = conn.prepareStatement(builderSelect.toString());
+				ResultSet rs = pst.executeQuery();
+				while (rs.next()) {
+					id = rs.getInt(1);
+					repeatKey = rs.getString(2);
+				}
+				
+				if (repeatKey != null) {
+					builder.append(" UPDATE ").append(" hoja_zika ").append(" SET ")
+					.append(" estado_carga ").append(" = ").append(" ? ")
+					.append(" WHERE ").append(" num_hoja_seguimiento ").append(" = ").append(numHoja);
+					
+					pst = conn.prepareStatement(builder.toString());
+					pst.setString(1, null);
+					pst.executeUpdate();
+				}
 			}
 
 			StringBuilder builderUpdate = new StringBuilder();
